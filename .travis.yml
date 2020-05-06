@@ -10,7 +10,9 @@ addons:
     - libglib2.0-dev
     - tcl-dev
     - tk-dev
-
+arch:
+  - amd64
+  - arm64
 before_script:
   - cmake .
 script:
