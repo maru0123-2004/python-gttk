@@ -130,6 +130,14 @@ INCLUDE_DIRECTORIES ( ${TK_INCLUDE_PATH}/tk-private/generic/ttk )
 INCLUDE_DIRECTORIES ( ${PROJECT_SOURCE_DIR}/generic )
 
 ## ===========================================================================
+##  Locate X11...
+## ===========================================================================
+find_package ( X11 REQUIRED )
+if ( X11_FOUND )
+  MESSAGE ( STATUS "X11 Found: ${X11_LIBRARIES}" )
+endif ()
+
+## ===========================================================================
 ##  Locate GNOME2...
 ## ===========================================================================
 IF ( USE_GNOME )
@@ -191,6 +199,7 @@ MESSAGE ( STATUS "===========================================================" )
 ADD_LIBRARY ( ${PKG_TARGET_LIB_NAME} SHARED ${PKG_SOURCES} )
 TARGET_LINK_LIBRARIES ( ${PKG_TARGET_LIB_NAME} ${TCL_STUB_LIBRARY} )
 TARGET_LINK_LIBRARIES ( ${PKG_TARGET_LIB_NAME} ${TK_STUB_LIBRARY} )
+TARGET_LINK_LIBRARIES ( ${PKG_TARGET_LIB_NAME} ${X11_LIBRARIES} )
 IF ( TTK_STUB_LIBRARY )
   TARGET_LINK_LIBRARIES ( ${PKG_TARGET_LIB_NAME} ${TTK_STUB_LIBRARY} )
 ENDIF ( TTK_STUB_LIBRARY )
