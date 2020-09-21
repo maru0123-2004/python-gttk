@@ -1,8 +1,9 @@
 """
 Author: RedFantom
 License: GNU GPLv3
-Copyright (c) 2018 RedFantom
+Copyright (c) 2018-2020 RedFantom
 """
+import os
 import sys
 import tkinter as tk
 from tkinter import ttk
@@ -30,6 +31,7 @@ class Example(tk.Tk):
         self.tree = ttk.Treeview(self, height=4, show=("tree", "headings"))
         self.setup_tree()
         self.progress = ttk.Progressbar(self, maximum=100, value=50)
+        self.bind("<F10>", self.screenshot)
         # Grid widgets
         self.grid_widgets()
 
@@ -54,6 +56,26 @@ class Example(tk.Tk):
         self.scroll.grid(row=1, column=3, rowspan=8, padx=5, **sticky)
         self.tree.grid(row=6, column=1, columnspan=2, **sticky)
         self.progress.grid(row=9, column=1, columnspan=2, padx=5, pady=5, **sticky)
+
+    def screenshot(self, *args):
+        """Take a screenshot, crop and save"""
+        try:
+            from PIL import Image
+            from mss import mss
+        except ImportError:
+            print("Taking a screenshot requires additional packages: 'pillow' and 'mss'")
+            raise
+        if not os.path.exists("screenshots"):
+            os.makedirs("screenshots")
+        box = {
+            "top": self.winfo_y(),
+            "left": self.winfo_x(),
+            "width": self.winfo_width(),
+            "height": self.winfo_height()
+        }
+        screenshot = mss().grab(box)
+        screenshot = Image.frombytes("RGB", screenshot.size, screenshot.rgb)
+        screenshot.save("screenshots/{}.png".format(ttk.Style(self).theme_use()))
 
 
 if __name__ == '__main__':
