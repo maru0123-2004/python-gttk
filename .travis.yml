@@ -1,5 +1,4 @@
 language: python
-sudo: required
 dist: bionic
 compiler: gcc
 services:
@@ -12,6 +11,7 @@ addons:
     - tcl-dev
     - tk-dev
 install:
+  - sudo apt install cmake build-essential
   - sudo -H python -m pip install nose scikit-build
 script:
   - sudo -H python setup.py install
