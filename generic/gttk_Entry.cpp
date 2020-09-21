@@ -70,6 +70,8 @@ static void EntryFieldElementDraw(
       GTTK_STYLE_FROM_WIDGET;
       gttk_StateShadowTableLookup(NULL, state, gtkState, gtkShadow,
               GTTK_SECTION_ENTRY|GTTK_SECTION_ALL);
+      gttk_gtk_paint_flat_box(style, gdkDrawable, gtkState, gtkShadow, NULL, widget,
+          "entry_bg", 0, 0, b.width, b.height);
       GTTK_WIDGET_SET_FOCUS(widget);
       gttk_gtk_paint_shadow(style, gdkDrawable, gtkState, gtkShadow, NULL,
               widget, "entry", 0, 0, b.width, b.height);

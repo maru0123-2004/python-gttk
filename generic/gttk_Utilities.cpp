@@ -458,11 +458,13 @@ unsigned int gttk_StateShadowTableLookup(gttk_StateTable *map,
         gtkShadow = GTK_SHADOW_IN;
       } else {
         gtkShadow = GTK_SHADOW_OUT;
-        // if (state & TTK_STATE_DISABLED || state & TTK_STATE_READONLY)
-        //                                    gtkState  = GTK_STATE_INSENSITIVE;
+        if (state & TTK_STATE_DISABLED || state & TTK_STATE_READONLY)
+            gtkState  = GTK_STATE_INSENSITIVE;
         // else if (state & TTK_STATE_ACTIVE) gtkState  = GTK_STATE_PRELIGHT;
         // else if (state & TTK_STATE_FOCUS)  gtkState  = GTK_STATE_ACTIVE;
       }
+      if ((section & GTTK_SECTION_ENTRY) && (state & TTK_STATE_FOCUS))
+        gtkState = GTK_STATE_ACTIVE;
       if ((state & TTK_STATE_ACTIVE) &&
              (!(state & TTK_STATE_PRESSED) && !(state & TTK_STATE_SELECTED))) {
         gtkState = GTK_STATE_PRELIGHT;
