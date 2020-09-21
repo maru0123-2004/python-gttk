@@ -1,6 +1,8 @@
 language: python
 dist: bionic
 compiler: gcc
+python:
+  - "3.8"
 services:
   - xvfb
 addons:
@@ -12,7 +14,7 @@ addons:
     - tk-dev
 install:
   - sudo apt install cmake build-essential
-  - sudo -H python -m pip install nose scikit-build
+  - python -m pip install nose scikit-build
 script:
   - python setup.py install
   - rm -rf ./gttk
