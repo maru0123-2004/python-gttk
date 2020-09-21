@@ -80,6 +80,9 @@ CMakeCache.txt
 install_manifest.txt
 CTestTestfile.cmake
 
+# Generated files
+/library/pkgIndex.tcl
+
 # Python packages
 /*.egg-info
 /build
