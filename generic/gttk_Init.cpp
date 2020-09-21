@@ -17,10 +17,9 @@ extern void gttk_DestroyGtkApp(void);
 
 static char initScript[] =
   "namespace eval gttk { };"
-  "namespace eval ttk::theme::gttk { variable version "
-                                                 PACKAGE_VERSION " };"
+  "namespace eval ttk::theme::gttk { variable version " PACKAGE_VERSION " };"
   "tcl_findLibrary gttk $ttk::theme::gttk::version "
-  "$ttk::theme::gttk::version gttk.tcl GTTK_LIBRARY gttk::library;";
+  "$ttk::theme::gttk::version [file join [pwd] gttk.tcl] GTTK_LIBRARY gttk::library;";
 #ifdef GTTK_LOAD_GTK_DYNAMICALLY
 static char libsInitScript[] =
   "ttk::theme::gttk::loadLibraries";
@@ -739,7 +738,7 @@ int gttk_SetStyle(ClientData clientData, Tcl_Interp *interp,
 }; /* gttk_SetStyle */
 
 extern "C" int DLLEXPORT
-gttk_Init(Tcl_Interp *interp)
+_Gttk_Init(Tcl_Interp *interp)
 {
     Ttk_Theme themePtr;
     Tk_Window tkwin;
@@ -876,7 +875,7 @@ gttk_Init(Tcl_Interp *interp)
 }; /* gttk_Init */
 
 int DLLEXPORT
-gttk_Finish(Tcl_Interp *interp)
+Gttk_Finish(Tcl_Interp *interp)
 {
     Tcl_MutexLock(&gttkMutex);
     if (gttk_GtkAppCreated < 0) {Tcl_MutexUnlock(&gttkMutex); return 0;}
