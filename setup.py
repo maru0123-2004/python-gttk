@@ -10,9 +10,6 @@ except ImportError:
     print("scikit-build is required to build this project")
     print("install with `python -m pip install scikit-build`")
     raise
-import glob
-from shutil import copyfile
-import os
 
 
 def read(file_name):

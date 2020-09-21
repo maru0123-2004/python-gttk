@@ -2,7 +2,6 @@ language: python
 sudo: required
 dist: bionic
 compiler: gcc
-
 addons:
   apt:
     packages:
@@ -10,9 +9,8 @@ addons:
     - libglib2.0-dev
     - tcl-dev
     - tk-dev
-
-before_script:
-  - cmake .
+install:
+  - sudo -H python -m pip install nose
 script:
-  - make
-  - sudo make install
+  - sudo -H python setup.py install
+  - python -m nose

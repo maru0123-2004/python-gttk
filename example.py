@@ -3,20 +3,13 @@ Author: RedFantom
 License: GNU GPLv3
 Copyright (c) 2018 RedFantom
 """
-import os
 import sys
-if sys.version_info.major == 3:
-    import tkinter as tk
-    from tkinter import ttk
-else:
-    import Tkinter as tk
-    import ttk
+import tkinter as tk
+from tkinter import ttk
 
 
 class Example(tk.Tk):
-    """
-    Example that is used to create screenshots for new themes.
-    """
+    """Example that is used to create screenshots for new themes"""
     def __init__(self):
         tk.Tk.__init__(self)
         # Create widgets
@@ -64,11 +57,12 @@ class Example(tk.Tk):
 
 
 if __name__ == '__main__':
+    sys.path = sys.path[2:]
+
+    import gttk
+
     window = Example()
     style = ttk.Style(window)
-    window.eval("set dir /usr/lib/tcltk/tcl8.6/gtkTtk0.5; source /usr/lib/tcltk/tcl8.6/gtkTtk0.5/pkgIndex.tcl")
-    window.tk.call("package", "require", "ttk::theme::gtkTtk")
-    print(style.theme_names())
 
     style.theme_use("gtkTtk")
 

@@ -3,16 +3,15 @@ CMAKE_MINIMUM_REQUIRED ( VERSION 2.8 )
 ## ===========================================================================
 ##  Project Information
 ## ===========================================================================
-PROJECT ( gtkTtk )
+PROJECT ( gttk )
 ## Package version information.
 SET ( PKG_NAME          ${PROJECT_NAME} )
 SET ( PKG_MAJOR_VERSION 0 )
 SET ( PKG_MINOR_VERSION 5 )
 SET ( PKG_BUILD_VERSION 0 )
-SET ( PKG_VERSION
-     "${PKG_MAJOR_VERSION}.${PKG_MINOR_VERSION}" )
+SET ( PKG_VERSION "${PKG_MAJOR_VERSION}.${PKG_MINOR_VERSION}" )
 SET ( PKG_NAME_VERSION  ${PKG_NAME}-${PKG_VERSION} )
-SET ( PKG_VENDOR        "Géballin" )
+SET ( PKG_VENDOR        "RedFantom" )
 SET ( PKG_HOME_DIR      ${PROJECT_SOURCE_DIR} )
 
 SET ( LOAD_GTK_DYNAMICALLY ON )
@@ -189,7 +188,7 @@ SET_SOURCE_FILES_PROPERTIES ( ${PROJECT_SOURCE_DIR}/generic/gtkTtk_Symbols.cpp
 SET_SOURCE_FILES_PROPERTIES ( ${PROJECT_SOURCE_DIR}/generic/gtkTtk_Symbols.h
                               PROPERTIES GENERATED true )
 
-SET ( PKG_TARGET_LIB_NAME ${PKG_NAME}${PKG_VERSION} )
+SET ( PKG_TARGET_LIB_NAME ${PKG_NAME} )
 ## ===========================================================================
 ##  Target: gtkTtk shared library
 ## ===========================================================================

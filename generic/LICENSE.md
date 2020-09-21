@@ -1,4 +1,4 @@
-LICENSE ("MIT-style")
+# MIT License
 
 Copyright 2008-2012 Georgios Petasis
 Copyright 2012 Cheer Xiao
