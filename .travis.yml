@@ -2,6 +2,8 @@ language: python
 sudo: required
 dist: bionic
 compiler: gcc
+services:
+  - xvfb
 addons:
   apt:
     packages:
@@ -10,7 +12,7 @@ addons:
     - tcl-dev
     - tk-dev
 install:
-  - sudo -H python -m pip install nose
+  - sudo -H python -m pip install nose scikit-build
 script:
   - sudo -H python setup.py install
   - python -m nose
