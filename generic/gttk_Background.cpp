@@ -1,8 +1,8 @@
 /*
- *  gtkTtk_Background.cpp
+ *  gttk_Background.cpp
  * -----------------------
  *
- * This file is part of the gtkTtk package, a Tk/Tile based theme that uses
+ * This file is part of the gttk package, a Tk/Tile based theme that uses
  * Gtk/GNOME for drawing.
  *
  * Copyright (C) 2004-2008 by:
@@ -13,9 +13,9 @@
  * Aghia Paraskevi, 153 10, Athens, Greece.
  */
 
-#include "gtkTtk_Utilities.h"
-#include "gtkTtk_TkHeaders.h"
-#include "gtkTtk_WidgetDefaults.h"
+#include "gttk_Utilities.h"
+#include "gttk_TkHeaders.h"
+#include "gttk_WidgetDefaults.h"
 
 /*
  * Map between Tk/Tile & Gtk/GNOME state flags.
@@ -44,18 +44,18 @@ static void BackgroundElementDraw(
     void *clientData, void *elementRecord, Tk_Window tkwin,
     Drawable d, Ttk_Box b, unsigned state)
 {
-    GTKTTK_GTK_DRAWABLE_DEFINITIONS;
-    GTKTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
-    GTKTTK_SETUP_GTK_DRAWABLE;
-    //GtkTtk_StateShadowTableLookup(NULL, state, gtkState, gtkShadow,
-    //                               GTKTTK_SECTION_ALL);
-    GTKTTK_DEFAULT_BACKGROUND;
-    GtkTtk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin,
+    GTTK_GTK_DRAWABLE_DEFINITIONS;
+    GTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
+    GTTK_SETUP_GTK_DRAWABLE;
+    //gttk_StateShadowTableLookup(NULL, state, gtkState, gtkShadow,
+    //                               GTTK_SECTION_ALL);
+    GTTK_DEFAULT_BACKGROUND;
+    gttk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin,
                    0, 0, b.width, b.height, b.x, b.y);
-    GTKTTK_CLEANUP_GTK_DRAWABLE;
+    GTTK_CLEANUP_GTK_DRAWABLE;
 }
 
-static Ttk_ElementSpec GtkTtk_BackgroundElementSpec = {
+static Ttk_ElementSpec gttk_BackgroundElementSpec = {
     TK_STYLE_VERSION_2,
     sizeof(BackgroundElement),
     BackgroundElementOptions,
@@ -84,22 +84,22 @@ static void BorderElementGeometry(
     void *clientData, void *elementRecord, Tk_Window tkwin,
     int *widthPtr, int *heightPtr, Ttk_Padding *paddingPtr)
 {
-    if (!GtkTtk_GtkInitialised()) NO_GTK_STYLE_ENGINE;
-    //Tcl_MutexLock(&gtkTtkMutex);
+    if (!gttk_GtkInitialised()) NO_GTK_STYLE_ENGINE;
+    //Tcl_MutexLock(&gttkMutex);
     BorderElement *border = (BorderElement*) elementRecord;
     int borderWidth = 0;
     Tcl_GetIntFromObj(NULL, border->borderWidthObj, &borderWidth);
     *paddingPtr = Ttk_UniformPadding((short)borderWidth+2);
-    //Tcl_MutexUnlock(&gtkTtkMutex);
+    //Tcl_MutexUnlock(&gttkMutex);
 }
 
 static void BorderElementDraw(
     void *clientData, void *elementRecord, Tk_Window tkwin,
     Drawable d, Ttk_Box b, unsigned state)
 {
-    if (!GtkTtk_GtkInitialised()) NO_GTK_STYLE_ENGINE;
-    NULL_PROXY_WIDGET(GtkTtk_QWidget_WidgetParent);
-    Tcl_MutexLock(&gtkTtkMutex);
+    if (!gttk_GtkInitialised()) NO_GTK_STYLE_ENGINE;
+    NULL_PROXY_WIDGET(gttk_QWidget_WidgetParent);
+    Tcl_MutexLock(&gttkMutex);
     BorderElement *border = (BorderElement*) elementRecord;
     int relief = TK_RELIEF_FLAT;
     int borderWidth = 0;
@@ -125,23 +125,23 @@ static void BorderElementDraw(
 
     QPixmap      pixmap(b.width, b.height);
     QPainter     painter(&pixmap);
-    if (wc->GtkTtk_QPixmap_BackgroundTile &&
-        !(wc->GtkTtk_QPixmap_BackgroundTile->isNull())) {
+    if (wc->gttk_QPixmap_BackgroundTile &&
+        !(wc->gttk_QPixmap_BackgroundTile->isNull())) {
         painter.fillRect(0, 0, b.width, b.height,
                          QBrush(QColor(255,255,255),
-                         *(wc->GtkTtk_QPixmap_BackgroundTile)));
+                         *(wc->gttk_QPixmap_BackgroundTile)));
     } else {
         painter.fillRect(0, 0, b.width, b.height,
                          qApp->palette().active().background());
     }
     if (borderWidth) {
-      wc->GtkTtk_Style->drawPrimitive(QStyle::PE_GroupBoxFrame, &painter,
+      wc->gttk_Style->drawPrimitive(QStyle::PE_GroupBoxFrame, &painter,
             QRect(0, 0, b.width, b.height), qApp->palette().active(), sflags,
             QStyleOption(borderWidth, 0));
     }
-    GtkTtk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin,
+    gttk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin,
                                     0, 0, b.width, b.height, b.x, b.y);
-    Tcl_MutexUnlock(&gtkTtkMutex);
+    Tcl_MutexUnlock(&gttkMutex);
 }
 
 static Ttk_ElementSpec BorderElementSpec = {
@@ -157,14 +157,14 @@ static Ttk_ElementSpec BorderElementSpec = {
  * +++ Widget layout.
  */
 
-int GtkTtk_Init_Background(Tcl_Interp *interp,
-                           GtkTtk_WidgetCache **wc, Ttk_Theme themePtr)
+int gttk_Init_Background(Tcl_Interp *interp,
+                           gttk_WidgetCache **wc, Ttk_Theme themePtr)
 {
     /*
      * Register elements:
      */
     Ttk_RegisterElement(interp, themePtr, "background",
-            &GtkTtk_BackgroundElementSpec, (void *) wc[0]);
+            &gttk_BackgroundElementSpec, (void *) wc[0]);
     //Ttk_RegisterElement(interp, themePtr, "border",
     //        &BorderElementSpec, NULL);
     /*
@@ -172,4 +172,4 @@ int GtkTtk_Init_Background(Tcl_Interp *interp,
      */
 
     return TCL_OK;
-}; /* GtkTtk_Init_Background */
+}; /* gttk_Init_Background */

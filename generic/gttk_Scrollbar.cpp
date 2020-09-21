@@ -1,8 +1,8 @@
 /*
- *  gtkTtk_Scrollbar.cpp
+ *  gttk_Scrollbar.cpp
  * ------------------------
  *
- * This file is part of the gtkTtk package, a Tk/Tile based theme that uses
+ * This file is part of the gttk package, a Tk/Tile based theme that uses
  * Gtk/GNOME for drawing.
  *
  * Copyright (C) 2004-2008 by:
@@ -13,9 +13,9 @@
  * Aghia Paraskevi, 153 10, Athens, Greece.
  */
 
-#include "gtkTtk_Utilities.h"
-#include "gtkTtk_TkHeaders.h"
-#include "gtkTtk_WidgetDefaults.h"
+#include "gttk_Utilities.h"
+#include "gttk_TkHeaders.h"
+#include "gttk_WidgetDefaults.h"
 
 #if 0
 /*
@@ -37,13 +37,13 @@ static void ScrollbarTroughElementGeometry(
     void *clientData, void *elementRecord, Tk_Window tkwin,
     int *widthPtr, int *heightPtr, Ttk_Padding *paddingPtr)
 {
-    GTKTTK_WIDGET_CACHE_DEFINITION;
+    GTTK_WIDGET_CACHE_DEFINITION;
     gint trough_border = 0;
     int xt = 0, yt = 0;
-    GtkWidget *widget = GtkTtk_GetScrollBar(wc);
-    GTKTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
-    GTKTTK_ENSURE_WIDGET_OK;
-    GtkTtk_gtk_widget_style_get(widget, "trough-border", &trough_border, NULL);
+    GtkWidget *widget = gttk_GetScrollBar(wc);
+    GTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
+    GTTK_ENSURE_WIDGET_OK;
+    gttk_gtk_widget_style_get(widget, "trough-border", &trough_border, NULL);
     // xt = widget->style->xthickness;
     // yt = widget->style->ythickness;
     *paddingPtr = Ttk_MakePadding(xt + trough_border,
@@ -56,43 +56,43 @@ static void ScrollbarTroughElementDraw(
     void *clientData, void *elementRecord, Tk_Window tkwin,
     Drawable d, Ttk_Box b, unsigned state)
 {
-    GTKTTK_GTK_DRAWABLE_DEFINITIONS;
-    GTKTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
-    GTKTTK_SETUP_GTK_DRAWABLE;
-    GtkWidget *widget = GtkTtk_GetScrollBar(wc);
+    GTTK_GTK_DRAWABLE_DEFINITIONS;
+    GTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
+    GTTK_SETUP_GTK_DRAWABLE;
+    GtkWidget *widget = gttk_GetScrollBar(wc);
     gboolean trough_side_details = FALSE;
-    GTKTTK_ENSURE_WIDGET_OK;
-    GTKTTK_STYLE_FROM_WIDGET;
-    GtkTtk_StateShadowTableLookup(NULL, state, gtkState, gtkShadow,
-            GTKTTK_SECTION_TROUGH|GTKTTK_SECTION_ALL);
-    //GTKTTK_SETUP_WIDGET_SIZE(b.width, b.height);
-    GTKTTK_WIDGET_SET_FOCUS(widget);
-    GtkTtk_gtk_widget_style_get(widget, "trough-side-details",
+    GTTK_ENSURE_WIDGET_OK;
+    GTTK_STYLE_FROM_WIDGET;
+    gttk_StateShadowTableLookup(NULL, state, gtkState, gtkShadow,
+            GTTK_SECTION_TROUGH|GTTK_SECTION_ALL);
+    //GTTK_SETUP_WIDGET_SIZE(b.width, b.height);
+    GTTK_WIDGET_SET_FOCUS(widget);
+    gttk_gtk_widget_style_get(widget, "trough-side-details",
                                  &trough_side_details, NULL);
-    GTKTTK_DEFAULT_BACKGROUND;
-    // GtkTtk_StateInfo(state, gtkState, gtkShadow, tkwin, widget);
+    GTTK_DEFAULT_BACKGROUND;
+    // gttk_StateInfo(state, gtkState, gtkShadow, tkwin, widget);
     if (trough_side_details) {
       int trough_change_pos_x = b.width, trough_change_pos_y = b.height;
       if (wc->gtkOrientation == GTK_ORIENTATION_HORIZONTAL)
         trough_change_pos_x = b.width / 2;
       else
         trough_change_pos_y = b.height / 2;
-      GtkTtk_gtk_paint_box(style, gdkDrawable, gtkState, GTK_SHADOW_IN, NULL, widget,
+      gttk_gtk_paint_box(style, gdkDrawable, gtkState, GTK_SHADOW_IN, NULL, widget,
           "trough-upper", 0, 0, trough_change_pos_x, trough_change_pos_y);
       if (wc->gtkOrientation == GTK_ORIENTATION_HORIZONTAL)
         trough_change_pos_y = 0;
       else
         trough_change_pos_x = 0;
-      GtkTtk_gtk_paint_box(style, gdkDrawable, gtkState, GTK_SHADOW_IN, NULL, widget,
+      gttk_gtk_paint_box(style, gdkDrawable, gtkState, GTK_SHADOW_IN, NULL, widget,
           "trough-lower", trough_change_pos_x, trough_change_pos_y,
           b.width-trough_change_pos_x, b.height-trough_change_pos_y);
     } else {
-      GtkTtk_gtk_paint_box(style, gdkDrawable, gtkState, GTK_SHADOW_IN, NULL, widget,
+      gttk_gtk_paint_box(style, gdkDrawable, gtkState, GTK_SHADOW_IN, NULL, widget,
           "trough", 0, 0, b.width, b.height);
     }
-    GtkTtk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin,
+    gttk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin,
                    0, 0, b.width, b.height, b.x, b.y);
-    GTKTTK_CLEANUP_GTK_DRAWABLE;
+    GTTK_CLEANUP_GTK_DRAWABLE;
 }
 
 static Ttk_ElementSpec ScrollbarTroughElementSpec = {
@@ -114,12 +114,12 @@ static void ScrollbarThumbElementGeometry(
     void *clientData, void *elementRecord, Tk_Window tkwin,
     int *widthPtr, int *heightPtr, Ttk_Padding *paddingPtr)
 {
-    GTKTTK_WIDGET_CACHE_DEFINITION;
+    GTTK_WIDGET_CACHE_DEFINITION;
     gint slider_width = 0, slider_min = ScrollbarThumbMinimumLen;
-    GtkWidget *widget = GtkTtk_GetScrollBar(wc);
-    GTKTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
-    GTKTTK_ENSURE_WIDGET_OK;
-    GtkTtk_gtk_widget_style_get(widget, "slider-width",      &slider_width,
+    GtkWidget *widget = gttk_GetScrollBar(wc);
+    GTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
+    GTTK_ENSURE_WIDGET_OK;
+    gttk_gtk_widget_style_get(widget, "slider-width",      &slider_width,
                                   "min-slider-length", &slider_min, NULL);
     *heightPtr = *widthPtr = slider_min;
     if (wc->orientation == TTK_ORIENT_HORIZONTAL) {
@@ -136,30 +136,30 @@ static void ScrollbarThumbElementDraw(
     void *clientData, void *elementRecord, Tk_Window tkwin,
     Drawable d, Ttk_Box b, unsigned state)
 {
-    GTKTTK_GTK_DRAWABLE_DEFINITIONS;
-    GTKTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
-    GTKTTK_SETUP_GTK_DRAWABLE;
-    GtkWidget *widget = GtkTtk_GetScrollBar(wc);
+    GTTK_GTK_DRAWABLE_DEFINITIONS;
+    GTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
+    GTTK_SETUP_GTK_DRAWABLE;
+    GtkWidget *widget = gttk_GetScrollBar(wc);
     GtkAdjustment *adj = NULL;
-    GTKTTK_ENSURE_WIDGET_OK;
-    GTKTTK_STYLE_FROM_WIDGET;
-    // GTKTTK_SETUP_WIDGET_SIZE(b.width, b.height);
-    GTKTTK_WIDGET_SET_FOCUS(widget);
-    adj = GtkTtk_gtk_range_get_adjustment((GtkRange *) widget);
-    GtkTtk_gtk_adjustment_set_value(adj,GtkTtk_ValueFromSlider(wc, tkwin, b));
-    //    GTKTTK_DEFAULT_BACKGROUND;
-      GtkTtk_gtk_paint_box(style, gdkDrawable, gtkState, GTK_SHADOW_IN, NULL, widget,
+    GTTK_ENSURE_WIDGET_OK;
+    GTTK_STYLE_FROM_WIDGET;
+    // GTTK_SETUP_WIDGET_SIZE(b.width, b.height);
+    GTTK_WIDGET_SET_FOCUS(widget);
+    adj = gttk_gtk_range_get_adjustment((GtkRange *) widget);
+    gttk_gtk_adjustment_set_value(adj,gttk_ValueFromSlider(wc, tkwin, b));
+    //    GTTK_DEFAULT_BACKGROUND;
+      gttk_gtk_paint_box(style, gdkDrawable, gtkState, GTK_SHADOW_IN, NULL, widget,
           "trough", 0, 0, b.width, b.height);
 
-    GtkTtk_StateShadowTableLookup(NULL, state, gtkState, gtkShadow,
-            GTKTTK_SECTION_SCROLLBAR|GTKTTK_SECTION_ALL);
-    // GtkTtk_StateInfo(state, gtkState, gtkShadow, tkwin, widget);
-    GtkTtk_gtk_paint_slider(style, gdkDrawable, gtkState, gtkShadow, NULL, widget,
+    gttk_StateShadowTableLookup(NULL, state, gtkState, gtkShadow,
+            GTTK_SECTION_SCROLLBAR|GTTK_SECTION_ALL);
+    // gttk_StateInfo(state, gtkState, gtkShadow, tkwin, widget);
+    gttk_gtk_paint_slider(style, gdkDrawable, gtkState, gtkShadow, NULL, widget,
         "slider", 0, 0, b.width, b.height,
         wc->gtkOrientation);
-    GtkTtk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin,
+    gttk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin,
                    0, 0, b.width, b.height, b.x, b.y);
-    GTKTTK_CLEANUP_GTK_DRAWABLE;
+    GTTK_CLEANUP_GTK_DRAWABLE;
 }
 
 static Ttk_ElementSpec ScrollbarThumbElementSpec = {
@@ -181,13 +181,13 @@ static void ScrollbarUpArrowElementGeometry(
     void *clientData, void *elementRecord, Tk_Window tkwin,
     int *widthPtr, int *heightPtr, Ttk_Padding *paddingPtr)
 {
-    GTKTTK_WIDGET_CACHE_DEFINITION;
+    GTTK_WIDGET_CACHE_DEFINITION;
     gint stepper_size = 0, slider_width = 0;
-    GtkWidget *widget = GtkTtk_GetScrollBar(wc);
+    GtkWidget *widget = gttk_GetScrollBar(wc);
     int xt = 0, yt = 0, trough_border = 0;
-    GTKTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
-    GTKTTK_ENSURE_WIDGET_OK;
-    GtkTtk_gtk_widget_style_get(widget, "stepper-size", &stepper_size,
+    GTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
+    GTTK_ENSURE_WIDGET_OK;
+    gttk_gtk_widget_style_get(widget, "stepper-size", &stepper_size,
                                   "slider-width", &slider_width, NULL);
     if (wc->orientation == TTK_ORIENT_HORIZONTAL) {
       *widthPtr  = stepper_size;
@@ -208,42 +208,42 @@ static void ScrollbarUpArrowElementDraw(
     void *clientData, void *elementRecord, Tk_Window tkwin,
     Drawable d, Ttk_Box b, unsigned state)
 {
-    GTKTTK_GTK_DRAWABLE_DEFINITIONS;
-    GTKTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
-    GTKTTK_SETUP_GTK_DRAWABLE;
-    GtkWidget *widget = GtkTtk_GetScrollBar(wc);
+    GTTK_GTK_DRAWABLE_DEFINITIONS;
+    GTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
+    GTTK_SETUP_GTK_DRAWABLE;
+    GtkWidget *widget = gttk_GetScrollBar(wc);
     int horizontal = wc->orientation == TTK_ORIENT_HORIZONTAL;
     gfloat arrow_scaling;
     gint arrow_x;
     gint arrow_y;
     gint arrow_width;
     gint arrow_height;
-    GTKTTK_ENSURE_WIDGET_OK;
-    GTKTTK_STYLE_FROM_WIDGET;
-    GtkTtk_StateShadowTableLookup(NULL, state, gtkState, gtkShadow,
-            GTKTTK_SECTION_STEPPERS|GTKTTK_SECTION_ALL);
-    // GTKTTK_SETUP_WIDGET_SIZE(b.width, b.height);
-    GTKTTK_WIDGET_SET_FOCUS(widget);
-    // GTKTTK_DEFAULT_BACKGROUND;
-    // GtkTtk_StateInfo(state, gtkState, gtkShadow, tkwin, widget);
-    GtkTtk_gtk_paint_box(style, gdkDrawable, gtkState, GTK_SHADOW_IN, NULL,
+    GTTK_ENSURE_WIDGET_OK;
+    GTTK_STYLE_FROM_WIDGET;
+    gttk_StateShadowTableLookup(NULL, state, gtkState, gtkShadow,
+            GTTK_SECTION_STEPPERS|GTTK_SECTION_ALL);
+    // GTTK_SETUP_WIDGET_SIZE(b.width, b.height);
+    GTTK_WIDGET_SET_FOCUS(widget);
+    // GTTK_DEFAULT_BACKGROUND;
+    // gttk_StateInfo(state, gtkState, gtkShadow, tkwin, widget);
+    gttk_gtk_paint_box(style, gdkDrawable, gtkState, GTK_SHADOW_IN, NULL,
         widget, horizontal ? "hscrollbar":"vscrollbar",
         0, 0, b.width, b.height);
     /* Draw the arrow, according to the desired scaling! */
-    GtkTtk_gtk_widget_style_get(widget, "arrow-scaling", &arrow_scaling, NULL);
+    gttk_gtk_widget_style_get(widget, "arrow-scaling", &arrow_scaling, NULL);
     if (arrow_scaling == 0.0) arrow_scaling = 1.0;
     arrow_width  = b.width  * arrow_scaling;
     arrow_height = b.height * arrow_scaling;
     arrow_x =  (b.width  - arrow_width) / 2;
     arrow_y =  (b.height - arrow_height) / 2;
 
-    GtkTtk_gtk_paint_arrow(style, gdkDrawable, gtkState, gtkShadow, NULL,
+    gttk_gtk_paint_arrow(style, gdkDrawable, gtkState, gtkShadow, NULL,
         widget, horizontal ? "hscrollbar":"vscrollbar",
         horizontal? GTK_ARROW_LEFT : GTK_ARROW_UP, FALSE,
         arrow_x, arrow_y, arrow_width, arrow_height);
-    GtkTtk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin,
+    gttk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin,
                    0, 0, b.width, b.height, b.x, b.y);
-    GTKTTK_CLEANUP_GTK_DRAWABLE;
+    GTTK_CLEANUP_GTK_DRAWABLE;
 }
 
 static Ttk_ElementSpec ScrollbarUpArrowElementSpec = {
@@ -273,42 +273,42 @@ static void ScrollbarDownArrowElementDraw(
     void *clientData, void *elementRecord, Tk_Window tkwin,
     Drawable d, Ttk_Box b, unsigned state)
 {
-    GTKTTK_GTK_DRAWABLE_DEFINITIONS;
-    GTKTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
-    GTKTTK_SETUP_GTK_DRAWABLE;
-    GtkWidget *widget = GtkTtk_GetScrollBar(wc);
+    GTTK_GTK_DRAWABLE_DEFINITIONS;
+    GTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
+    GTTK_SETUP_GTK_DRAWABLE;
+    GtkWidget *widget = gttk_GetScrollBar(wc);
     int horizontal = wc->orientation == TTK_ORIENT_HORIZONTAL;
-    GTKTTK_ENSURE_WIDGET_OK;
+    GTTK_ENSURE_WIDGET_OK;
     gfloat arrow_scaling;
     gint arrow_x;
     gint arrow_y;
     gint arrow_width;
     gint arrow_height;
-    GTKTTK_STYLE_FROM_WIDGET;
-    GtkTtk_StateShadowTableLookup(NULL, state, gtkState, gtkShadow,
-            GTKTTK_SECTION_STEPPERS|GTKTTK_SECTION_ALL);
-    // GTKTTK_SETUP_WIDGET_SIZE(b.width, b.height);
-    GTKTTK_WIDGET_SET_FOCUS(widget);
-    // GTKTTK_DEFAULT_BACKGROUND;
-    // GtkTtk_StateInfo(state, gtkState, gtkShadow, tkwin, widget);
-    GtkTtk_gtk_paint_box(style, gdkDrawable, gtkState, GTK_SHADOW_IN, NULL,
+    GTTK_STYLE_FROM_WIDGET;
+    gttk_StateShadowTableLookup(NULL, state, gtkState, gtkShadow,
+            GTTK_SECTION_STEPPERS|GTTK_SECTION_ALL);
+    // GTTK_SETUP_WIDGET_SIZE(b.width, b.height);
+    GTTK_WIDGET_SET_FOCUS(widget);
+    // GTTK_DEFAULT_BACKGROUND;
+    // gttk_StateInfo(state, gtkState, gtkShadow, tkwin, widget);
+    gttk_gtk_paint_box(style, gdkDrawable, gtkState, GTK_SHADOW_IN, NULL,
         widget, horizontal ? "hscrollbar":"vscrollbar",
         0, 0, b.width, b.height);
     /* Draw the arrow, according to the desired scaling! */
-    GtkTtk_gtk_widget_style_get(widget, "arrow-scaling", &arrow_scaling, NULL);
+    gttk_gtk_widget_style_get(widget, "arrow-scaling", &arrow_scaling, NULL);
     if (arrow_scaling == 0.0) arrow_scaling = 1.0;
     arrow_width  = b.width  * arrow_scaling;
     arrow_height = b.height * arrow_scaling;
     arrow_x =  (b.width  - arrow_width) / 2;
     arrow_y =  (b.height - arrow_height) / 2;
 
-    GtkTtk_gtk_paint_arrow(style, gdkDrawable, gtkState, gtkShadow, NULL,
+    gttk_gtk_paint_arrow(style, gdkDrawable, gtkState, gtkShadow, NULL,
         widget, horizontal ? "hscrollbar":"vscrollbar",
         horizontal? GTK_ARROW_RIGHT : GTK_ARROW_DOWN, TRUE,
         arrow_x, arrow_y, arrow_width, arrow_height);
-    GtkTtk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin,
+    gttk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin,
                    0, 0, b.width, b.height, b.x, b.y);
-    GTKTTK_CLEANUP_GTK_DRAWABLE;
+    GTTK_CLEANUP_GTK_DRAWABLE;
 }
 
 static Ttk_ElementSpec ScrollbarDownArrowElementSpec = {
@@ -374,8 +374,8 @@ static Ttk_ElementSpec ScrollbarDownSubArrowElementSpec = {
 //         TTK_NODE("Vertical.Scrollbar.thumb", TTK_FILL_BOTH))
 // TTK_END_LAYOUT
 
-int GtkTtk_Init_Scrollbar(Tcl_Interp *interp,
-                       GtkTtk_WidgetCache **wc, Ttk_Theme themePtr)
+int gttk_Init_Scrollbar(Tcl_Interp *interp,
+                       gttk_WidgetCache **wc, Ttk_Theme themePtr)
 {
     /*
      * Register elements:
@@ -416,4 +416,4 @@ int GtkTtk_Init_Scrollbar(Tcl_Interp *interp,
     //        HorizontalScrollbarLayout);
 
     return TCL_OK;
-}; /* GtkTtk_Init_Scrollbar */
+}; /* gttk_Init_Scrollbar */

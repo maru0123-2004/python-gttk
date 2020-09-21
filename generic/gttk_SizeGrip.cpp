@@ -1,8 +1,8 @@
 /*
- *  gtkTtk_SizeGrip.cpp
+ *  gttk_SizeGrip.cpp
  * ---------------------
  *
- * This file is part of the gtkTtk package, a Tk/Tile based theme that uses
+ * This file is part of the gttk package, a Tk/Tile based theme that uses
  * Gtk/GNOME for drawing.
  *
  * Copyright (C) 2004-2008 by:
@@ -13,9 +13,9 @@
  * Aghia Paraskevi, 153 10, Athens, Greece.
  */
 
-#include "gtkTtk_Utilities.h"
-#include "gtkTtk_TkHeaders.h"
-#include "gtkTtk_WidgetDefaults.h"
+#include "gttk_Utilities.h"
+#include "gttk_TkHeaders.h"
+#include "gttk_WidgetDefaults.h"
 
 #if 0
 /*
@@ -37,12 +37,12 @@ static void SizeGripElementGeometry(
     void *clientData, void *elementRecord, Tk_Window tkwin,
     int *widthPtr, int *heightPtr, Ttk_Padding *paddingPtr)
 {
-    GTKTTK_WIDGET_CACHE_DEFINITION;
-    GTKTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
-    GtkWidget *widget = GtkTtk_GetStatusBar(wc);
+    GTTK_WIDGET_CACHE_DEFINITION;
+    GTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
+    GtkWidget *widget = gttk_GetStatusBar(wc);
     *widthPtr  = 18;
     *heightPtr = 18;
-    GTKTTK_ENSURE_WIDGET_OK;
+    GTTK_ENSURE_WIDGET_OK;
     *paddingPtr = Ttk_MakePadding(0, 0, widget->style->xthickness,
                                         widget->style->ythickness);
 }
@@ -51,22 +51,22 @@ static void SizeGripElementDraw(
     void *clientData, void *elementRecord, Tk_Window tkwin,
     Drawable d, Ttk_Box b, unsigned state)
 {
-    GTKTTK_GTK_DRAWABLE_DEFINITIONS;
-    GTKTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
-    /* GTKTTK_SETUP_GTK_DRAWABLE; */
+    GTTK_GTK_DRAWABLE_DEFINITIONS;
+    GTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
+    /* GTTK_SETUP_GTK_DRAWABLE; */
     GtkWidget *widget = wc->gtkWindow;
-    GTKTTK_ENSURE_WIDGET_OK;
-    GTKTTK_STYLE_FROM_WIDGET;
-    GTKTTK_DRAWABLE_FROM_WIDGET;
-    // GtkTtk_StateShadowTableLookup(NULL, state, gtkState, gtkShadow,
-    //         GTKTTK_SECTION_ALL);
-    GTKTTK_DEFAULT_BACKGROUND;
-    // GtkTtk_StateInfo(state, gtkState, gtkShadow, tkwin, widget);
-    GtkTtk_gtk_paint_resize_grip(style, gdkDrawable, GTK_STATE_NORMAL, NULL, widget,
+    GTTK_ENSURE_WIDGET_OK;
+    GTTK_STYLE_FROM_WIDGET;
+    GTTK_DRAWABLE_FROM_WIDGET;
+    // gttk_StateShadowTableLookup(NULL, state, gtkState, gtkShadow,
+    //         GTTK_SECTION_ALL);
+    GTTK_DEFAULT_BACKGROUND;
+    // gttk_StateInfo(state, gtkState, gtkShadow, tkwin, widget);
+    gttk_gtk_paint_resize_grip(style, gdkDrawable, GTK_STATE_NORMAL, NULL, widget,
        "window", GDK_WINDOW_EDGE_SOUTH_EAST, 0, 0, b.width, b.height);
-    GtkTtk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin,
+    gttk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin,
                    0, 0, b.width, b.height, b.x, b.y);
-    GTKTTK_CLEANUP_GTK_DRAWABLE;
+    GTTK_CLEANUP_GTK_DRAWABLE;
 }; /* SizeGripElementDraw */
 
 static Ttk_ElementSpec SizeGripElementSpec = {
@@ -85,8 +85,8 @@ TTK_BEGIN_LAYOUT(SizegripLayout)
     TTK_NODE("Sizegrip.sizegrip", TTK_PACK_BOTTOM|TTK_STICK_S|TTK_STICK_E)
 TTK_END_LAYOUT
 
-int GtkTtk_Init_SizeGrip(Tcl_Interp *interp,
-                       GtkTtk_WidgetCache **wc, Ttk_Theme themePtr)
+int gttk_Init_SizeGrip(Tcl_Interp *interp,
+                       gttk_WidgetCache **wc, Ttk_Theme themePtr)
 {
     /*
      * Register elements:
@@ -100,4 +100,4 @@ int GtkTtk_Init_SizeGrip(Tcl_Interp *interp,
     Ttk_RegisterLayout(themePtr, "TSizegrip", SizegripLayout);
 
     return TCL_OK;
-}; /* GtkTtk_Init_SizeGrip */
+}; /* gttk_Init_SizeGrip */

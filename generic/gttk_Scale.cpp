@@ -1,8 +1,8 @@
 /*
- *  gtkTtk_Scale.cpp
+ *  gttk_Scale.cpp
  * ---------------------
  *
- * This file is part of the gtkTtk package, a Tk/Tile based theme that uses
+ * This file is part of the gttk package, a Tk/Tile based theme that uses
  * Gtk/GNOME for drawing.
  *
  * Copyright (C) 2004-2008 by:
@@ -13,9 +13,9 @@
  * Aghia Paraskevi, 153 10, Athens, Greece.
  */
 
-#include "gtkTtk_Utilities.h"
-#include "gtkTtk_TkHeaders.h"
-#include "gtkTtk_WidgetDefaults.h"
+#include "gttk_Utilities.h"
+#include "gttk_TkHeaders.h"
+#include "gttk_WidgetDefaults.h"
 
 #if 0
 /*
@@ -37,13 +37,13 @@ static void ScaleTroughElementGeometry(
     void *clientData, void *elementRecord, Tk_Window tkwin,
     int *widthPtr, int *heightPtr, Ttk_Padding *paddingPtr)
 {
-    GTKTTK_WIDGET_CACHE_DEFINITION;
+    GTTK_WIDGET_CACHE_DEFINITION;
     gint trough_border = 0;
     int xt = 0, yt = 0;
-    GtkWidget *widget = GtkTtk_GetScale(wc);
-    GTKTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
-    GTKTTK_ENSURE_WIDGET_OK;
-    GtkTtk_gtk_widget_style_get(widget, "trough-border", &trough_border, NULL);
+    GtkWidget *widget = gttk_GetScale(wc);
+    GTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
+    GTTK_ENSURE_WIDGET_OK;
+    gttk_gtk_widget_style_get(widget, "trough-border", &trough_border, NULL);
     // xt = widget->style->xthickness;
     // yt = widget->style->ythickness;
     *paddingPtr = Ttk_MakePadding(xt + trough_border,
@@ -56,44 +56,44 @@ static void ScaleTroughElementDraw(
     void *clientData, void *elementRecord, Tk_Window tkwin,
     Drawable d, Ttk_Box b, unsigned state)
 {
-    GTKTTK_GTK_DRAWABLE_DEFINITIONS;
-    GTKTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
-    GtkWidget *widget = GtkTtk_GetScale(wc);
+    GTTK_GTK_DRAWABLE_DEFINITIONS;
+    GTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
+    GtkWidget *widget = gttk_GetScale(wc);
     gboolean trough_side_details = FALSE;
-    GTKTTK_ENSURE_WIDGET_OK;
-    GTKTTK_DRAWABLE_FROM_WIDGET;
-    GTKTTK_STYLE_BACKGROUND_DEFAULT;
-    GTKTTK_DEFAULT_BACKGROUND;
-    GTKTTK_STYLE_FROM_WIDGET;
-    GtkTtk_StateShadowTableLookup(NULL, state, gtkState, gtkShadow,
-            GTKTTK_SECTION_TROUGH|GTKTTK_SECTION_ALL);
-    GTKTTK_WIDGET_SET_FOCUS(widget);
-    GtkTtk_gtk_widget_style_get(widget, "trough-side-details",
+    GTTK_ENSURE_WIDGET_OK;
+    GTTK_DRAWABLE_FROM_WIDGET;
+    GTTK_STYLE_BACKGROUND_DEFAULT;
+    GTTK_DEFAULT_BACKGROUND;
+    GTTK_STYLE_FROM_WIDGET;
+    gttk_StateShadowTableLookup(NULL, state, gtkState, gtkShadow,
+            GTTK_SECTION_TROUGH|GTTK_SECTION_ALL);
+    GTTK_WIDGET_SET_FOCUS(widget);
+    gttk_gtk_widget_style_get(widget, "trough-side-details",
                                  &trough_side_details, NULL);
-    // GtkTtk_StateInfo(state, gtkState, gtkShadow, tkwin, widget);
+    // gttk_StateInfo(state, gtkState, gtkShadow, tkwin, widget);
     if (trough_side_details) {
       int trough_change_pos_x = b.width, trough_change_pos_y = b.height;
       if (wc->gtkOrientation == GTK_ORIENTATION_HORIZONTAL)
         trough_change_pos_x = b.width / 2;
       else
         trough_change_pos_y = b.height / 2;
-      GtkTtk_gtk_paint_box(style, gdkDrawable, gtkState, GTK_SHADOW_IN, NULL,
+      gttk_gtk_paint_box(style, gdkDrawable, gtkState, GTK_SHADOW_IN, NULL,
               widget, "trough-upper", 0, 0,
               trough_change_pos_x, trough_change_pos_y);
       if (wc->gtkOrientation == GTK_ORIENTATION_HORIZONTAL)
         trough_change_pos_y = 0;
       else
         trough_change_pos_x = 0;
-      GtkTtk_gtk_paint_box(style, gdkDrawable, gtkState, GTK_SHADOW_IN, NULL,
+      gttk_gtk_paint_box(style, gdkDrawable, gtkState, GTK_SHADOW_IN, NULL,
               widget, "trough-lower", trough_change_pos_x, trough_change_pos_y,
               b.width-trough_change_pos_x, b.height-trough_change_pos_y);
     } else {
-      GtkTtk_gtk_paint_box(style, gdkDrawable, gtkState, GTK_SHADOW_IN, NULL,
+      gttk_gtk_paint_box(style, gdkDrawable, gtkState, GTK_SHADOW_IN, NULL,
               widget, "trough", 0, 0, b.width, b.height);
     }
-    GtkTtk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin,
+    gttk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin,
                    0, 0, b.width, b.height, b.x, b.y);
-    GTKTTK_CLEANUP_GTK_DRAWABLE;
+    GTTK_CLEANUP_GTK_DRAWABLE;
 }
 
 static Ttk_ElementSpec ScaleTroughElementSpec = {
@@ -118,12 +118,12 @@ static void ScaleSliderElementGeometry(
     void *clientData, void *elementRecord, Tk_Window tkwin,
     int *widthPtr, int *heightPtr, Ttk_Padding *paddingPtr)
 {
-    GTKTTK_WIDGET_CACHE_DEFINITION;
+    GTTK_WIDGET_CACHE_DEFINITION;
     gint slider_len = 0, slider_width = ScaleThumbMinimumLen;
-    GtkWidget *widget = GtkTtk_GetScale(wc);
-    GTKTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
-    GTKTTK_ENSURE_WIDGET_OK;
-    GtkTtk_gtk_widget_style_get(widget,
+    GtkWidget *widget = gttk_GetScale(wc);
+    GTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
+    GTTK_ENSURE_WIDGET_OK;
+    gttk_gtk_widget_style_get(widget,
            "slider-length", &slider_len,
            "slider-width",  &slider_width, NULL);
     *heightPtr = *widthPtr = slider_width;
@@ -141,29 +141,29 @@ static void ScaleSliderElementDraw(
     void *clientData, void *elementRecord, Tk_Window tkwin,
     Drawable d, Ttk_Box b, unsigned state)
 {
-    GTKTTK_GTK_DRAWABLE_DEFINITIONS;
-    GTKTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
-    GtkWidget *widget = GtkTtk_GetScale(wc);
+    GTTK_GTK_DRAWABLE_DEFINITIONS;
+    GTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
+    GtkWidget *widget = gttk_GetScale(wc);
     GtkAdjustment *adj = NULL;
-    GTKTTK_ENSURE_WIDGET_OK;
-    GTKTTK_DRAWABLE_FROM_WIDGET;
-    GTKTTK_STYLE_BACKGROUND_DEFAULT;
-    GTKTTK_DEFAULT_BACKGROUND;
-    GTKTTK_STYLE_FROM_WIDGET;
-    GTKTTK_WIDGET_SET_FOCUS(widget);
-    adj = GtkTtk_gtk_range_get_adjustment((GtkRange *) widget);
-    GtkTtk_gtk_adjustment_set_value(adj,
-            GtkTtk_ValueFromSlider(wc, tkwin, b));
-    GtkTtk_StateShadowTableLookup(NULL, state, gtkState, gtkShadow,
-            GTKTTK_SECTION_SCROLLBAR|GTKTTK_SECTION_ALL);
-    // GtkTtk_StateInfo(state, gtkState, gtkShadow, tkwin, widget);
-    GtkTtk_gtk_paint_slider(style, gdkDrawable, gtkState, gtkShadow, NULL,
+    GTTK_ENSURE_WIDGET_OK;
+    GTTK_DRAWABLE_FROM_WIDGET;
+    GTTK_STYLE_BACKGROUND_DEFAULT;
+    GTTK_DEFAULT_BACKGROUND;
+    GTTK_STYLE_FROM_WIDGET;
+    GTTK_WIDGET_SET_FOCUS(widget);
+    adj = gttk_gtk_range_get_adjustment((GtkRange *) widget);
+    gttk_gtk_adjustment_set_value(adj,
+            gttk_ValueFromSlider(wc, tkwin, b));
+    gttk_StateShadowTableLookup(NULL, state, gtkState, gtkShadow,
+            GTTK_SECTION_SCROLLBAR|GTTK_SECTION_ALL);
+    // gttk_StateInfo(state, gtkState, gtkShadow, tkwin, widget);
+    gttk_gtk_paint_slider(style, gdkDrawable, gtkState, gtkShadow, NULL,
             widget,
             (wc->orientation == TTK_ORIENT_HORIZONTAL) ? "hscale" : "vscale",
             0, 0, b.width, b.height, wc->gtkOrientation);
-    GtkTtk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin,
+    gttk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin,
                    0, 0, b.width, b.height, b.x, b.y);
-    GTKTTK_CLEANUP_GTK_DRAWABLE;
+    GTTK_CLEANUP_GTK_DRAWABLE;
 }
 
 static Ttk_ElementSpec ScaleSliderElementSpec = {
@@ -188,8 +188,8 @@ TTK_BEGIN_LAYOUT(HorizontalScaleLayout)
             TTK_NODE("Horizontal.Scale.slider", TTK_PACK_LEFT) )
 TTK_END_LAYOUT
 
-int GtkTtk_Init_Scale(Tcl_Interp *interp,
-                       GtkTtk_WidgetCache **wc, Ttk_Theme themePtr)
+int gttk_Init_Scale(Tcl_Interp *interp,
+                       gttk_WidgetCache **wc, Ttk_Theme themePtr)
 {
     /*
      * Register elements:
@@ -212,4 +212,4 @@ int GtkTtk_Init_Scale(Tcl_Interp *interp,
             "Vertical.TScale", VerticalScaleLayout);
 
     return TCL_OK;
-}; /* GtkTtk_Init_Scale */
+}; /* gttk_Init_Scale */

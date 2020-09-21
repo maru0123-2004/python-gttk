@@ -64,7 +64,7 @@ if __name__ == '__main__':
     window = Example()
     style = ttk.Style(window)
 
-    style.theme_use("gtkTtk")
+    style.theme_use("gttk")
 
     window.mainloop()
 

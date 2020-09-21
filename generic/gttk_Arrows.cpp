@@ -1,8 +1,8 @@
 /*
- *  gtkTtk_Arrows.cpp
+ *  gttk_Arrows.cpp
  * -------------------
  *
- * This file is part of the gtkTtk package, a Tk/Tile based theme that uses
+ * This file is part of the gttk package, a Tk/Tile based theme that uses
  * Gtk/GNOME for drawing.
  *
  * Copyright (C) 2004-2008 by:
@@ -13,9 +13,9 @@
  * Aghia Paraskevi, 153 10, Athens, Greece.
  */
 
-#include "gtkTtk_Utilities.h"
-#include "gtkTtk_TkHeaders.h"
-#include "gtkTtk_WidgetDefaults.h"
+#include "gttk_Utilities.h"
+#include "gttk_TkHeaders.h"
+#include "gttk_WidgetDefaults.h"
 
 #if 0
 /*
@@ -56,7 +56,7 @@ ArrowElementGeometry(
     void *clientData, void *elementRecord,
     Tk_Window tkwin, int *widthPtr, int *heightPtr, Ttk_Padding *paddingPtr)
 {
-    if (!GtkTtk_GtkInitialised()) NO_GTK_STYLE_ENGINE;
+    if (!gttk_GtkInitialised()) NO_GTK_STYLE_ENGINE;
     ArrowElement *arrow = (ArrowElement *) elementRecord;
     int size = 12;
 
@@ -68,10 +68,10 @@ static void
 ArrowElementDraw(void *clientData, void *elementRecord,
     Tk_Window tkwin, Drawable d, Ttk_Box b, unsigned int state)
 {
-    if (!GtkTtk_GtkInitialised()) NO_GTK_STYLE_ENGINE;
+    if (!gttk_GtkInitialised()) NO_GTK_STYLE_ENGINE;
     //ArrowElement *arrow = (ArrowElement *) elementRecord;
     int direction = *(int *)clientData;
-    QStyle::SFlags sflags = GtkTtk_StateTableLookup(arrow_statemap ,state);
+    QStyle::SFlags sflags = gttk_StateTableLookup(arrow_statemap ,state);
     QStyle::PrimitiveElement element = QStyle::PE_ArrowUp;
     //if (state == GTK_STATE_INSENSITIVE)
     //        sflags |= QStyle::Style_Off;
@@ -85,22 +85,22 @@ ArrowElementDraw(void *clientData, void *elementRecord,
         case ARROW_LEFT:  element = QStyle::PE_ArrowLeft;  break;
         case ARROW_RIGHT: element = QStyle::PE_ArrowRight; break;
     }
-    Tcl_MutexLock(&gtkTtkMutex);
+    Tcl_MutexLock(&gttkMutex);
     QPixmap     pixmap(b.width, b.height);
     QPainter    painter(&pixmap);
-    if ((GtkTtk_QPixmap_BackgroundTile) &&
-        (!GtkTtk_QPixmap_BackgroundTile->isNull())) {
+    if ((gttk_QPixmap_BackgroundTile) &&
+        (!gttk_QPixmap_BackgroundTile->isNull())) {
        painter.fillRect(0, 0, b.width, b.height, QBrush(QColor(255,255,255),
-               *GtkTtk_QPixmap_BackgroundTile));
+               *gttk_QPixmap_BackgroundTile));
     } else {
        painter.fillRect(0, 0, b.width, b.height,
                qApp->palette().active().brush(QColorGroup::Background));
     }    
     qApp->style().drawPrimitive(element, &painter,
           QRect(0, 0, b.width, b.height), qApp->palette().active(), sflags);
-    GtkTtk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin,
+    gttk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin,
                                     0, 0, b.width, b.height, b.x, b.y);
-    Tcl_MutexUnlock(&gtkTtkMutex);
+    Tcl_MutexUnlock(&gttkMutex);
 }
 
 static Ttk_ElementSpec ArrowElementSpec =
@@ -117,7 +117,7 @@ static Ttk_ElementSpec ArrowElementSpec =
  */
 
 
-int GtkTtk_Init_Arrows(Tcl_Interp *interp, Ttk_Theme themePtr)
+int gttk_Init_Arrows(Tcl_Interp *interp, Ttk_Theme themePtr)
 {
     /*
      * Register elements:

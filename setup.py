@@ -40,7 +40,7 @@ setup(
     version="0.1.0",
     packages=["gttk"],
     description="GTK theme for Tkinter/ttk",
-    author="The gttk/tile-gtk/gtkTtk authors",
+    author="The gttk/tile-gtk/gttk authors",
     url="https://github.com/RedFantom/python-gttk",
     download_url="https://github.com/RedFantom/python-gttk/releases",
     license="GNU GPLv3",

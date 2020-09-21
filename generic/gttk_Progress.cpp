@@ -1,8 +1,8 @@
 /*
- *  gtkTtk_Progress.cpp
+ *  gttk_Progress.cpp
  * ---------------------
  *
- * This file is part of the gtkTtk package, a Tk/Tile based theme that uses
+ * This file is part of the gttk package, a Tk/Tile based theme that uses
  * Gtk/GNOME for drawing.
  *
  * Copyright (C) 2004-2008 by:
@@ -13,9 +13,9 @@
  * Aghia Paraskevi, 153 10, Athens, Greece.
  */
 
-#include "gtkTtk_Utilities.h"
-#include "gtkTtk_TkHeaders.h"
-#include "gtkTtk_WidgetDefaults.h"
+#include "gttk_Utilities.h"
+#include "gttk_TkHeaders.h"
+#include "gttk_WidgetDefaults.h"
 
 #if 0
 /*
@@ -44,24 +44,24 @@ static void ProgressTroughElementDraw(
     void *clientData, void *elementRecord, Tk_Window tkwin,
     Drawable d, Ttk_Box b, unsigned state)
 {
-    GTKTTK_GTK_DRAWABLE_DEFINITIONS;
-    GTKTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
-    /* GTKTTK_SETUP_GTK_DRAWABLE; */
-    GtkWidget *widget = GtkTtk_GetProgressBar(wc);
-    GTKTTK_ENSURE_WIDGET_OK;
-    GTKTTK_STYLE_FROM_WIDGET;
-    GTKTTK_DRAWABLE_FROM_WIDGET;
-    GtkTtk_StateShadowTableLookup(NULL, state, gtkState, gtkShadow,
-            GTKTTK_SECTION_TROUGH|GTKTTK_SECTION_ALL);
-    // GTKTTK_SETUP_WIDGET_SIZE(b.width, b.height);
-    GTKTTK_WIDGET_SET_FOCUS(widget);
-    // GTKTTK_DEFAULT_BACKGROUND;
-    // GtkTtk_StateInfo(state, gtkState, gtkShadow, tkwin, widget);
-    GtkTtk_gtk_paint_box(style, gdkDrawable, gtkState, GTK_SHADOW_IN, NULL, widget,
+    GTTK_GTK_DRAWABLE_DEFINITIONS;
+    GTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
+    /* GTTK_SETUP_GTK_DRAWABLE; */
+    GtkWidget *widget = gttk_GetProgressBar(wc);
+    GTTK_ENSURE_WIDGET_OK;
+    GTTK_STYLE_FROM_WIDGET;
+    GTTK_DRAWABLE_FROM_WIDGET;
+    gttk_StateShadowTableLookup(NULL, state, gtkState, gtkShadow,
+            GTTK_SECTION_TROUGH|GTTK_SECTION_ALL);
+    // GTTK_SETUP_WIDGET_SIZE(b.width, b.height);
+    GTTK_WIDGET_SET_FOCUS(widget);
+    // GTTK_DEFAULT_BACKGROUND;
+    // gttk_StateInfo(state, gtkState, gtkShadow, tkwin, widget);
+    gttk_gtk_paint_box(style, gdkDrawable, gtkState, GTK_SHADOW_IN, NULL, widget,
         "trough", 0, 0, b.width, b.height);
-    GtkTtk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin,
+    gttk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin,
                    0, 0, b.width, b.height, b.x, b.y);
-    GTKTTK_CLEANUP_GTK_DRAWABLE;
+    GTTK_CLEANUP_GTK_DRAWABLE;
 }
 
 static Ttk_ElementSpec ProgressTroughElementSpec = {
@@ -111,13 +111,13 @@ static void ProgressBarElementDraw(
     //int width = Tk_Width(tkwin), height = Tk_Height(tkwin);
     //bool determinate = true;
     //double value, maximum;
-    GTKTTK_GTK_DRAWABLE_DEFINITIONS;
-    GTKTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
-    /* GTKTTK_SETUP_GTK_DRAWABLE; */
-    GtkWidget *widget = GtkTtk_GetProgressBar(wc);
-    GTKTTK_ENSURE_WIDGET_OK;
-    GTKTTK_STYLE_FROM_WIDGET;
-    GTKTTK_DRAWABLE_FROM_WIDGET;
+    GTTK_GTK_DRAWABLE_DEFINITIONS;
+    GTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
+    /* GTTK_SETUP_GTK_DRAWABLE; */
+    GtkWidget *widget = gttk_GetProgressBar(wc);
+    GTTK_ENSURE_WIDGET_OK;
+    GTTK_STYLE_FROM_WIDGET;
+    GTTK_DRAWABLE_FROM_WIDGET;
     // Tcl_GetDoubleFromObj(NULL, pbar->valueObj, &value);
     // Tcl_GetDoubleFromObj(NULL, pbar->maximumObj, &maximum);
     // if (strncmp(Tcl_GetString(pbar->modeObj), "determinate", 10) != 0) {
@@ -125,27 +125,27 @@ static void ProgressBarElementDraw(
     // }
 
     // if (determinate) {
-    //   GtkTtk_gtk_progress_bar_set_bar_style((GtkProgressBar *) widget,
+    //   gttk_gtk_progress_bar_set_bar_style((GtkProgressBar *) widget,
     //                                   GTK_PROGRESS_DISCRETE);
-    //   GtkTtk_gtk_progress_bar_set_fraction((GtkProgressBar *) widget,
-    //                      GtkTtk_ValueFromSlider(wc, tkwin, b));
+    //   gttk_gtk_progress_bar_set_fraction((GtkProgressBar *) widget,
+    //                      gttk_ValueFromSlider(wc, tkwin, b));
     // } else {
-    //   GtkTtk_gtk_progress_bar_set_bar_style((GtkProgressBar *) widget,
+    //   gttk_gtk_progress_bar_set_bar_style((GtkProgressBar *) widget,
     //                                   GTK_PROGRESS_CONTINUOUS);
-    //   GtkTtk_gtk_progress_bar_set_fraction((GtkProgressBar *) widget,
-    //                      GtkTtk_ValueFromSlider(wc, tkwin, b));
+    //   gttk_gtk_progress_bar_set_fraction((GtkProgressBar *) widget,
+    //                      gttk_ValueFromSlider(wc, tkwin, b));
     // }
 
-    GTKTTK_WIDGET_SET_FOCUS(widget);
-    // GTKTTK_DEFAULT_BACKGROUND;
-    GtkTtk_StateShadowTableLookup(NULL, state, gtkState, gtkShadow,
-            GTKTTK_SECTION_SCROLLBAR|GTKTTK_SECTION_ALL);
-    // GtkTtk_StateInfo(state, gtkState, gtkShadow, tkwin, widget);
-    GtkTtk_gtk_paint_box(style, gdkDrawable, gtkState, gtkShadow, NULL, widget,
+    GTTK_WIDGET_SET_FOCUS(widget);
+    // GTTK_DEFAULT_BACKGROUND;
+    gttk_StateShadowTableLookup(NULL, state, gtkState, gtkShadow,
+            GTTK_SECTION_SCROLLBAR|GTTK_SECTION_ALL);
+    // gttk_StateInfo(state, gtkState, gtkShadow, tkwin, widget);
+    gttk_gtk_paint_box(style, gdkDrawable, gtkState, gtkShadow, NULL, widget,
         "bar", 0, 0, b.width, b.height);
-    GtkTtk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin,
+    gttk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin,
                    0, 0, b.width, b.height, b.x, b.y);
-    GTKTTK_CLEANUP_GTK_DRAWABLE;
+    GTTK_CLEANUP_GTK_DRAWABLE;
 }
 
 static Ttk_ElementSpec ProgressBarElementSpec = {
@@ -170,8 +170,8 @@ TTK_BEGIN_LAYOUT(HorizontalProgressBarLayout)
         TTK_NODE("Horizontal.Progressbar.pbar", TTK_PACK_LEFT|TTK_FILL_Y))
 TTK_END_LAYOUT
 
-int GtkTtk_Init_Progress(Tcl_Interp *interp,
-                       GtkTtk_WidgetCache **wc, Ttk_Theme themePtr)
+int gttk_Init_Progress(Tcl_Interp *interp,
+                       gttk_WidgetCache **wc, Ttk_Theme themePtr)
 {
     /*
      * Register elements:
@@ -195,4 +195,4 @@ int GtkTtk_Init_Progress(Tcl_Interp *interp,
             "Vertical.TProgressbar", VerticalProgressBarLayout);
 
     return TCL_OK;
-}; /* GtkTtk_Init_Progress */
+}; /* gttk_Init_Progress */

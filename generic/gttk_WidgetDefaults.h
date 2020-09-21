@@ -1,8 +1,8 @@
 /*
- *  gtkTtk_WidgetDefaults.h
+ *  gttk_WidgetDefaults.h
  * -------------------------
  *
- * This file is part of the gtkTtk package, a Tk/Tile based theme that uses
+ * This file is part of the gttk package, a Tk/Tile based theme that uses
  * Gtk/GNOME for drawing.
  *
  * Copyright (C) 2004-2008 by:

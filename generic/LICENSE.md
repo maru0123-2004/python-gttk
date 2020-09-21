@@ -1,6 +1,7 @@
 # MIT License
 
 Copyright 2008-2012 Georgios Petasis
+
 Copyright 2012 Cheer Xiao
 
 The following terms apply to all files associated with this software

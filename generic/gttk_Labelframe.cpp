@@ -1,8 +1,8 @@
 /*
- *  gtkTtk_Labelframe.cpp
+ *  gttk_Labelframe.cpp
  * -----------------------
  *
- * This file is part of the gtkTtk package, a Tk/Tile based theme that uses
+ * This file is part of the gttk package, a Tk/Tile based theme that uses
  * Gtk/GNOME for drawing.
  *
  * Copyright (C) 2004-2008 by:
@@ -13,9 +13,9 @@
  * Aghia Paraskevi, 153 10, Athens, Greece.
  */
 
-#include "gtkTtk_Utilities.h"
-#include "gtkTtk_TkHeaders.h"
-#include "gtkTtk_WidgetDefaults.h"
+#include "gttk_Utilities.h"
+#include "gttk_TkHeaders.h"
+#include "gttk_WidgetDefaults.h"
 
 #if 0
 /*
@@ -45,28 +45,28 @@ static void LabelframeBorderElementDraw(
     void *clientData, void *elementRecord, Tk_Window tkwin,
     Drawable d, Ttk_Box b, unsigned state)
 {
-    GTKTTK_GTK_DRAWABLE_DEFINITIONS;
-    GTKTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
-    /* GTKTTK_SETUP_GTK_DRAWABLE; */
-    GtkWidget *widget = GtkTtk_GetFrame(wc);
-    GTKTTK_ENSURE_WIDGET_OK;
-    GTKTTK_STYLE_FROM_WIDGET;
-    GTKTTK_DRAWABLE_FROM_WIDGET;
-    // GTKTTK_ATTACH_STYLE_TO_WIDGET;
-    // GTKTTK_SETUP_WIDGET_SIZE(b.width, b.height);
-    // GTKTTK_WIDGET_SET_FOCUS(widget);
-    GTKTTK_DEFAULT_BACKGROUND;
-    // GtkTtk_gtk_paint_flat_box(style, gdkDrawable, gtkState, gtkShadow, NULL,
+    GTTK_GTK_DRAWABLE_DEFINITIONS;
+    GTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
+    /* GTTK_SETUP_GTK_DRAWABLE; */
+    GtkWidget *widget = gttk_GetFrame(wc);
+    GTTK_ENSURE_WIDGET_OK;
+    GTTK_STYLE_FROM_WIDGET;
+    GTTK_DRAWABLE_FROM_WIDGET;
+    // GTTK_ATTACH_STYLE_TO_WIDGET;
+    // GTTK_SETUP_WIDGET_SIZE(b.width, b.height);
+    // GTTK_WIDGET_SET_FOCUS(widget);
+    GTTK_DEFAULT_BACKGROUND;
+    // gttk_gtk_paint_flat_box(style, gdkDrawable, gtkState, gtkShadow, NULL,
     //                            widget, "frame", 0, 0, b.width, b.height);
-    GtkTtk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin,
+    gttk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin,
                    0, 0, b.width, b.height, 0, 0);
-    GtkTtk_StateShadowTableLookup(NULL, state, gtkState, gtkShadow,
-            GTKTTK_SECTION_BUTTONS|GTKTTK_SECTION_ALL);
-    GtkTtk_gtk_paint_shadow(style, gdkDrawable, gtkState, gtkShadow, NULL, widget,
+    gttk_StateShadowTableLookup(NULL, state, gtkState, gtkShadow,
+            GTTK_SECTION_BUTTONS|GTTK_SECTION_ALL);
+    gttk_gtk_paint_shadow(style, gdkDrawable, gtkState, gtkShadow, NULL, widget,
                      "frame", 0, 0, b.width, b.height);
-    GtkTtk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin,
+    gttk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin,
                    0, 0, b.width, b.height, b.x, b.y);
-    GTKTTK_CLEANUP_GTK_DRAWABLE;
+    GTTK_CLEANUP_GTK_DRAWABLE;
 }
 
 static Ttk_ElementSpec LabelframeBorderElementSpec = {
@@ -86,8 +86,8 @@ TTK_BEGIN_LAYOUT(LabelframeLayout)
     TTK_NODE("Labelframe.border", TTK_FILL_BOTH)
 TTK_END_LAYOUT
 
-int GtkTtk_Init_Labelframe(Tcl_Interp *interp,
-                       GtkTtk_WidgetCache **wc, Ttk_Theme themePtr)
+int gttk_Init_Labelframe(Tcl_Interp *interp,
+                       gttk_WidgetCache **wc, Ttk_Theme themePtr)
 {
     /*
      * Register elements:
@@ -101,4 +101,4 @@ int GtkTtk_Init_Labelframe(Tcl_Interp *interp,
     Ttk_RegisterLayout(themePtr, "TLabelframe", LabelframeLayout);
 
     return TCL_OK;
-}; /* GtkTtk_Init_Labelframe */
+}; /* gttk_Init_Labelframe */

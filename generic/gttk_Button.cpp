@@ -1,8 +1,8 @@
 /*
- *  gtkTtk_ToolButton.cpp
- * -----------------------
+ *  gttk_Button.cpp
+ * -------------------
  *
- * This file is part of the gtkTtk package, a Tk/Tile based theme that uses
+ * This file is part of the gttk package, a Tk/Tile based theme that uses
  * Gtk/GNOME for drawing.
  *
  * Copyright (C) 2004-2008 by:
@@ -13,90 +13,88 @@
  * Aghia Paraskevi, 153 10, Athens, Greece.
  */
 
-#include "gtkTtk_Utilities.h"
-#include "gtkTtk_TkHeaders.h"
-#include "gtkTtk_WidgetDefaults.h"
+#include "gttk_Utilities.h"
+#include "gttk_TkHeaders.h"
+#include "gttk_WidgetDefaults.h"
 
 typedef struct {
     Tcl_Obj        *defaultStateObj;
-} ToolButtonElement;
+} ButtonElement;
 
-static Ttk_ElementOptionSpec ToolButtonElementOptions[] = {
+static Ttk_ElementOptionSpec ButtonElementOptions[] = {
     { (char *) "-default", TK_OPTION_ANY, 
-        Tk_Offset(ToolButtonElement, defaultStateObj), (char *) "normal" },
+        Tk_Offset(ButtonElement, defaultStateObj), (char *) "normal" },
     {NULL}
 };
 
-static void ToolButtonElementGeometry(
+static void ButtonElementGeometry(
     void *clientData, void *elementRecord, Tk_Window tkwin,
     int *widthPtr, int *heightPtr, Ttk_Padding *paddingPtr)
 {
-    GTKTTK_WIDGET_CACHE_DEFINITION;
+    GTTK_WIDGET_CACHE_DEFINITION;
     gint focus_width;
     gint focus_pad;
-    GTKTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
-    GtkWidget *widget = GtkTtk_GetButton(wc);
-    GTKTTK_ENSURE_WIDGET_OK;
-    GtkTtk_gtk_widget_style_get(widget,
+    GTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
+    GtkWidget *widget = gttk_GetButton(wc);
+    GTTK_ENSURE_WIDGET_OK;
+    gttk_gtk_widget_style_get(widget,
            "focus-line-width", &focus_width,
            "focus-padding",    &focus_pad, NULL);
     *paddingPtr = Ttk_UniformPadding(PushButtonUniformPadding +
                                      focus_width + focus_pad);
 }
 
-static void ToolButtonElementDraw(
+static void ButtonElementDraw(
     void *clientData, void *elementRecord, Tk_Window tkwin,
-    Drawable d, Ttk_Box b, unsigned state)
+    Drawable d, Ttk_Box b, unsigned int state)
 {
-    GTKTTK_GTK_DRAWABLE_DEFINITIONS;
+    GTTK_GTK_DRAWABLE_DEFINITIONS;
     gint width, height;
     gint x, y;
     gint border_width;
     GtkBorder default_border = { 1, 1, 1, 1 };
     GtkBorder default_outside_border = { 0, 0, 0, 0 };
     GtkBorder *tmp_border, *tmp_outside_border;
-    GtkReliefStyle button_relief = GTK_RELIEF_NORMAL;
     gboolean interior_focus;
     gint focus_width;
     gint focus_pad;
-    GTKTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
-    GtkWidget *toolbar = GtkTtk_GetToolBar(wc);
-    GtkWidget *widget  = GtkTtk_GetToolButton(wc);
-    ToolButtonElement *bd = (ToolButtonElement *) elementRecord;
-    GtkButton *button  = (GtkButton *) widget;
-    GTKTTK_ENSURE_WIDGET_OK;
-    GTKTTK_STYLE_FROM_WIDGET;
-    GTKTTK_DRAWABLE_FROM_WIDGET;
-    GTKTTK_DEFAULT_BACKGROUND;
-    GtkTtk_StateShadowTableLookup(NULL, state, gtkState, gtkShadow,
-            GTKTTK_SECTION_BUTTONS | GTKTTK_SECTION_ALL);
-    GTKTTK_WIDGET_SET_FOCUS(widget);
-    GTKTTK_WIDGET_SET_DEFAULT(widget, bd->defaultStateObj);
-    // GtkTtk_StateInfo(state, gtkState, gtkShadow, tkwin, widget);
-    /* Make the button relief to what suggested by the toolbar... */
-    GtkTtk_gtk_widget_style_get(toolbar, "button-relief", &button_relief,NULL);
-    if (button_relief != GtkTtk_gtk_button_get_relief(button)) {
-      GtkTtk_gtk_button_set_relief(button, button_relief);
-    }
+    GTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
+    GtkWidget *widget = gttk_GetButton(wc);
+    ButtonElement *bd = (ButtonElement *) elementRecord;
+    GtkButton *button = (GtkButton *) widget;
+    GTTK_ENSURE_WIDGET_OK;
+    GTTK_STYLE_FROM_WIDGET;
+    GTTK_DRAWABLE_FROM_WIDGET;
+    GTTK_DEFAULT_BACKGROUND;
+    gttk_StateShadowTableLookup(NULL, state, gtkState, gtkShadow,
+            GTTK_SECTION_BUTTONS|GTTK_SECTION_ALL);
+    GTTK_WIDGET_SET_FOCUS(widget);
+    GTTK_WIDGET_SET_DEFAULT(widget, bd->defaultStateObj);
+    // gttk_StateInfo(state, gtkState, gtkShadow, tkwin, widget);
+    // gttk_gtk_paint_box(style, gdkDrawable, gtkState, gtkShadow, NULL,
+    //               widget, has_default ? "buttondefault" : "button",
+    //               0, 0, b.width, b.height);
+    // gttk_gtk_paint_focus(style, gdkDrawable, gtkState,
+    //               NULL, widget, "button", 0, 0, b.width, b.height);
 
     /*
      * The following was taken from GTK+ button drawing code.
      */
     border_width = ((GtkContainer*) widget)->border_width;
-    GtkTtk_gtk_widget_style_get(widget,
+    gttk_gtk_widget_style_get(widget,
            "default-border",         &tmp_border,
            "default-outside-border", &tmp_outside_border,
            "interior-focus",         &interior_focus, NULL);
     if (tmp_border) {
       default_border = *tmp_border;
-      GtkTtk_gtk_border_free(tmp_border);
+      gttk_gtk_border_free(tmp_border);
     }
     if (tmp_outside_border) {
       default_outside_border = *tmp_outside_border;
-      GtkTtk_gtk_border_free(tmp_outside_border);
+      gttk_gtk_border_free(tmp_outside_border);
     }
 
-    GtkTtk_gtk_widget_style_get(widget,
+    gttk_gtk_widget_style_get(widget,
            "focus-line-width", &focus_width,
            "focus-padding",    &focus_pad, NULL); 
         
@@ -106,7 +104,7 @@ static void ToolButtonElementDraw(
     height = b.height - border_width * 2;
 
     if (has_default && button->relief == GTK_RELIEF_NORMAL) {
-      GtkTtk_gtk_paint_box(style, gdkDrawable, GTK_STATE_NORMAL, GTK_SHADOW_IN,
+      gttk_gtk_paint_box(style, gdkDrawable, GTK_STATE_NORMAL, GTK_SHADOW_IN,
               NULL, widget, "buttondefault", x, y, width, height);
       x += default_border.left;
       y += default_border.top;
@@ -128,7 +126,7 @@ static void ToolButtonElementDraw(
 
     if (button->relief != GTK_RELIEF_NONE || (state & TTK_STATE_PRESSED) ||
         (state & TTK_STATE_ACTIVE) ) {
-      GtkTtk_gtk_paint_box(style, gdkDrawable, gtkState, gtkShadow, NULL,
+      gttk_gtk_paint_box(style, gdkDrawable, gtkState, gtkShadow, NULL,
              widget, "button", x, y, width, height);
     }
      
@@ -137,7 +135,7 @@ static void ToolButtonElementDraw(
       gint child_displacement_y;
       gboolean displace_focus;
       
-      GtkTtk_gtk_widget_style_get(widget,
+      gttk_gtk_widget_style_get(widget,
               "child-displacement-y", &child_displacement_y,
               "child-displacement-x", &child_displacement_x,
               "displace-focus",       &displace_focus, NULL);
@@ -159,45 +157,52 @@ static void ToolButtonElementDraw(
         y += child_displacement_y;
       }
 
-      GtkTtk_gtk_paint_focus(style, gdkDrawable, gtkState, NULL, widget,
+      gttk_gtk_paint_focus(style, gdkDrawable, gtkState, NULL, widget,
               "button", x, y, width, height);
     }
 
-    GtkTtk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin,
+    gttk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin,
                   0, 0, b.width, b.height, b.x, b.y);
-    GTKTTK_CLEANUP_GTK_DRAWABLE;
+    GTTK_CLEANUP_GTK_DRAWABLE;
 }
 
-static Ttk_ElementSpec ToolButtonElementSpec = {
+static Ttk_ElementSpec ButtonElementSpec = {
     TK_STYLE_VERSION_2,
-    sizeof(ToolButtonElement),
-    ToolButtonElementOptions,
-    ToolButtonElementGeometry,
-    ToolButtonElementDraw
+    sizeof(ButtonElement),
+    ButtonElementOptions,
+    ButtonElementGeometry,
+    ButtonElementDraw
 };
 
 /*------------------------------------------------------------------------
  * +++ Widget layout.
  */
 
-TTK_BEGIN_LAYOUT(ToolbuttonLayout)
-    TTK_GROUP("Toolbutton.border", TTK_FILL_BOTH,
-	    TTK_GROUP("Toolbutton.padding", TTK_FILL_BOTH,
-		TTK_NODE("Toolbutton.label", TTK_FILL_BOTH)))
+/*
+ * TTK_BEGIN_LAYOUT(ButtonLayout)
+ *     TTK_GROUP("Button.border", TTK_FILL_BOTH,
+ *         TTK_GROUP("Button.focus", TTK_FILL_BOTH, 
+ *                 TTK_NODE("Button.label", TTK_FILL_BOTH))))
+ * TTK_END_LAYOUT
+ */
+TTK_BEGIN_LAYOUT(ButtonLayout)
+    TTK_GROUP("Button.border", TTK_FILL_BOTH,
+        TTK_GROUP("Button.padding", TTK_FILL_BOTH,
+            TTK_NODE("Button.label", TTK_FILL_BOTH)))
 TTK_END_LAYOUT
 
-int GtkTtk_Init_ToolButton(Tcl_Interp *interp,
-                       GtkTtk_WidgetCache **wc, Ttk_Theme themePtr)
+int gttk_Init_Button(Tcl_Interp *interp,
+                        gttk_WidgetCache **wc, Ttk_Theme themePtr)
 {
     /*
      * Register elements:
      */
-    Ttk_RegisterElement(interp, themePtr, "Toolbutton.border",
-            &ToolButtonElementSpec, (void *) wc[0]);
+    Ttk_RegisterElement(interp, themePtr, "Button.border",
+            &ButtonElementSpec, (void *) wc[0]);
 
     /*
      * Register layouts:
      */
-    Ttk_RegisterLayout(themePtr, "TToolbutton", ToolbuttonLayout);
+    Ttk_RegisterLayout(themePtr, "TButton", ButtonLayout);
     return TCL_OK;
-}; /* GtkTtk_Init_ToolButton */
+}; /* gttk_Init_Button */

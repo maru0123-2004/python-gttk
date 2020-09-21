@@ -16,7 +16,7 @@ def __ttk_Style_init__(self, *args, **kwargs):
     folder = os.path.dirname(os.path.abspath(__file__))
 
     self.tk.eval("set dir {0}; source {0}/pkgIndex.tcl".format(folder))
-    self.tk.call("package", "require", "ttk::theme::gtkTtk")
+    self.tk.call("package", "require", "ttk::theme::gttk")
 
 
 ttk.Style.__init__ = __ttk_Style_init__

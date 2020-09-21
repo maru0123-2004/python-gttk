@@ -50,7 +50,7 @@ class TestThemedWidgets(TestCase):
             pass
         if "signal" not in locals() or not hasattr(signal, "alarm"):
             return
-        theme = "gtkTtk"
+        theme = "gttk"
         self.style.theme_use(theme)
         for widget in self.WIDGETS:
             signal.alarm(5)
