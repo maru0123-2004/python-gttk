@@ -7,7 +7,6 @@ import sys
 from unittest import TestCase
 import tkinter as tk
 from tkinter import ttk
-sys.path = sys.path[2:]
 import gttk
 
 
