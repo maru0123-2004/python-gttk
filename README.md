@@ -89,3 +89,7 @@ encounter various graphical artifacts when using particular themes,
 while others work without flaws.
 
 You are welcome to report any issues, and pull requests are even better.
+Currently the package can only be built for Linux-based systems and 
+attempts to create a process for building on Windows using MSYS and
+CMake have proven unfruitful. If you would like to give it a go, 
+feel free to contact me.
