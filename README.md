@@ -1,5 +1,5 @@
 # GTK Theme for Python's tkinter/ttk
-![Build Status](https://api.travis-ci.com/RedFantom/python-gttk.svg?branch=master)
+![Build Status](https://api.travis-ci.com/TkinterEP/python-gttk.svg?branch=master)
 
 Would you like to have a more native look for your Tkinter application?
 Are the themes provided in [ttkthemes](https://github.com/TkinterEP/ttkthemes)
