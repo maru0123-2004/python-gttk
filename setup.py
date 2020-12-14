@@ -172,7 +172,7 @@ else:
 
 setup(
     name="gttk",
-    version="0.1.0",
+    version="v0.6.0",
     packages=["gttk"],
     description="GTK theme for Tkinter/ttk",
     author="The gttk/tile-gtk/gttk authors",
