@@ -98,3 +98,11 @@ MANIFEST
 /docs/doxygen/xml
 /html
 /latex
+
+# GTK Themes and configuration
+/gttk/*
+!/gttk/__init__.py
+!/gttk/gttk.tcl
+
+# Dependencies Program
+/deps

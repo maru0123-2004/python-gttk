@@ -7,7 +7,7 @@ import sys
 from unittest import TestCase
 import tkinter as tk
 from tkinter import ttk
-import gttk
+from gttk import GTTK
 
 
 def printf(string, end="\n"):
@@ -41,6 +41,7 @@ class TestThemedWidgets(TestCase):
 
     def setUp(self):
         self.window = tk.Tk()
+        self.gttk = GTTK(self.window)
         self.style = ttk.Style()
 
     def test_widget_creation(self):
@@ -48,16 +49,17 @@ class TestThemedWidgets(TestCase):
             import signal
         except ImportError:
             pass
-        if "signal" not in locals() or not hasattr(signal, "alarm"):
-            return
+        signal_available = "signal" in locals() and hasattr(locals()["signal"], "alarm")
         theme = "gttk"
         self.style.theme_use(theme)
         for widget in self.WIDGETS:
-            signal.alarm(5)
+            if signal_available:
+                signal.alarm(5)
             printf("Testing {}: {}".format(theme, widget), end=" - ")
             getattr(ttk, widget)(self.window).pack()
             self.window.update()
-            signal.alarm(0)
+            if signal_available:
+                signal.alarm(0)
             printf("SUCCESS")
 
     def tearDown(self):

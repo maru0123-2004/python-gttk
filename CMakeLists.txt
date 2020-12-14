@@ -1,4 +1,4 @@
-CMAKE_MINIMUM_REQUIRED ( VERSION 2.8 )
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
 ## ===========================================================================
 ##  Project Information
@@ -62,18 +62,18 @@ MESSAGE ( STATUS "===========================================================" )
 ## ===========================================================================
 ##  Locate Tcl/Tk
 ## ===========================================================================
-MESSAGE ( STATUS "Searching for Tcl/Tk..." )
-FIND_PACKAGE ( TCL REQUIRED )
-FIND_PACKAGE ( TclStub REQUIRED )
-MESSAGE ( STATUS "  TCL_TCLSH:               " ${TCL_TCLSH} )
-MESSAGE ( STATUS "  TCL_INCLUDE_PATH:        " ${TCL_INCLUDE_PATH} )
-MESSAGE ( STATUS "  TCL_STUB_LIBRARY:        " ${TCL_STUB_LIBRARY} )
-MESSAGE ( STATUS "  TCL_LIBRARY:             " ${TCL_LIBRARY} )
-MESSAGE ( STATUS "  TK_WISH:                 " ${TK_WISH} )
-MESSAGE ( STATUS "  TK_INCLUDE_PATH:         " ${TK_INCLUDE_PATH} )
-MESSAGE ( STATUS "  TK_STUB_LIBRARY:         " ${TK_STUB_LIBRARY} )
-MESSAGE ( STATUS "  TTK_STUB_LIBRARY:        " ${TTK_STUB_LIBRARY} )
-MESSAGE ( STATUS "  TK_LIBRARY:              " ${TK_LIBRARY} )
+MESSAGE(STATUS "Searching for Tcl/Tk...")
+FIND_PACKAGE(TCL REQUIRED)
+FIND_PACKAGE(TclStub REQUIRED)
+MESSAGE(STATUS "  TCL_TCLSH:               " ${TCL_TCLSH})
+MESSAGE(STATUS "  TCL_INCLUDE_PATH:        " ${TCL_INCLUDE_PATH})
+MESSAGE(STATUS "  TCL_STUB_LIBRARY:        " ${TCL_STUB_LIBRARY})
+MESSAGE(STATUS "  TCL_LIBRARY:             " ${TCL_LIBRARY})
+MESSAGE(STATUS "  TK_WISH:                 " ${TK_WISH})
+MESSAGE(STATUS "  TK_INCLUDE_PATH:         " ${TK_INCLUDE_PATH})
+MESSAGE(STATUS "  TK_STUB_LIBRARY:         " ${TK_STUB_LIBRARY})
+MESSAGE(STATUS "  TTK_STUB_LIBRARY:        " ${TTK_STUB_LIBRARY})
+MESSAGE(STATUS "  TK_LIBRARY:              " ${TK_LIBRARY})
 # STRING  ( REPLACE stub "" TCL_LIBRARY_STATIC   ${TCL_STUB_LIBRARY} )
 # STRING  ( REPLACE stub "" TK_LIBRARY_STATIC    ${TK_STUB_LIBRARY} )
 # MESSAGE ( STATUS "  TCL_LIBRARY_STATIC:      " ${TCL_LIBRARY_STATIC} )
@@ -84,14 +84,14 @@ IF ( WIN32 AND NO_MSVCRT )
   STRING ( REPLACE /MDd /MTd CMAKE_C_FLAGS_DEBUG     ${CMAKE_C_FLAGS_DEBUG} )
   STRING ( REPLACE /MD  /MT  CMAKE_CXX_FLAGS_RELEASE ${CMAKE_CXX_FLAGS_RELEASE})
   STRING ( REPLACE /MDd /MTd CMAKE_CXX_FLAGS_DEBUG   ${CMAKE_CXX_FLAGS_DEBUG} )
-  SET (    CMAKE_EXE_LINKER_FLAGS
-        "${CMAKE_EXE_LINKER_FLAGS} /nodefaultlib:MSVCRT.LIB" )
+  # SET (    CMAKE_EXE_LINKER_FLAGS
+  #       "${CMAKE_EXE_LINKER_FLAGS} /nodefaultlib:MSVCRT.LIB" )
   SET (    CMAKE_EXE_LINKER_FLAGS_RELEASE
         "${CMAKE_EXE_LINKER_FLAGS_RELEASE} LIBCMT.LIB" )
   SET (    CMAKE_EXE_LINKER_FLAGS_DEBUG
         "${CMAKE_EXE_LINKER_FLAGS_DEBUG} LIBCMTD.LIB" )
-  SET (    CMAKE_SHARED_LINKER_FLAGS
-        "${CMAKE_SHARED_LINKER_FLAGS} /nodefaultlib:MSVCRT.LIB" )
+  # SET (    CMAKE_SHARED_LINKER_FLAGS
+  #       "${CMAKE_SHARED_LINKER_FLAGS} /nodefaultlib:MSVCRT.LIB" )
   SET (    CMAKE_SHARED_LINKER_FLAGS_RELEASE
         "${CMAKE_SHARED_LINKER_FLAGS_RELEASE} LIBCMT.LIB" )
   SET (    CMAKE_SHARED_LINKER_FLAGS_DEBUG
@@ -127,6 +127,11 @@ ADD_DEFINITIONS     ( -DPACKAGE_VERSION="${PKG_VERSION}" )
 INCLUDE_DIRECTORIES ( ${TCL_INCLUDE_PATH} )
 INCLUDE_DIRECTORIES ( ${TK_INCLUDE_PATH} )
 INCLUDE_DIRECTORIES ( ${TK_INCLUDE_PATH}/tk-private/generic/ttk )
+IF ( WIN32 )  # Include additional directories for MSYS build
+  INCLUDE_DIRECTORIES ( ${TK_INCLUDE_PATH}/tk8.6/tk-private/generic )
+  INCLUDE_DIRECTORIES ( ${TK_INCLUDE_PATH}/tk8.6/tk-private/generic/ttk )
+  INCLUDE_DIRECTORIES ( ${TK_INCLUDE_PATH}/tk8.6/tk-private/win )
+ENDIF ( WIN32 )
 INCLUDE_DIRECTORIES ( ${PROJECT_SOURCE_DIR}/generic )
 
 ## ===========================================================================
@@ -162,15 +167,15 @@ ENDIF ( USE_GNOME )
 ## ===========================================================================
 ##  Locate GTK...
 ## ===========================================================================
-MESSAGE ( STATUS "Searching for GTK2..." )
+MESSAGE(STATUS "Searching for GTK2...")
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(GTK "gtk+-2.0")
 if (GTK_FOUND)
-  LINK_LIBRARIES( ${GTK_LIBRARIES})
-  add_definitions(${GTK_CFLAGS} ${GTK_CFLAGS_OTHER})
+    LINK_LIBRARIES(${GTK_LIBRARIES})
+    add_definitions(${GTK_CFLAGS} ${GTK_CFLAGS_OTHER})
 
-MESSAGE ( STATUS "  GTK 2.x Found!" )
-endif()
+    MESSAGE(STATUS "  GTK 2.x Found!")
+endif ()
 
 ## ===========================================================================
 ##  Target: gttk_Symbols.[h|cpp]
@@ -190,6 +195,7 @@ endif()
 #                               PROPERTIES GENERATED true )
 
 SET ( PKG_TARGET_LIB_NAME ${PKG_NAME} )
+
 ## ===========================================================================
 ##  Target: gttk shared library
 ## ===========================================================================
@@ -231,7 +237,7 @@ ELSE ( LOAD_GTK_DYNAMICALLY )
   ENDIF ( UNIX )
 ENDIF ( LOAD_GTK_DYNAMICALLY )
 
-FILE ( WRITE library/pkgIndex.tcl 
+FILE ( WRITE gttk/pkgIndex.tcl
 "package ifneeded ttk::theme::gttk ${PKG_VERSION} \\
   [list load [file join $dir lib${PKG_NAME}[info sharedlibextension]] gttk]" )
 
@@ -239,9 +245,5 @@ INSTALL ( TARGETS ${PKG_TARGET_LIB_NAME}
           RUNTIME DESTINATION ${PKG_TARGET_LIB_NAME}
           LIBRARY DESTINATION ${PKG_TARGET_LIB_NAME}
           ARCHIVE DESTINATION ${PKG_TARGET_LIB_NAME} )
-INSTALL ( FILES library/pkgIndex.tcl library/gttk.tcl
+INSTALL ( FILES gttk/pkgIndex.tcl gttk/gttk.tcl
           DESTINATION ${PKG_TARGET_LIB_NAME} )
-
-ENABLE_TESTING ( )
-ADD_TEST ( demo   ${TK_WISH} ${PROJECT_SOURCE_DIR}/demos/demo.tcl )
-ADD_TEST ( styles ${TK_WISH} ${PROJECT_SOURCE_DIR}/demos/WidgetStates.tcl )
