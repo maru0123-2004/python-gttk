@@ -83,11 +83,12 @@ if __name__ == '__main__':
     from gttk import GTTK
 
     window = Example()
-    gttk = GTTK(window)
+    gttk = GTTK(window, theme="Adwaita")
     style = ttk.Style(window)
 
     style.theme_use("gttk")
 
-    print(gttk.get_theme_colour_keys())
+    gttk.set_gtk_theme("Yaru")
+    window.after(2000, lambda: gttk.set_gtk_theme("Adwaita"))
 
     window.mainloop()

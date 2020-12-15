@@ -6,8 +6,7 @@ Copyright (c) 2020 RedFantom
 import contextlib
 import os
 import tkinter as tk
-from tkinter import ttk
-from typing import List, Tuple
+from typing import Optional, Tuple
 
 
 @contextlib.contextmanager
@@ -25,18 +24,30 @@ class GTTK(object):
     Class representing the GTTK extension
     """
 
-    def __init__(self, window: tk.Tk):
+    FOLDER = os.path.abspath(os.path.dirname(__file__))
+
+    def __init__(self, window: tk.Tk, theme: Optional[str] = None, theme_dir_prefix: Optional[str] = None):
         """
         Initialize gttk and load it into a window
 
         :param window: Window with Tk/Tcl interpreter to load gttk for
+        :param theme: GTK theme to set upon initialisation
+        :param theme_dir_prefix: Prefix to the theme directory. If not
+            given, defaults to the current working directory. If this
+            has the special value "LIB", the script will use the
+            site-packages directory where it is installed.
         """
         self.tk = window.tk
         folder = os.path.dirname(os.path.abspath(__file__)).replace("\\", "/")
+        if theme_dir_prefix is not None:
+            os.environ["GTK_DATA_PREFIX"] = theme_dir_prefix
+
         with chdir(folder):
             self.tk.eval("set dir {0}; source {0}/pkgIndex.tcl".format(folder))
             self.tk.call("package", "require", "ttk::theme::gttk")
-        print(self.get_current_theme())
+
+        if theme is not None:
+            self.set_gtk_theme(theme)
 
     def get_themes_directory(self) -> str:
         """Return the directory in which GTK looks for installed themes"""
@@ -67,3 +78,6 @@ class GTTK(object):
 
     def get_theme_colour_keys(self) -> Tuple[str]:
         return self.tk.call("ttk::theme::gttk::currentThemeColourKeys")
+
+    def set_gtk_theme(self, theme: str):
+        self.tk.call("ttk::theme::gttk::setGtkTheme", theme)

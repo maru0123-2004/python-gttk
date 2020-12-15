@@ -8,6 +8,7 @@
 
 #include "gttk_Utilities.h"
 #include "gttk_TkHeaders.h"
+#include <gtk/gtkmodules.h>
 #include <string.h>
 
 static int gttk_GtkAppCreated = 0;
@@ -80,6 +81,25 @@ int gttk_ThemeName(ClientData clientData, Tcl_Interp *interp,
   Tcl_MutexUnlock(&gttkMutex);
   return TCL_OK;
 }; /* gttk_ThemeName */
+
+int gttk_set_gtk_theme(ClientData clientData, Tcl_Interp* interp, int objc, Tcl_Obj* const objv[]) {
+  /** @brief Tcl command 'setGtkTheme': Set the GTK theme from Tcl */
+  if (objc != 2) {
+    Tcl_WrongNumArgs(interp, 1, objv, "fileName");
+    return TCL_ERROR;
+  }
+  // Get the argument and format it into the proper string
+  const char* name = Tcl_GetStringFromObj(objv[1], NULL);
+  // Make GTK parse the resource string
+  Tcl_MutexLock(&gttkMutex);
+  GtkSettings* settings = gtk_settings_get_default();
+  gtk_settings_set_string_property(settings, "gtk-theme-name", name, NULL);
+  gtk_rc_reset_styles(settings);
+
+  Tcl_MutexUnlock(&gttkMutex);
+
+  return TCL_OK;
+} // gttk_set_gtk_theme
 
 int gttk_SettingsProperty(ClientData clientData, Tcl_Interp *interp,
                                  int objc, Tcl_Obj *const objv[]) {
@@ -810,44 +830,23 @@ _Gttk_Init(Tcl_Interp *interp)
     Tcl_CreateExitHandler(&gttk_ExitProc, 0);
     //Tcl_CreateThreadExitHandler(&gttk_ExitProc, 0);
     
-    /*
-     * Register the TileGtk package...
-     */
-    Tcl_CreateObjCommand(interp, "ttk::theme::gttk::gtkEnum",
-                         gttk_GtkEnum, (ClientData) wc, NULL);
-    Tcl_CreateObjCommand(interp, "ttk::theme::gttk::settingsProperty",
-                         gttk_SettingsProperty, (ClientData) wc, NULL);
-    Tcl_CreateObjCommand(interp, "ttk::theme::gttk::widgetStyleProperty",
-                         gttk_WidgetStyleProperty, (ClientData) wc, NULL);
-    Tcl_CreateObjCommand(interp, "ttk::theme::gttk::widgetProperty",
-                         gttk_WidgetProperty, (ClientData) wc, NULL);
-    Tcl_CreateObjCommand(interp, "ttk::theme::gttk::currentThemeName",
-                         gttk_ThemeName, (ClientData) wc, NULL);
-    Tcl_CreateObjCommand(interp, "ttk::theme::gttk::gtkDirectory",
-                         gttk_GtkDirectory, (ClientData) wc, NULL);
-    Tcl_CreateObjCommand(interp, "ttk::theme::gttk::setStyle",
-                         gttk_SetStyle, (ClientData) wc, NULL);
-    Tcl_CreateObjCommand(interp, "ttk::theme::gttk::gtk_method",
-                         gttk_gtk_method, (ClientData) wc, NULL);
-    Tcl_CreateObjCommand(interp,
-                         "ttk::theme::gttk::currentThemeColour",
-                         gttk_ThemeColour, (ClientData) wc, NULL);
-    Tcl_CreateObjCommand(interp,
-                         "ttk::theme::gttk::currentThemeColourKeys",
-                         gttk_ColourKeys, (ClientData) wc, NULL);
+    // Register ttk::theme::gttk Tcl commands
+    Tcl_CreateObjCommand(interp, "ttk::theme::gttk::gtkEnum", gttk_GtkEnum, (ClientData) wc, NULL);
+    Tcl_CreateObjCommand(interp, "ttk::theme::gttk::settingsProperty", gttk_SettingsProperty, (ClientData) wc, NULL);
+    Tcl_CreateObjCommand(interp, "ttk::theme::gttk::widgetStyleProperty", gttk_WidgetStyleProperty, (ClientData) wc, NULL);
+    Tcl_CreateObjCommand(interp, "ttk::theme::gttk::widgetProperty", gttk_WidgetProperty, (ClientData) wc, NULL);
+    Tcl_CreateObjCommand(interp, "ttk::theme::gttk::currentThemeName", gttk_ThemeName, (ClientData) wc, NULL);
+    Tcl_CreateObjCommand(interp, "ttk::theme::gttk::gtkDirectory", gttk_GtkDirectory, (ClientData) wc, NULL);
+    Tcl_CreateObjCommand(interp, "ttk::theme::gttk::setStyle", gttk_SetStyle, (ClientData) wc, NULL);
+    Tcl_CreateObjCommand(interp, "ttk::theme::gttk::gtk_method", gttk_gtk_method, (ClientData) wc, NULL);
+    Tcl_CreateObjCommand(interp, "ttk::theme::gttk::currentThemeColour", gttk_ThemeColour, (ClientData) wc, NULL);
+    Tcl_CreateObjCommand(interp, "ttk::theme::gttk::currentThemeColourKeys", gttk_ColourKeys, (ClientData) wc, NULL);
+    Tcl_CreateObjCommand(interp, "ttk::theme::gttk::setGtkTheme", gttk_set_gtk_theme, (ClientData) wc, NULL);
 #if 0
-    Tcl_CreateObjCommand(interp,
-                         "ttk::theme::gttk::setPalette",
-                         gttk_SetPalette, (ClientData) wc, NULL);
-    Tcl_CreateObjCommand(interp,
-                         "ttk::theme::gttk::getPixelMetric",
-                         gttk_GetPixelMetric, (ClientData) wc, NULL);
-    Tcl_CreateObjCommand(interp,
-                         "ttk::theme::gttk::getStyleHint",
-                         gttk_GetStyleHint, (ClientData) wc, NULL);
-    Tcl_CreateObjCommand(interp,
-                         "ttk::theme::gttk::getSubControlMetrics",
-                         gttk_GetSubControlMetrics, (ClientData) wc, NULL);
+    Tcl_CreateObjCommand(interp, "ttk::theme::gttk::setPalette", gttk_SetPalette, (ClientData) wc, NULL);
+    Tcl_CreateObjCommand(interp, "ttk::theme::gttk::getPixelMetric", gttk_GetPixelMetric, (ClientData) wc, NULL);
+    Tcl_CreateObjCommand(interp, "ttk::theme::gttk::getStyleHint", gttk_GetStyleHint, (ClientData) wc, NULL);
+    Tcl_CreateObjCommand(interp, "ttk::theme::gttk::getSubControlMetrics", gttk_GetSubControlMetrics, (ClientData) wc, NULL);
 #endif
     /* Save the name of the current theme... */
     strcpy(tmpScript, "namespace eval ttk::theme::gttk { variable theme ");
