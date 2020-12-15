@@ -1,4 +1,5 @@
 environment:
+  APPVEYOR_RDP_PASSWORD: gttk:loaders
   matrix:
     - PYTHON: "C:\\PYTHON38-x64"
 build: off
@@ -35,7 +36,7 @@ deploy:
   provider: GitHub
   auth_token:
     secure: QimY++/91urL/oMJL/q2zYFqc1C7747HguEaIbPQovtC3zG8CK+TiCmFOCXy1D6e
-  artifact: "/dist/*.whl"
+  artifact: "dist/*.whl"
   draft: false
   prerelease: false
   force_update: true
