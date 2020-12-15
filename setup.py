@@ -157,12 +157,19 @@ elif "win" in sys.platform:
                     shutil.copyfile(p, os.path.join(target, os.path.basename(p)))
     
     specials={
-        "libpixmap.dll": "/lib/gtk-2.0/2.10.0/engines/", 
-        "libwimp.dll": "/lib/gtk-2.0/2.10.0/engines/",
-        "loaders.cache": "/lib/gdk-pixbuf-2.0/2.10.0/"}  # loaders.cache is used to specify abspaths to the loaders
+        "libpixmap.dll": "lib/gtk-2.0/2.10.0/engines/",
+        "libwimp.dll": "lib/gtk-2.0/2.10.0/engines/",
+        "loaders.cache": "lib/gdk-pixbuf-2.0/2.10.0/"}  # loaders.cache is used to specify abspaths to the loaders
     specials.update({"libpixbufloader-{}.dll".format(fmt): "/lib/gdk-pixbuf-2.0/2.10.0/loaders/"
                      for fmt in ["ani", "bmp", "gif", "icns", "ico", "jpeg", "png", "pnm", "qtif", "svg", "tga", "tiff", "xbm", "xpm"]})
     DependencyWalker("libgttk.dll", specials=specials).copy_to_target("gttk")
+
+    # If loaders.cache is not found, it must be generated
+    cache_file = os.path.join("gttk", specials["loaders.cache"], "loaders.cache")
+    if not os.path.exists(cache_file):
+        with open(cache_file, "w") as fo:
+            sp.call(["gdk-pixbuf-query-loaders"], stdout=fo)
+
     kwargs = {"package_data": {"gttk": ["*.dll", "pkgIndex.tcl", "gttk.tcl"] + ["{}/{}".format(dir.strip("/"), base) for base, dir in specials.items()]}}
 
 else:
