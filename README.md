@@ -79,6 +79,7 @@ gttk = GTTK(window)
 style = ttk.Style()
 style.theme_use("gttk")
 print(gttk.get_current_theme()) # Prints the active GTK theme
+gttk.set_gtk_theme("Yaru") # Sets GTK theme, provided by developer
 ttk.Button(window, text="Destroy", command=window.destroy).pack()
 
 window.mainloop()
@@ -92,30 +93,6 @@ import sys
 sys.path = sys.path[2:]
 import gttk
 ```
-
-## Applying themes
-Themes are applied in the standard GTK+-2.0 manner: By reading a 
-resource file. On **Linux**, the GTK libraries that are installed will point
-`gttk` in the direction of the globally enabled GTK theme. Currently,
-no method for overriding this behaviour is available.
-
-On **Windows**, the behaviour is a little different. GTK will look for 
-for the configuration files that point it towards the theme to be loaded
-in the files reported by
-```python
-GTTK.get_default_files()
-```
-and themes should be placed in the folder
-```python
-GTTK.get_themes_directory()
-```
-
-A method for reliably loading user themes is being researched, but for
-now this is the way to go. A `gtkrc` file may for example simply be
-```gtkrc
-gtk-theme-name = "Yaru"
-```
-where `some_path_here/share/themes/Yaru` is a valid GTK theme folder.
 
 ## Screenshots
 `gttk` should work with any GTK theme you can throw at it, but below

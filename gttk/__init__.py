@@ -51,15 +51,19 @@ class GTTK(object):
         # Create loaders.cache on win32 platforms to find pixbuf loaders properly
         if "win" in sys.platform:
             target = os.path.join(temp_dir, "loaders.cache")
-            with open(os.path.join(folder, "loaders.cache")) as fi, open(target, "w") as fo:
+            source = os.path.join(folder, "lib", "gdk-pixbuf-2.0", "2.10.0", "loaders.cache")
+            with open(os.path.join(source)) as fi, open(target, "w") as fo:
                 cache = fi.read()
-                abspath = (os.path.join(folder, "lib", "gdk-pixbuf-2.0", "2.10.0", "loaders") + "\\")\
-                    .replace("\\", "\\\\")  # loaders.cache uses double \ everywhere
-                cache_w_abspaths = cache.replace("\\\\lib", abspath)
+                # loaders.cache uses double \ everywhere
+                abspath = (os.path.join(folder, "lib", ) + "\\").replace("\\", "\\\\")
+                cache_w_abspaths = cache.replace("lib\\\\", abspath)
                 fo.write(cache_w_abspaths)
             # Set GDK_PIXBUF_MODULE_FILE to the path of the new cache file
             # GDK_PIXBUF_MODULEDIR does not do anything for plain GDK!
             os.environ["GDK_PIXBUF_MODULE_FILE"] = target
+
+            # Set GTK_EXE_PREFIX on win32 to ensure theme engine loading
+            os.environ["GTK_EXE_PREFIX"] = folder
 
         with chdir(folder):
             # Evaluate pkgIndex.tcl, Tcl does not handle \ as a pathsep, so with /
