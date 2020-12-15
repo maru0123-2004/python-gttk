@@ -167,11 +167,11 @@ elif "win" in sys.platform:
     # If loaders.cache is not found, it must be generated
     cache_file = os.path.join("gttk", specials["loaders.cache"], "loaders.cache")
     if not os.path.exists(cache_file):
-        with open(cache_file, "w") as fo:
-            sp.call(["gdk-pixbuf-query-loaders"], stdout=fo)
-            fo.flush()
+        fo = open(cache_file, "w")
+        sp.call(["gdk-pixbuf-query-loaders"], stdout=fo)
+        fo.close()
         import time
-        time.sleep(4)  # Sleep to wait for file to be written
+        time.sleep(10)  # Sleep to wait for file to be written
 
     kwargs = {"package_data": {"gttk": ["*.dll", "pkgIndex.tcl", "gttk.tcl"] + ["{}/{}".format(dir.strip("/"), base) for base, dir in specials.items()]}}
 
