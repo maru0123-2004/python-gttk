@@ -159,7 +159,7 @@ elif "win" in sys.platform:
     specials={
         "libpixmap.dll": "/lib/gtk-2.0/2.10.0/engines/", 
         "libwimp.dll": "/lib/gtk-2.0/2.10.0/engines/",
-        "loaders.cache": "/lib/gdk-pixbuf-2.0/2.10.0/"}
+        "loaders.cache": "/"}  # loaders.cache is used to specify abspaths to the loaders
     specials.update({"libpixbufloader-{}.dll".format(fmt): "/lib/gdk-pixbuf-2.0/2.10.0/loaders/"
                      for fmt in ["ani", "bmp", "gif", "icns", "ico", "jpeg", "png", "pnm", "qtif", "svg", "tga", "tiff", "xbm", "xpm"]})
     DependencyWalker("libgttk.dll", specials=specials).copy_to_target("gttk")

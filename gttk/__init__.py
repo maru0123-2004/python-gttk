@@ -5,6 +5,8 @@ Copyright (c) 2020 RedFantom
 """
 import contextlib
 import os
+import sys
+from tempfile import gettempdir
 import tkinter as tk
 from typing import Optional, Tuple
 
@@ -26,7 +28,8 @@ class GTTK(object):
 
     FOLDER = os.path.abspath(os.path.dirname(__file__))
 
-    def __init__(self, window: tk.Tk, theme: Optional[str] = None, theme_dir_prefix: Optional[str] = None):
+    def __init__(self, window: tk.Tk, theme: Optional[str] = None, theme_dir_prefix: Optional[str] = None,
+                 temp_dir: str = gettempdir()):
         """
         Initialize gttk and load it into a window
 
@@ -36,14 +39,31 @@ class GTTK(object):
             given, defaults to the current working directory. If this
             has the special value "LIB", the script will use the
             site-packages directory where it is installed.
+        :param temp_dir: Absolute path to temporary files directory that
+            may be used by the library
         """
         self.tk = window.tk
-        folder = os.path.dirname(os.path.abspath(__file__)).replace("\\", "/")
+        folder = os.path.dirname(os.path.abspath(__file__))
+
         if theme_dir_prefix is not None:
             os.environ["GTK_DATA_PREFIX"] = theme_dir_prefix
 
+        # Create loaders.cache on win32 platforms to find pixbuf loaders properly
+        if "win" in sys.platform:
+            target = os.path.join(temp_dir, "loaders.cache")
+            with open(os.path.join(folder, "loaders.cache")) as fi, open(target, "w") as fo:
+                cache = fi.read()
+                abspath = (os.path.join(folder, "lib", "gdk-pixbuf-2.0", "2.10.0", "loaders") + "\\")\
+                    .replace("\\", "\\\\")  # loaders.cache uses double \ everywhere
+                cache_w_abspaths = cache.replace("\\\\lib", abspath)
+                fo.write(cache_w_abspaths)
+            # Set GDK_PIXBUF_MODULE_FILE to the path of the new cache file
+            # GDK_PIXBUF_MODULEDIR does not do anything for plain GDK!
+            os.environ["GDK_PIXBUF_MODULE_FILE"] = target
+
         with chdir(folder):
-            self.tk.eval("set dir {0}; source {0}/pkgIndex.tcl".format(folder))
+            # Evaluate pkgIndex.tcl, Tcl does not handle \ as a pathsep, so with /
+            self.tk.eval("set dir {0}; source {0}/pkgIndex.tcl".format(folder.replace("\\", "/")))
             self.tk.call("package", "require", "ttk::theme::gttk")
 
         if theme is not None:
