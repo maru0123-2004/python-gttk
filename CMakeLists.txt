@@ -14,7 +14,7 @@ SET ( PKG_NAME_VERSION  ${PKG_NAME}-${PKG_VERSION} )
 SET ( PKG_VENDOR        "RedFantom" )
 SET ( PKG_HOME_DIR      ${PROJECT_SOURCE_DIR} )
 
-SET ( LOAD_GTK_DYNAMICALLY OFF )
+SET ( LOAD_GTK_DYNAMICALLY ON )
 SET ( NO_MSVCRT            ON  )
 SET ( USE_GNOME            OFF )
 SET ( VERBOSE              ON  )
@@ -25,8 +25,7 @@ IF ( VERBOSE )
   SET ( GTK2_LOGGING_ENABLED   ON )
 ENDIF ( VERBOSE )
 
-SET ( PKG_SOURCES 
-                  generic/gttk_TreeView.cpp
+SET ( PKG_SOURCES generic/gttk_TreeView.cpp
                   generic/gttk_Separator.cpp
                   generic/gttk_Arrows.cpp )
 
@@ -48,8 +47,7 @@ SET ( PKG_SOURCES generic/gttk_Init.cpp
                   generic/gttk_SizeGrip.cpp
                   generic/gttk_Paned.cpp
                   generic/gttk_Notebook.cpp
-                  generic/gttk_Combobox.cpp
-)
+                  generic/gttk_Combobox.cpp )
 
 MESSAGE ( STATUS "===========================================================" )
 MESSAGE ( STATUS " Welcome to the ${PKG_NAME} ${PKG_VERSION} build system!" )
@@ -182,12 +180,12 @@ endif ()
 ## ===========================================================================
 # ADD_CUSTOM_COMMAND ( OUTPUT ${PROJECT_SOURCE_DIR}/generic/gttk_Symbols.cpp
 #                             ${PROJECT_SOURCE_DIR}/generic/gttk_Symbols.h
-#     DEPENDS library/GenarateSymbols.tcl
+#     DEPENDS library/GenerateSymbols.tcl
 #             generic/gttk_Init.cpp
 #             generic/gttk_GtkApp.cpp
 #             generic/gttk_Utilities.h
 #             generic/gttk_Utilities.cpp
-#     COMMAND ${TCL_TCLSH} GenarateSymbols.tcl
+#     COMMAND ${TCL_TCLSH} GenerateSymbols.tcl
 #     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/library )
 # SET_SOURCE_FILES_PROPERTIES ( ${PROJECT_SOURCE_DIR}/generic/gttk_Symbols.cpp
 #                               PROPERTIES GENERATED true )
