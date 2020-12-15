@@ -52,11 +52,12 @@ elif "win" in sys.platform:
     import subprocess as sp
     from typing import List, Optional
 
-    dependencies = ["pango", "cmake", "gtk2", "glib2", "tk", "toolchain"]
+    dependencies = ["pango", "cmake", "gtk2", "glib2", "tk", "toolchain", "libffi"]
     
     for dep in dependencies:
         printf("Installing dependency {}...".format(dep), end=" ")
-        sp.call(["pacman", "--needed", "--noconfirm", "-S", "mingw-w64-x86_64-{}".format(dep)], stdout=sp.PIPE)
+        sp.call(["pacman", "--needed", "--noconfirm", "-S", "mingw-w64-x86_64-{}".format(dep)],
+                stdout=sp.PIPE, stderr=sp.PIPE)
         printf("Done.")
     sp.call(["cmake", ".", "-G", "MinGW Makefiles"])
     sp.call(["mingw32-make"])
