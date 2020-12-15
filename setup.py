@@ -72,7 +72,7 @@ elif "win" in sys.platform:
         - The DLL_SEARCH_PATHS environment variable
         """
 
-        EXCLUDE = ["MSVCRT140.dll"]
+        EXCLUDE = ["MSVCRT140.dll", "VCRUNTIME140.dll"]
 
         def __init__(self, dll_file: str, dependencies_exe="deps\\dependencies.exe", specials=dict()):
             if not os.path.exists(dependencies_exe):
