@@ -72,6 +72,8 @@ elif "win" in sys.platform:
         - The DLL_SEARCH_PATHS environment variable
         """
 
+        EXCLUDE = ["MSVCRT140.dll"]
+
         def __init__(self, dll_file: str, dependencies_exe="deps\\dependencies.exe", specials=dict()):
             if not os.path.exists(dependencies_exe):
                 printf("dependencies.exe is required to find all dependency DLLs")
@@ -146,7 +148,9 @@ elif "win" in sys.platform:
         
         def copy_to_target(self, target: str):
             for p in self.dependency_dll_files:
-                if os.path.basename(p) in self._specials:
+                if os.path.basename(p) in self.EXCLUDE:
+                    continue
+                elif os.path.basename(p) in self._specials:
                     t = os.path.join(target, *self._specials[os.path.basename(p)].split("/"), os.path.basename(p))
                     d = os.path.dirname(t)
                     if not os.path.exists(d):
@@ -192,6 +196,7 @@ setup(
     url="https://github.com/RedFantom/python-gttk",
     download_url="https://github.com/RedFantom/python-gttk/releases",
     license="GNU GPLv3",
+    long_description_content_type="text/markdown",
     long_description=read("README.md"),
     zip_safe=False,
     **kwargs
