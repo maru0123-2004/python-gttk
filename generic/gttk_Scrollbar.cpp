@@ -43,7 +43,7 @@ static void ScrollbarTroughElementGeometry(
     GtkWidget *widget = gttk_GetScrollBar(wc);
     GTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
     GTTK_ENSURE_WIDGET_OK;
-    gttk_gtk_widget_style_get(widget, "trough-border", &trough_border, NULL);
+    gtk_widget_style_get(widget, "trough-border", &trough_border, NULL);
     // xt = widget->style->xthickness;
     // yt = widget->style->ythickness;
     *paddingPtr = Ttk_MakePadding(xt + trough_border,
@@ -67,7 +67,7 @@ static void ScrollbarTroughElementDraw(
             GTTK_SECTION_TROUGH|GTTK_SECTION_ALL);
     //GTTK_SETUP_WIDGET_SIZE(b.width, b.height);
     GTTK_WIDGET_SET_FOCUS(widget);
-    gttk_gtk_widget_style_get(widget, "trough-side-details",
+    gtk_widget_style_get(widget, "trough-side-details",
                                  &trough_side_details, NULL);
     GTTK_DEFAULT_BACKGROUND;
     // gttk_StateInfo(state, gtkState, gtkShadow, tkwin, widget);
@@ -77,17 +77,17 @@ static void ScrollbarTroughElementDraw(
         trough_change_pos_x = b.width / 2;
       else
         trough_change_pos_y = b.height / 2;
-      gttk_gtk_paint_box(style, gdkDrawable, gtkState, GTK_SHADOW_IN, NULL, widget,
+      gtk_paint_box(style, gdkDrawable, gtkState, GTK_SHADOW_IN, NULL, widget,
           "trough-upper", 0, 0, trough_change_pos_x, trough_change_pos_y);
       if (wc->gtkOrientation == GTK_ORIENTATION_HORIZONTAL)
         trough_change_pos_y = 0;
       else
         trough_change_pos_x = 0;
-      gttk_gtk_paint_box(style, gdkDrawable, gtkState, GTK_SHADOW_IN, NULL, widget,
+      gtk_paint_box(style, gdkDrawable, gtkState, GTK_SHADOW_IN, NULL, widget,
           "trough-lower", trough_change_pos_x, trough_change_pos_y,
           b.width-trough_change_pos_x, b.height-trough_change_pos_y);
     } else {
-      gttk_gtk_paint_box(style, gdkDrawable, gtkState, GTK_SHADOW_IN, NULL, widget,
+      gtk_paint_box(style, gdkDrawable, gtkState, GTK_SHADOW_IN, NULL, widget,
           "trough", 0, 0, b.width, b.height);
     }
     gttk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin,
@@ -119,7 +119,7 @@ static void ScrollbarThumbElementGeometry(
     GtkWidget *widget = gttk_GetScrollBar(wc);
     GTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
     GTTK_ENSURE_WIDGET_OK;
-    gttk_gtk_widget_style_get(widget, "slider-width",      &slider_width,
+    gtk_widget_style_get(widget, "slider-width",      &slider_width,
                                   "min-slider-length", &slider_min, NULL);
     *heightPtr = *widthPtr = slider_min;
     if (wc->orientation == TTK_ORIENT_HORIZONTAL) {
@@ -145,16 +145,16 @@ static void ScrollbarThumbElementDraw(
     GTTK_STYLE_FROM_WIDGET;
     // GTTK_SETUP_WIDGET_SIZE(b.width, b.height);
     GTTK_WIDGET_SET_FOCUS(widget);
-    adj = gttk_gtk_range_get_adjustment((GtkRange *) widget);
-    gttk_gtk_adjustment_set_value(adj,gttk_ValueFromSlider(wc, tkwin, b));
+    adj = gtk_range_get_adjustment((GtkRange *) widget);
+    gtk_adjustment_set_value(adj,gttk_ValueFromSlider(wc, tkwin, b));
     //    GTTK_DEFAULT_BACKGROUND;
-      gttk_gtk_paint_box(style, gdkDrawable, gtkState, GTK_SHADOW_IN, NULL, widget,
+      gtk_paint_box(style, gdkDrawable, gtkState, GTK_SHADOW_IN, NULL, widget,
           "trough", 0, 0, b.width, b.height);
 
     gttk_StateShadowTableLookup(NULL, state, gtkState, gtkShadow,
             GTTK_SECTION_SCROLLBAR|GTTK_SECTION_ALL);
     // gttk_StateInfo(state, gtkState, gtkShadow, tkwin, widget);
-    gttk_gtk_paint_slider(style, gdkDrawable, gtkState, gtkShadow, NULL, widget,
+    gtk_paint_slider(style, gdkDrawable, gtkState, gtkShadow, NULL, widget,
         "slider", 0, 0, b.width, b.height,
         wc->gtkOrientation);
     gttk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin,
@@ -187,7 +187,7 @@ static void ScrollbarUpArrowElementGeometry(
     int xt = 0, yt = 0, trough_border = 0;
     GTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
     GTTK_ENSURE_WIDGET_OK;
-    gttk_gtk_widget_style_get(widget, "stepper-size", &stepper_size,
+    gtk_widget_style_get(widget, "stepper-size", &stepper_size,
                                   "slider-width", &slider_width, NULL);
     if (wc->orientation == TTK_ORIENT_HORIZONTAL) {
       *widthPtr  = stepper_size;
@@ -226,18 +226,18 @@ static void ScrollbarUpArrowElementDraw(
     GTTK_WIDGET_SET_FOCUS(widget);
     // GTTK_DEFAULT_BACKGROUND;
     // gttk_StateInfo(state, gtkState, gtkShadow, tkwin, widget);
-    gttk_gtk_paint_box(style, gdkDrawable, gtkState, GTK_SHADOW_IN, NULL,
+    gtk_paint_box(style, gdkDrawable, gtkState, GTK_SHADOW_IN, NULL,
         widget, horizontal ? "hscrollbar":"vscrollbar",
         0, 0, b.width, b.height);
     /* Draw the arrow, according to the desired scaling! */
-    gttk_gtk_widget_style_get(widget, "arrow-scaling", &arrow_scaling, NULL);
+    gtk_widget_style_get(widget, "arrow-scaling", &arrow_scaling, NULL);
     if (arrow_scaling == 0.0) arrow_scaling = 1.0;
     arrow_width  = b.width  * arrow_scaling;
     arrow_height = b.height * arrow_scaling;
     arrow_x =  (b.width  - arrow_width) / 2;
     arrow_y =  (b.height - arrow_height) / 2;
 
-    gttk_gtk_paint_arrow(style, gdkDrawable, gtkState, gtkShadow, NULL,
+    gtk_paint_arrow(style, gdkDrawable, gtkState, gtkShadow, NULL,
         widget, horizontal ? "hscrollbar":"vscrollbar",
         horizontal? GTK_ARROW_LEFT : GTK_ARROW_UP, FALSE,
         arrow_x, arrow_y, arrow_width, arrow_height);
@@ -291,18 +291,18 @@ static void ScrollbarDownArrowElementDraw(
     GTTK_WIDGET_SET_FOCUS(widget);
     // GTTK_DEFAULT_BACKGROUND;
     // gttk_StateInfo(state, gtkState, gtkShadow, tkwin, widget);
-    gttk_gtk_paint_box(style, gdkDrawable, gtkState, GTK_SHADOW_IN, NULL,
+    gtk_paint_box(style, gdkDrawable, gtkState, GTK_SHADOW_IN, NULL,
         widget, horizontal ? "hscrollbar":"vscrollbar",
         0, 0, b.width, b.height);
     /* Draw the arrow, according to the desired scaling! */
-    gttk_gtk_widget_style_get(widget, "arrow-scaling", &arrow_scaling, NULL);
+    gtk_widget_style_get(widget, "arrow-scaling", &arrow_scaling, NULL);
     if (arrow_scaling == 0.0) arrow_scaling = 1.0;
     arrow_width  = b.width  * arrow_scaling;
     arrow_height = b.height * arrow_scaling;
     arrow_x =  (b.width  - arrow_width) / 2;
     arrow_y =  (b.height - arrow_height) / 2;
 
-    gttk_gtk_paint_arrow(style, gdkDrawable, gtkState, gtkShadow, NULL,
+    gtk_paint_arrow(style, gdkDrawable, gtkState, gtkShadow, NULL,
         widget, horizontal ? "hscrollbar":"vscrollbar",
         horizontal? GTK_ARROW_RIGHT : GTK_ARROW_DOWN, TRUE,
         arrow_x, arrow_y, arrow_width, arrow_height);

@@ -14,7 +14,7 @@ SET ( PKG_NAME_VERSION  ${PKG_NAME}-${PKG_VERSION} )
 SET ( PKG_VENDOR        "RedFantom" )
 SET ( PKG_HOME_DIR      ${PROJECT_SOURCE_DIR} )
 
-SET ( LOAD_GTK_DYNAMICALLY ON )
+SET ( LOAD_GTK_DYNAMICALLY OFF )
 SET ( NO_MSVCRT            ON  )
 SET ( USE_GNOME            OFF )
 SET ( VERBOSE              ON  )
@@ -30,7 +30,6 @@ SET ( PKG_SOURCES generic/gttk_TreeView.cpp
                   generic/gttk_Arrows.cpp )
 
 SET ( PKG_SOURCES generic/gttk_Init.cpp
-                  generic/gttk_Symbols.cpp
                   generic/gttk_GtkApp.cpp
                   generic/gttk_Utilities.cpp
                   generic/gttk_Background.cpp
@@ -174,23 +173,6 @@ if (GTK_FOUND)
 
     MESSAGE(STATUS "  GTK 2.x Found!")
 endif ()
-
-## ===========================================================================
-##  Target: gttk_Symbols.[h|cpp]
-## ===========================================================================
-# ADD_CUSTOM_COMMAND ( OUTPUT ${PROJECT_SOURCE_DIR}/generic/gttk_Symbols.cpp
-#                             ${PROJECT_SOURCE_DIR}/generic/gttk_Symbols.h
-#     DEPENDS library/GenerateSymbols.tcl
-#             generic/gttk_Init.cpp
-#             generic/gttk_GtkApp.cpp
-#             generic/gttk_Utilities.h
-#             generic/gttk_Utilities.cpp
-#     COMMAND ${TCL_TCLSH} GenerateSymbols.tcl
-#     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/library )
-# SET_SOURCE_FILES_PROPERTIES ( ${PROJECT_SOURCE_DIR}/generic/gttk_Symbols.cpp
-#                               PROPERTIES GENERATED true )
-# SET_SOURCE_FILES_PROPERTIES ( ${PROJECT_SOURCE_DIR}/generic/gttk_Symbols.h
-#                               PROPERTIES GENERATED true )
 
 SET ( PKG_TARGET_LIB_NAME ${PKG_NAME} )
 

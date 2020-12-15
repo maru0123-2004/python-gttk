@@ -35,7 +35,7 @@ static void CheckButtonIndicatorElementGeometry(
     GTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
     GtkWidget *widget = gttk_GetCheckButton(wc);
     GTTK_ENSURE_WIDGET_OK;
-    gttk_gtk_widget_style_get(widget,
+    gtk_widget_style_get(widget,
            "indicator-size",    &size,
            "indicator-spacing", &spacing,
            "focus-line-width",  &focus_width,
@@ -59,14 +59,14 @@ static void CheckButtonIndicatorElementDraw(
     GTTK_DEFAULT_BACKGROUND;
     GTTK_STYLE_FROM_WIDGET;
     GTTK_WIDGET_SET_FOCUS(widget);
-    gttk_gtk_widget_style_get(widget,
+    gtk_widget_style_get(widget,
            "indicator-size", &indicator_size, NULL);
     gttk_StateShadowTableLookup(NULL, state, gtkState, gtkShadow,
             GTTK_SECTION_BUTTONS|GTTK_SECTION_ALL);
     // gttk_StateInfo(state, gtkState, gtkShadow, tkwin, widget);
     x = (b.width  - indicator_size) / 2;
     y = (b.height - indicator_size) / 2;
-    gttk_gtk_paint_check(style, gdkDrawable, gtkState, gtkShadow, NULL,
+    gtk_paint_check(style, gdkDrawable, gtkState, gtkShadow, NULL,
             widget, "checkbutton", x, y, indicator_size, indicator_size);
     gttk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin,
             0, 0, b.width, b.height, b.x, b.y);
@@ -99,7 +99,7 @@ static void CheckButtonBorderElementGeometry(
     GTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
     GtkWidget *widget = gttk_GetCheckButton(wc);
     GTTK_ENSURE_WIDGET_OK;
-    gttk_gtk_widget_style_get(widget,
+    gtk_widget_style_get(widget,
            "focus-line-width", &focus_width,
            "focus-padding",    &focus_pad, NULL);
     *paddingPtr = Ttk_UniformPadding(focus_width + focus_pad);
@@ -124,10 +124,10 @@ static void CheckButtonBorderElementDraw(
       GTTK_WIDGET_SET_FOCUS(widget);
       gttk_StateShadowTableLookup(NULL, state, gtkState, gtkShadow,
             GTTK_SECTION_BUTTONS|GTTK_SECTION_ALL);
-      gttk_gtk_widget_style_get(widget,
+      gtk_widget_style_get(widget,
            "focus-line-width", &focus_width,
            "focus-padding",    &focus_pad, NULL);
-      gttk_gtk_paint_focus(style, gdkDrawable, gtkState, NULL, widget,
+      gtk_paint_focus(style, gdkDrawable, gtkState, NULL, widget,
               "checkbutton", b.x + border_width, b.y + border_width,
                b.width - 2 * border_width, b.height - 2 * border_width);
     }

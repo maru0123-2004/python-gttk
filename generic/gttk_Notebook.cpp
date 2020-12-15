@@ -43,7 +43,7 @@ static void NotebookTabElementGeometry(
     GtkWidget *widget = gttk_GetNotebook(wc);
     gint focus_width = 1, tab_curvature = 1;
     GTTK_ENSURE_WIDGET_OK;
-    gttk_gtk_widget_style_get(widget, "focus-line-width", &focus_width,
+    gtk_widget_style_get(widget, "focus-line-width", &focus_width,
                                  "tab-curvature",    &tab_curvature, NULL);
     *paddingPtr = Ttk_UniformPadding(tab_curvature + focus_width +
                                      ((GtkNotebook *)widget)->tab_hborder);
@@ -68,7 +68,7 @@ static void NotebookTabElementDraw(
     GTTK_ENSURE_WIDGET_OK;
     GTTK_STYLE_FROM_WIDGET;
     GTTK_DRAWABLE_FROM_WIDGET_SIZE(b.width, height_with_overlap);
-    gttk_gtk_style_apply_default_background(style, gdkDrawable, TRUE,
+    gtk_style_apply_default_background(style, gdkDrawable, TRUE,
             gtkState, NULL, 0, 0, b.width, height_with_overlap);
 
     if (state & TTK_STATE_SELECTED) {
@@ -86,7 +86,7 @@ static void NotebookTabElementDraw(
     gttk_StateShadowTableLookup(NULL, state, gtkState, gtkShadow,
             GTTK_SECTION_TABS|GTTK_SECTION_ALL);
     // gttk_StateInfo(state, gtkState, gtkShadow, tkwin, widget);
-    gttk_gtk_paint_extension(style, gdkDrawable, gtkState, gtkShadow, NULL,
+    gtk_paint_extension(style, gdkDrawable, gtkState, gtkShadow, NULL,
        widget, (char *) "tab", 0, 0, b.width, b.height + dh, GTK_POS_BOTTOM);
     gttk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin,
                    0, 0, b.width, b.height + dh, b.x, b.y);
@@ -134,11 +134,11 @@ static void NotebookClientElementDraw(
     GTTK_ENSURE_WIDGET_OK;
     GTTK_STYLE_FROM_WIDGET;
     GTTK_DRAWABLE_FROM_WIDGET;
-    // gttk_gtk_paint_box_gap(style, gdkDrawable,
+    // gtk_paint_box_gap(style, gdkDrawable,
     //      GTK_STATE_NORMAL,GTK_SHADOW_OUT,
     //      NULL, widget, (char *) "notebook", 0, 0, b.width, b.height,
     //      GTK_POS_TOP, 0, 0);
-    gttk_gtk_paint_box(style, gdkDrawable, GTK_STATE_NORMAL, GTK_SHADOW_OUT,
+    gtk_paint_box(style, gdkDrawable, GTK_STATE_NORMAL, GTK_SHADOW_OUT,
          NULL, widget, (char *) "notebook", 0, 0, b.width, b.height);
     gttk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin,
                    0, 0, b.width, b.height, b.x, b.y);

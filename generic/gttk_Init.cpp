@@ -70,12 +70,12 @@ int gttk_ThemeName(ClientData clientData, Tcl_Interp *interp,
   if (objc != 1) {Tcl_WrongNumArgs(interp, 1, objv, ""); return TCL_ERROR;}
 
   Tcl_MutexLock(&gttkMutex);
-  settings = gttk_gtk_settings_get_default();
+  settings = gtk_settings_get_default();
   if (settings) {
-    gttk_g_object_get(settings, "gtk-theme-name", &strval, NULL);
+    g_object_get(settings, "gtk-theme-name", &strval, NULL);
     if (strval) {
       Tcl_SetResult(interp, (char *) strval, TCL_VOLATILE);
-      gttk_g_free(strval);
+      g_free(strval);
     }
   }
   Tcl_MutexUnlock(&gttkMutex);
@@ -126,23 +126,23 @@ int gttk_SettingsProperty(ClientData clientData, Tcl_Interp *interp,
   }
 
   Tcl_MutexLock(&gttkMutex);
-  settings = gttk_gtk_settings_get_default();
+  settings = gtk_settings_get_default();
   if (settings) {
     switch ((enum methods) type) {
       case INTEGER:
-        gttk_g_object_get(settings, Tcl_GetString(objv[1]), &i_val, NULL);
+        g_object_get(settings, Tcl_GetString(objv[1]), &i_val, NULL);
         Tcl_SetObjResult(interp, Tcl_NewIntObj(i_val));
         break;
       case BOOLEAN:
-        gttk_g_object_get(settings, Tcl_GetString(objv[1]), &b_val, NULL);
+        g_object_get(settings, Tcl_GetString(objv[1]), &b_val, NULL);
         if (b_val) Tcl_SetObjResult(interp, Tcl_NewBooleanObj(1));
         else Tcl_SetObjResult(interp, Tcl_NewBooleanObj(0));
         break;
       case STRING:
-        gttk_g_object_get(settings, Tcl_GetString(objv[1]), &s_val, NULL);
+        g_object_get(settings, Tcl_GetString(objv[1]), &s_val, NULL);
         if (s_val) {
           Tcl_SetResult(interp, (char *) s_val, TCL_VOLATILE);
-          gttk_g_free (s_val);
+          g_free (s_val);
         }
         break;
     }
@@ -210,11 +210,11 @@ int gttk_GetProperty(ClientData clientData, Tcl_Interp *interp,
       case INTEGER:
         switch (gtkMethod) {
           case GETPROPERTY_GTK_WIDGET_GET:
-            gttk_gtk_object_get((GtkObject *) widget,
+            gtk_object_get((GtkObject *) widget,
                 Tcl_GetString(objv[2]), &i_val, NULL);
           break;
           case GETPROPERTY_GTK_WIDGET_STYLE_GET:
-            gttk_gtk_widget_style_get(widget, Tcl_GetString(objv[2]),
+            gtk_widget_style_get(widget, Tcl_GetString(objv[2]),
                                          &i_val, NULL);
             break;
         }
@@ -223,11 +223,11 @@ int gttk_GetProperty(ClientData clientData, Tcl_Interp *interp,
       case BOOLEAN:
         switch (gtkMethod) {
           case GETPROPERTY_GTK_WIDGET_GET:
-            gttk_gtk_object_get((GtkObject *) widget,
+            gtk_object_get((GtkObject *) widget,
                 Tcl_GetString(objv[2]), &b_val, NULL);
             break;
           case GETPROPERTY_GTK_WIDGET_STYLE_GET:
-            gttk_gtk_widget_style_get(widget, Tcl_GetString(objv[2]),
+            gtk_widget_style_get(widget, Tcl_GetString(objv[2]),
                                          &b_val, NULL);
             break;
         }
@@ -237,17 +237,17 @@ int gttk_GetProperty(ClientData clientData, Tcl_Interp *interp,
       case STRING:
         switch (gtkMethod) {
           case GETPROPERTY_GTK_WIDGET_GET:
-            gttk_gtk_object_get((GtkObject *) widget,
+            gtk_object_get((GtkObject *) widget,
                 Tcl_GetString(objv[2]), &s_val, NULL);
             break;
           case GETPROPERTY_GTK_WIDGET_STYLE_GET:
-            gttk_gtk_widget_style_get(widget, Tcl_GetString(objv[2]),
+            gtk_widget_style_get(widget, Tcl_GetString(objv[2]),
                                          &s_val, NULL);
             break;
         }
         if (s_val) {
           Tcl_SetResult(interp, (char *) s_val, TCL_VOLATILE);
-          gttk_g_free (s_val);
+          g_free (s_val);
         }
         break;
     }
@@ -330,7 +330,7 @@ int gttk_GtkDirectory(ClientData clientData, Tcl_Interp *interp,
   Tcl_MutexLock(&gttkMutex);
   switch ((enum methods) type) {
     case THEME:
-      dir = gttk_gtk_rc_get_theme_dir();
+      dir = gtk_rc_get_theme_dir();
       break;
     case DEFAULT_FILES:
       if (objc == 3) {
@@ -338,18 +338,18 @@ int gttk_GtkDirectory(ClientData clientData, Tcl_Interp *interp,
         if (Tcl_ListObjGetElements(interp, objv[2], &mobjc, &mobjv) != TCL_OK) {
           return TCL_ERROR;
         }
-        dirs = gttk_g_new0(gchar *, mobjc+1);
+        dirs = g_new0(gchar *, mobjc+1);
         for (int i = 0; i < mobjc; ++i) {
           Tcl_IncrRefCount(mobjv[i]);
           dirs[i] = Tcl_GetString(mobjv[i]);
         }
-        gttk_gtk_rc_set_default_files(dirs);
+        gtk_rc_set_default_files(dirs);
         for (int i = 0; i < mobjc; ++i) {
           Tcl_DecrRefCount(mobjv[i]);
         }
-        gttk_g_free(dirs); dirs = NULL;
+        g_free(dirs); dirs = NULL;
       } else {
-        dirs = gttk_gtk_rc_get_default_files();
+        dirs = gtk_rc_get_default_files();
       }
       break;
     case MODULE:
@@ -358,7 +358,7 @@ int gttk_GtkDirectory(ClientData clientData, Tcl_Interp *interp,
   }
   if (dir) {
     Tcl_SetResult(interp, (char *) dir, TCL_VOLATILE);
-    gttk_g_free(dir);
+    g_free(dir);
   }
   if (dirs) {
     Tcl_Obj *list = Tcl_NewListObj(0, NULL);
@@ -372,7 +372,7 @@ int gttk_GtkDirectory(ClientData clientData, Tcl_Interp *interp,
   return TCL_OK;
 }; /* gttk_GtkDirectory */
 
-int gttk_gtk_method(ClientData clientData, Tcl_Interp *interp,
+int gtk_method(ClientData clientData, Tcl_Interp *interp,
                                  int objc, Tcl_Obj *const objv[]) {
   static const char *Methods[] = {
     "gtk_rc_reparse_all_for_settings", "gtk_rc_reset_styles", (char *) NULL
@@ -393,16 +393,16 @@ int gttk_gtk_method(ClientData clientData, Tcl_Interp *interp,
   Tcl_MutexLock(&gttkMutex);
   switch ((enum methods) type) {
     case GTK_RC_REPARSE_ALL_FOR_SETTINGS:
-      gttk_gtk_rc_reparse_all_for_settings(
-              gttk_gtk_settings_get_default(), TRUE);
+      gtk_rc_reparse_all_for_settings(
+              gtk_settings_get_default(), TRUE);
       break;
     case GTK_RC_RESET_STYLES:
-      gttk_gtk_rc_reset_styles(gttk_gtk_settings_get_default());
+      gtk_rc_reset_styles(gtk_settings_get_default());
       break;
   }
   Tcl_MutexUnlock(&gttkMutex);
   return TCL_OK;
-}; /* gttk_gtk_method */
+}; /* gtk_method */
 
 int gttk_ThemeColour(ClientData clientData, Tcl_Interp *interp,
                                  int objc, Tcl_Obj *const objv[]) {
@@ -506,16 +506,16 @@ int gttk_ThemeColour(ClientData clientData, Tcl_Interp *interp,
     case TAA_SELECTED:      colour = style->text_aa[GTK_STATE_SELECTED];  break;
     case TAA_INSENSITIVE:   colour = style->text_aa[GTK_STATE_INSENSITIVE];
   }
-    colour_str = gttk_gdk_color_to_string(&colour);
+    colour_str = gdk_color_to_string(&colour);
   } else {
-    if (gttk_gtk_style_lookup_color(style, Tcl_GetString(objv[1]), &colour)){
-      colour_str = gttk_gdk_color_to_string(&colour);
+    if (gtk_style_lookup_color(style, Tcl_GetString(objv[1]), &colour)){
+      colour_str = gdk_color_to_string(&colour);
     }
   }
 
   if (colour_str) {
     Tcl_SetResult(interp, (char *) colour_str, TCL_VOLATILE);
-    gttk_g_free(colour_str);
+    g_free(colour_str);
     return TCL_OK;
   }
   Tcl_SetResult(interp, (char *) "colour not found: ", TCL_STATIC);
@@ -552,7 +552,7 @@ int gttk_ColourKeys(ClientData clientData, Tcl_Interp *interp,
   Tcl_Obj *list = Tcl_NewListObj(0, NULL);
   for (iter = priv->color_hashes; iter != NULL; iter = iter->next) {
     GHashTable *hash    = (GHashTable *) iter->data;
-    GList *keys = gttk_g_hash_table_get_keys(hash);
+    GList *keys = g_hash_table_get_keys(hash);
     for (; keys != NULL; keys = keys->next) {
       Tcl_ListObjAppendElement(NULL, list,
                                Tcl_NewStringObj((char *) keys->data, -1));
@@ -589,47 +589,9 @@ int gttk_InitialiseLibrary(ClientData clientData, Tcl_Interp *interp,
   Tcl_MutexLock(&gttkMutex);
   switch ((enum methods) index) {
     case L_REQUIRED:
-#ifdef GTTK_LOAD_GTK_DYNAMICALLY
-      Tcl_SetObjResult(interp, Tcl_NewBooleanObj(1));
-#else
       Tcl_SetObjResult(interp, Tcl_NewBooleanObj(0));
-#endif /* GTTK_LOAD_GTK_DYNAMICALLY */
       Tcl_MutexUnlock(&gttkMutex);
       return TCL_OK;
-#ifdef GTTK_LOAD_GTK_DYNAMICALLY
-    case L_GDK:
-      if (!GTTK_LAST_SYMBOL_gdk && objc > 2) {
-        status = gttk_InitialiseSymbols_gdk(interp, objv[2]);
-      }
-      break;
-    case L_GDK_PIXBUF:
-      if (!GTTK_LAST_SYMBOL_gdk_pixbuf && objc > 2) {
-        status = gttk_InitialiseSymbols_gdk_pixbuf(interp, objv[2]);
-      }
-      break;
-    case L_GDK_PIXBUF_XLIB:
-#ifndef __WIN32__
-      if (!GTTK_LAST_SYMBOL_gdk_pixbuf_xlib && objc > 2) {
-        status = gttk_InitialiseSymbols_gdk_pixbuf_xlib(interp, objv[2]);
-      }
-#endif
-      break;
-    case L_GLIB:
-      if (!GTTK_LAST_SYMBOL_glib && objc > 2) {
-        status = gttk_InitialiseSymbols_glib(interp, objv[2]);
-      }
-      break;
-    case L_GOBJECT:
-      if (!GTTK_LAST_SYMBOL_gobject && objc > 2) {
-        status = gttk_InitialiseSymbols_gobject(interp, objv[2]);
-      }
-      break;
-    case L_GTK:
-      if (!GTTK_LAST_SYMBOL_gtk && objc > 2) {
-        status = gttk_InitialiseSymbols_gtk(interp, objv[2]);
-      }
-      break;
-#endif /* GTTK_LOAD_GTK_DYNAMICALLY */
   }
   Tcl_MutexUnlock(&gttkMutex);
   return status;
@@ -838,7 +800,7 @@ _Gttk_Init(Tcl_Interp *interp)
     Tcl_CreateObjCommand(interp, "ttk::theme::gttk::currentThemeName", gttk_ThemeName, (ClientData) wc, NULL);
     Tcl_CreateObjCommand(interp, "ttk::theme::gttk::gtkDirectory", gttk_GtkDirectory, (ClientData) wc, NULL);
     Tcl_CreateObjCommand(interp, "ttk::theme::gttk::setStyle", gttk_SetStyle, (ClientData) wc, NULL);
-    Tcl_CreateObjCommand(interp, "ttk::theme::gttk::gtk_method", gttk_gtk_method, (ClientData) wc, NULL);
+    Tcl_CreateObjCommand(interp, "ttk::theme::gttk::gtk_method", gtk_method, (ClientData) wc, NULL);
     Tcl_CreateObjCommand(interp, "ttk::theme::gttk::currentThemeColour", gttk_ThemeColour, (ClientData) wc, NULL);
     Tcl_CreateObjCommand(interp, "ttk::theme::gttk::currentThemeColourKeys", gttk_ColourKeys, (ClientData) wc, NULL);
     Tcl_CreateObjCommand(interp, "ttk::theme::gttk::setGtkTheme", gttk_set_gtk_theme, (ClientData) wc, NULL);
@@ -850,13 +812,13 @@ _Gttk_Init(Tcl_Interp *interp)
 #endif
     /* Save the name of the current theme... */
     strcpy(tmpScript, "namespace eval ttk::theme::gttk { variable theme ");
-    settings = gttk_gtk_settings_get_default();
+    settings = gtk_settings_get_default();
     if (settings) {
-      gttk_g_object_get(settings, "gtk-theme-name", &strval, NULL);
+      g_object_get(settings, "gtk-theme-name", &strval, NULL);
       strcat(tmpScript, "{");
       if (strval) {
         strcat(tmpScript, strval);
-        gttk_g_free(strval);
+        g_free(strval);
       }
       strcat(tmpScript, "}");
     } else {

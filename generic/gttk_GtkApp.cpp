@@ -22,7 +22,7 @@ GnomeProgram *my_app = NULL;
 #include "gttk_TkHeaders.h"
 #include <string.h>
 gboolean   gttk_GtkInitialisedFlag = FALSE;
-static int gttk_xlib_rgb_initialised = 0;
+static int xlib_rgb_initialised = 0;
 GtkWidget *gttk_GtkWindow = NULL;
 
 
@@ -47,7 +47,7 @@ static void gttk_InterpDeleteProc(ClientData clientData, Tcl_Interp *interp) {
   gttk_WidgetCache *wc = wc_array[0];
   if (wc && wc->gtkWindow) {
     /*This will destroy also ALL children!*/
-    gttk_gtk_widget_destroy(wc->gtkWindow);
+    gtk_widget_destroy(wc->gtkWindow);
   }
   // printf("Tk_DeleteGenericHandler: %p\n", interp); fflush(NULL);
   Tk_DeleteGenericHandler(&gttk_XEventHandler, (ClientData) interp);
@@ -73,7 +73,7 @@ gttk_WidgetCache **gttk_CreateGtkApp(Tcl_Interp *interp) {
     GOptionContext *option_context;
 #endif /* GTTK_ENABLE_GNOME */
     int argc = 1;
-    char **argv = gttk_g_new0(char*, 2);
+    char **argv = g_new0(char*, 2);
     argv[0] = (char *) Tcl_GetNameOfExecutable();
 
 #ifdef GTTK_INSTALL_XERROR_HANDLER
@@ -81,8 +81,8 @@ gttk_WidgetCache **gttk_CreateGtkApp(Tcl_Interp *interp) {
 #endif /* GTTK_INSTALL_XERROR_HANDLER */
 
 #ifdef GTTK_ENABLE_GNOME
-    option_context = gttk_g_option_context_new("tile-gtk");
-    gttk_g_option_context_add_main_entries(option_context,
+    option_context = g_option_context_new("tile-gtk");
+    g_option_context_add_main_entries(option_context,
                                               option_entries, NULL);
     /* We assume PACKAGE and VERSION are set to the program name and version
      * number respectively. Also, assume that 'option_entries' is a global
@@ -94,21 +94,21 @@ gttk_WidgetCache **gttk_CreateGtkApp(Tcl_Interp *interp) {
                                 GNOME_PARAM_NONE);
     if (my_app) gttk_GtkInitialisedFlag = TRUE;
     if (remaining_args != NULL) {
-      gttk_g_strfreev(remaining_args);
+      g_strfreev(remaining_args);
       remaining_args = NULL;
     }
 #else  /* GTTK_ENABLE_GNOME */
-    gttk_gtk_disable_setlocale();
-    gttk_GtkInitialisedFlag = gttk_gtk_init_check(&argc, &argv);
+    gtk_disable_setlocale();
+    gttk_GtkInitialisedFlag = gtk_init_check(&argc, &argv);
 #endif /* GTTK_ENABLE_GNOME */
-    gttk_g_free(argv);
+    g_free(argv);
     if (!gttk_GtkInitialisedFlag) {
       Tcl_MutexUnlock(&gttkMutex);
       return NULL;
     }
     /* Initialise gttk_GtkWindow... */
-    gttk_GtkWindow = gttk_gtk_window_new(GTK_WINDOW_POPUP);
-    gttk_gtk_widget_realize(gttk_GtkWindow);
+    gttk_GtkWindow = gtk_window_new(GTK_WINDOW_POPUP);
+    gtk_widget_realize(gttk_GtkWindow);
 #ifdef GTTK_INSTALL_XERROR_HANDLER
     /*
      * GTK+ xerror handler will terminate the application.
@@ -155,15 +155,15 @@ gttk_WidgetCache **gttk_CreateGtkApp(Tcl_Interp *interp) {
     return NULL;
   }
 #ifndef __WIN32__
-  wc->gdkDisplay = gttk_gdk_x11_lookup_xdisplay(wc->gttk_MainDisplay);
+  wc->gdkDisplay = gdk_x11_lookup_xdisplay(wc->gttk_MainDisplay);
 #endif
   if (!wc->gdkDisplay) {
-    wc->gdkDisplay = gttk_gdk_display_get_default();
+    wc->gdkDisplay = gdk_display_get_default();
   }
-  wc->gtkWindow = gttk_gtk_window_new(GTK_WINDOW_POPUP);
-  if (wc->gtkWindow) gttk_gtk_widget_realize(wc->gtkWindow);
-  wc->protoLayout = gttk_gtk_fixed_new();
-  gttk_gtk_container_add((GtkContainer*)(wc->gtkWindow), wc->protoLayout);
+  wc->gtkWindow = gtk_window_new(GTK_WINDOW_POPUP);
+  if (wc->gtkWindow) gtk_widget_realize(wc->gtkWindow);
+  wc->protoLayout = gtk_fixed_new();
+  gtk_container_add((GtkContainer*)(wc->gtkWindow), wc->protoLayout);
   memcpy(wc_array[1], wc_array[0], sizeof(gttk_WidgetCache));
   wc_array[0]->orientation    = TTK_ORIENT_HORIZONTAL;
   wc_array[1]->orientation    = TTK_ORIENT_VERTICAL;
@@ -172,9 +172,9 @@ gttk_WidgetCache **gttk_CreateGtkApp(Tcl_Interp *interp) {
 
 #ifndef __WIN32__
   Tcl_MutexLock(&gttkMutex);
-  if (!gttk_xlib_rgb_initialised) {
-    gttk_xlib_rgb_init(wc->gttk_MainDisplay,Tk_Screen(wc->gttk_tkwin));
-    gttk_xlib_rgb_initialised = 1;
+  if (!xlib_rgb_initialised) {
+    xlib_rgb_init(wc->gttk_MainDisplay,Tk_Screen(wc->gttk_tkwin));
+    xlib_rgb_initialised = 1;
   }
   Tcl_MutexUnlock(&gttkMutex);
 #endif

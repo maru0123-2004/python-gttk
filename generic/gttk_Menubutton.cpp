@@ -41,7 +41,7 @@ static void MenubuttonIndicatorElementGeometry(
     gint size = 15;
     GtkWidget *widget = gttk_GetComboboxEntry(wc);
     GTTK_ENSURE_WIDGET_OK;
-    gttk_gtk_widget_style_get(widget, "arrow-size", &size, NULL);
+    gtk_widget_style_get(widget, "arrow-size", &size, NULL);
 
     *widthPtr = *heightPtr = size;
     *paddingPtr = Ttk_UniformPadding(3);
@@ -67,17 +67,17 @@ static void MenubuttonIndicatorElementDraw(
     gttk_StateShadowTableLookup(NULL, state, gtkState, gtkShadow,
             GTTK_SECTION_BUTTONS|GTTK_SECTION_ALL);
     GTTK_WIDGET_SET_FOCUS(widget);
-    gttk_gtk_paint_flat_box(style, gdkDrawable, gtkState, gtkShadow, NULL, widget,
+    gtk_paint_flat_box(style, gdkDrawable, gtkState, gtkShadow, NULL, widget,
             "button", 0, 0, b.width, b.height);
     /* Draw the arrow, according to the desired scaling! */
-    gttk_gtk_widget_style_get(arrow_widget, "arrow-scaling",
+    gtk_widget_style_get(arrow_widget, "arrow-scaling",
                                  &arrow_scaling, NULL);
     if (arrow_scaling == 0.0) arrow_scaling = 1.0;
     arrow_width  = b.width  * arrow_scaling;
     arrow_height = b.height * arrow_scaling;
     arrow_x =  (b.width  - arrow_width) / 2;
     arrow_y =  (b.height - arrow_height) / 2;
-    gttk_gtk_paint_arrow(style, gdkDrawable, gtkState, gtkShadow, NULL,
+    gtk_paint_arrow(style, gdkDrawable, gtkState, gtkShadow, NULL,
         arrow_widget, "combo", GTK_ARROW_DOWN, TRUE,
         arrow_x, arrow_y, arrow_width, arrow_height);
     gttk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin,
@@ -128,7 +128,7 @@ static void MenubuttonElementDraw(
     gttk_StateShadowTableLookup(NULL, state, gtkState, gtkShadow,
             GTTK_SECTION_BUTTONS|GTTK_SECTION_ALL);
     GTTK_WIDGET_SET_FOCUS(widget);
-    gttk_gtk_paint_box(style, gdkDrawable, gtkState, gtkShadow, NULL, widget,
+    gtk_paint_box(style, gdkDrawable, gtkState, gtkShadow, NULL, widget,
                   "button", 0, 0, b.width, b.height);
     gttk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin,
                   0, 0, b.width, b.height, b.x, b.y);

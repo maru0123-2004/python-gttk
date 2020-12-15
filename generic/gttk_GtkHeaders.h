@@ -15,13 +15,26 @@
 #ifndef _GTTK_GTKHEADERS
 #define _GTTK_GTKHEADERS
 
-#include <tk.h>
-#include "gttk_Symbols.h"
+#include "tcl.h"
+#include "tk.h"
+#ifdef LOAD_SYMBOLS_WITH_TCL
+#else
+#include <glib.h>
+#endif
+#include <gdk/gdk.h>
+#include <gtk/gtk.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
+#ifndef __WIN32__
+#include <gdk-pixbuf-xlib/gdk-pixbuf-xlib.h>
+#include <gdk/gdkx.h>
+#else
+#include <gdk/gdkwin32.h>
+#endif
 
 /* Convenience memory allocators
  */
-#define gttk_g_new0(struct_type, n_structs) \
-    ((struct_type *) gttk_g_malloc0 (((gsize) sizeof (struct_type)) * ((gsize) (n_structs))))
+#define g_new0(struct_type, n_structs) \
+    ((struct_type *) g_malloc0 (((gsize) sizeof (struct_type)) * ((gsize) (n_structs))))
 
 typedef struct gttk_WidgetCache {
   Tk_Window      gttk_tkwin;

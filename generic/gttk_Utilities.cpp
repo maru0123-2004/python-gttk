@@ -41,14 +41,14 @@ void gttk_InitialiseGtkWidget(gttk_WidgetCache* wc, GtkWidget* widget) {
   // GtkStyle *style;
   if (!wc || !widget) return;
   if (!wc->protoLayout) {
-    wc->protoLayout = gttk_gtk_fixed_new();
-    gttk_gtk_container_add((GtkContainer*)(wc->gtkWindow), wc->protoLayout);
+    wc->protoLayout = gtk_fixed_new();
+    gtk_container_add((GtkContainer*)(wc->gtkWindow), wc->protoLayout);
   }
   if (!wc->protoLayout) return;
-  gttk_gtk_container_add((GtkContainer*)(wc->protoLayout), widget);
-  gttk_gtk_widget_realize(widget);
-  // style = gttk_gtk_rc_get_style(widget);
-  // if (style) gttk_gtk_style_attach(style,
+  gtk_container_add((GtkContainer*)(wc->protoLayout), widget);
+  gtk_widget_realize(widget);
+  // style = gtk_rc_get_style(widget);
+  // if (style) gtk_style_attach(style,
 }; /* gttk_InitialiseGtkWidget */
 
 #define GTTK_CHECK_WIDGET(widget, allocator_function) \
@@ -62,15 +62,15 @@ void gttk_InitialiseGtkWidget(gttk_WidgetCache* wc, GtkWidget* widget) {
 
 GtkWidget *gttk_GetArrow(gttk_WidgetCache* wc) {
   GTTK_CHECK_WIDGET(gtkArrow,
-                       gttk_gtk_arrow_new(GTK_ARROW_DOWN, GTK_SHADOW_NONE));
+                       gtk_arrow_new(GTK_ARROW_DOWN, GTK_SHADOW_NONE));
 }; /* gttk_GetButton */
 
 GtkWidget *gttk_GetButton(gttk_WidgetCache* wc) {
-  GTTK_CHECK_WIDGET(gtkButton, gttk_gtk_button_new());
+  GTTK_CHECK_WIDGET(gtkButton, gtk_button_new());
 }; /* gttk_GetButton */
 
 GtkWidget *gttk_GetCheckButton(gttk_WidgetCache* wc) {
-  GTTK_CHECK_WIDGET(gtkCheckButton, gttk_gtk_check_button_new());
+  GTTK_CHECK_WIDGET(gtkCheckButton, gtk_check_button_new());
 }; /* gttk_GetCheckButton */
 
 GtkWidget *gttk_GetRadioButton(gttk_WidgetCache* wc) {
@@ -78,39 +78,39 @@ GtkWidget *gttk_GetRadioButton(gttk_WidgetCache* wc) {
 }; /* gttk_GetRadioButton */
 
 GtkWidget *gttk_GetToolBar(gttk_WidgetCache* wc) {
-  GTTK_CHECK_WIDGET(gtkToolBar, gttk_gtk_toolbar_new());
+  GTTK_CHECK_WIDGET(gtkToolBar, gtk_toolbar_new());
 }; /* gttk_GetToolBar */
 
 GtkWidget *gttk_GetToolButton(gttk_WidgetCache* wc) {
-  GTTK_CHECK_WIDGET(gtkToolButton, gttk_gtk_button_new());
+  GTTK_CHECK_WIDGET(gtkToolButton, gtk_button_new());
 }; /* gttk_GetToolButton */
 
 GtkWidget *gttk_GetFrame(gttk_WidgetCache* wc) {
-  GTTK_CHECK_WIDGET(gtkFrame, gttk_gtk_frame_new(NULL));
+  GTTK_CHECK_WIDGET(gtkFrame, gtk_frame_new(NULL));
 }; /* gttk_GetFrame */
 
 GtkWidget *gttk_GetEntry(gttk_WidgetCache* wc) {
-  GTTK_CHECK_WIDGET(gtkEntry, gttk_gtk_entry_new());
+  GTTK_CHECK_WIDGET(gtkEntry, gtk_entry_new());
 }; /* gttk_GetEntry */
 
 GtkWidget *gttk_GetCombobox(gttk_WidgetCache* wc) {
-  GTTK_CHECK_WIDGET(gtkCombobox, gttk_gtk_combo_box_new());
+  GTTK_CHECK_WIDGET(gtkCombobox, gtk_combo_box_new());
 }; /* gttk_GetComboboxEntry */
 
 GtkWidget *gttk_GetComboboxEntry(gttk_WidgetCache* wc) {
-  GTTK_CHECK_WIDGET(gtkComboboxEntry, gttk_gtk_combo_box_entry_new());
+  GTTK_CHECK_WIDGET(gtkComboboxEntry, gtk_combo_box_entry_new());
 }; /* gttk_GetComboboxEntry */
 
 GtkWidget *gttk_GetHScrollBar(gttk_WidgetCache* wc) {
   GtkAdjustment *adjustment = (GtkAdjustment *)
-             gttk_gtk_adjustment_new(0.0, 0.0, 1.0, 0, 0, 0);
-  GTTK_CHECK_WIDGET(gtkHScrollBar, gttk_gtk_hscrollbar_new(adjustment));
+             gtk_adjustment_new(0.0, 0.0, 1.0, 0, 0, 0);
+  GTTK_CHECK_WIDGET(gtkHScrollBar, gtk_hscrollbar_new(adjustment));
 }; /* gttk_GetHScrollBar */
 
 GtkWidget *gttk_GetVScrollBar(gttk_WidgetCache* wc) {
   GtkAdjustment *adjustment = (GtkAdjustment *)
-             gttk_gtk_adjustment_new(0.0, 0.0, 1.0, 0, 0, 0);
-  GTTK_CHECK_WIDGET(gtkVScrollBar, gttk_gtk_vscrollbar_new(adjustment));
+             gtk_adjustment_new(0.0, 0.0, 1.0, 0, 0, 0);
+  GTTK_CHECK_WIDGET(gtkVScrollBar, gtk_vscrollbar_new(adjustment));
 }; /* gttk_GetVScrollBar */
 
 GtkWidget *gttk_GetScrollBar(gttk_WidgetCache* wc) {
@@ -121,11 +121,11 @@ GtkWidget *gttk_GetScrollBar(gttk_WidgetCache* wc) {
 }; /* gttk_GetScrollBar */
 
 GtkWidget *gttk_GetHScale(gttk_WidgetCache* wc) {
-  GTTK_CHECK_WIDGET(gtkHScale, gttk_gtk_hscale_new_with_range(0,1,0.001));
+  GTTK_CHECK_WIDGET(gtkHScale, gtk_hscale_new_with_range(0,1,0.001));
 }; /* gttk_GetHScale */
 
 GtkWidget *gttk_GetVScale(gttk_WidgetCache* wc) {
-  GTTK_CHECK_WIDGET(gtkVScale, gttk_gtk_vscale_new_with_range(0,1,0.001));
+  GTTK_CHECK_WIDGET(gtkVScale, gtk_vscale_new_with_range(0,1,0.001));
 }; /* gttk_GetVScale */
 
 GtkWidget *gttk_GetScale(gttk_WidgetCache* wc) {
@@ -136,18 +136,18 @@ GtkWidget *gttk_GetScale(gttk_WidgetCache* wc) {
 }; /* gttk_GetScale */
 
 GtkWidget *gttk_GetHProgressBar(gttk_WidgetCache* wc) {
-  GTTK_CHECK_WIDGET(gtkHProgressBar, gttk_gtk_progress_bar_new());
-  gttk_gtk_progress_bar_set_orientation(
+  GTTK_CHECK_WIDGET(gtkHProgressBar, gtk_progress_bar_new());
+  gtk_progress_bar_set_orientation(
      (GtkProgressBar*) wc->gtkHProgressBar, GTK_PROGRESS_LEFT_TO_RIGHT);
-  gttk_gtk_progress_bar_set_fraction(
+  gtk_progress_bar_set_fraction(
      (GtkProgressBar *) wc->gtkHProgressBar, 1);
 }; /* gttk_GetHProgressBar */
 
 GtkWidget *gttk_GetVProgressBar(gttk_WidgetCache* wc) {
-  GTTK_CHECK_WIDGET(gtkVProgressBar, gttk_gtk_progress_bar_new());
-  gttk_gtk_progress_bar_set_orientation(
+  GTTK_CHECK_WIDGET(gtkVProgressBar, gtk_progress_bar_new());
+  gtk_progress_bar_set_orientation(
      (GtkProgressBar*) wc->gtkVProgressBar, GTK_PROGRESS_BOTTOM_TO_TOP);
-  gttk_gtk_progress_bar_set_fraction(
+  gtk_progress_bar_set_fraction(
      (GtkProgressBar *) wc->gtkVProgressBar, 1);
 }; /* gttk_GetVProgressBar */
 
@@ -159,15 +159,15 @@ GtkWidget *gttk_GetProgressBar(gttk_WidgetCache* wc) {
 }; /* gttk_GetProgressBar */
 
 GtkWidget *gttk_GetStatusBar(gttk_WidgetCache* wc) {
-  GTTK_CHECK_WIDGET(gtkStatusBar, gttk_gtk_statusbar_new());
+  GTTK_CHECK_WIDGET(gtkStatusBar, gtk_statusbar_new());
 }; /* gttk_GetStatusBar */
 
 GtkWidget *gttk_GetHPaned(gttk_WidgetCache* wc) {
-  GTTK_CHECK_WIDGET(gtkHPaned, gttk_gtk_hpaned_new());
+  GTTK_CHECK_WIDGET(gtkHPaned, gtk_hpaned_new());
 }; /* gttk_GetHPaned */
 
 GtkWidget *gttk_GetVPaned(gttk_WidgetCache* wc) {
-  GTTK_CHECK_WIDGET(gtkVPaned, gttk_gtk_vpaned_new());
+  GTTK_CHECK_WIDGET(gtkVPaned, gtk_vpaned_new());
 }; /* gttk_GetVPaned */
 
 GtkWidget *gttk_GetPaned(gttk_WidgetCache* wc) {
@@ -178,7 +178,7 @@ GtkWidget *gttk_GetPaned(gttk_WidgetCache* wc) {
 }; /* gttk_GetPaned */
 
 GtkWidget *gttk_GetNotebook(gttk_WidgetCache* wc) {
-  GTTK_CHECK_WIDGET(gtkNotebook, gttk_gtk_notebook_new());
+  GTTK_CHECK_WIDGET(gtkNotebook, gtk_notebook_new());
 }; /* gttk_GetNotebook */
 
 
@@ -260,12 +260,10 @@ void gttk_StateInfo(int state, GtkStateType gtkState,
     printf(" state=%d\n", state);
     printf("  GTK state: %s, shadow: %s",
       gttk_GtkStateStr(gtkState), gttk_GtkShadowStr(gtkShadow));
-#ifndef GTTK_LOAD_GTK_DYNAMICALLY
     if (widget) {
       printf(", focus: %d, default: %d", GTK_WIDGET_HAS_FOCUS(widget),
                                          GTK_WIDGET_HAS_DEFAULT(widget));
     }
-#endif /* GTTK_LOAD_GTK_DYNAMICALLY */
     printf("\n");
     fflush(0);
 }; /* gttk_StateInfo */
@@ -280,7 +278,7 @@ void gttk_CopyGtkPixmapOnToDrawable(GdkPixmap *gdkDrawable, Drawable d,
     gcValues.graphics_exposures = False;
     GC gc = Tk_GetGC(tkwin, GCForeground | GCBackground | GCGraphicsExposures,
                      &gcValues);
-    GdkGC *gdkGC = gttk_gdk_gc_new(gdkDrawable);
+    GdkGC *gdkGC = gdk_gc_new(gdkDrawable);
     HDC hdcSrc = gdk_win32_hdc_get(gdkDrawable, gdkGC, gc_usage);
     /* Create a Tk Drawable from the HDC... */
     TkWinDrawable gtkD;
@@ -288,7 +286,7 @@ void gttk_CopyGtkPixmapOnToDrawable(GdkPixmap *gdkDrawable, Drawable d,
     gtkD.winDC.hdc = hdcSrc;
     XCopyArea(Tk_Display(tkwin), (Drawable) &gtkD, d, gc, x, y, w, h, x1, x2);
     gdk_win32_hdc_release(gdkDrawable, gdkGC, gc_usage);
-    if (gdkGC) gttk_g_object_unref(gdkGC);
+    if (gdkGC) g_object_unref(gdkGC);
     Tk_FreeGC(Tk_Display(tkwin), gc);
 #else
 
@@ -319,16 +317,16 @@ void gttk_CopyGtkPixmapOnToDrawable(GdkPixmap *gdkDrawable, Drawable d,
     gcValues.graphics_exposures = False;
     GC gc = Tk_GetGC(tkwin, GCForeground | GCBackground | GCGraphicsExposures,
                      &gcValues);
-    imgb = gttk_gdk_pixbuf_new(GDK_COLORSPACE_RGB, true, 8, w, h);
+    imgb = gdk_pixbuf_new(GDK_COLORSPACE_RGB, true, 8, w, h);
     if (!imgb) {
       Tk_FreeGC(Tk_Display(tkwin), gc);
       return;
     }
-    imgb = gttk_gdk_pixbuf_get_from_drawable(imgb, gdkDrawable,
+    imgb = gdk_pixbuf_get_from_drawable(imgb, gdkDrawable,
                                                 NULL, x, y, 0, 0, w, h);
-    gttk_gdk_pixbuf_xlib_render_to_drawable(imgb, d, gc,
+    gdk_pixbuf_xlib_render_to_drawable(imgb, d, gc,
          0, 0, x1, x2, w, h, XLIB_RGB_DITHER_MAX, 0, 0);
-    gttk_gdk_pixbuf_unref(imgb);
+    gdk_pixbuf_unref(imgb);
     Tk_FreeGC(Tk_Display(tkwin), gc);
 #endif
 
@@ -339,18 +337,18 @@ void gttk_CopyGtkPixmapOnToDrawable(GdkPixmap *gdkDrawable, Drawable d,
   GtkStyle     *style       = NULL; \
   GdkScreen    *screen      = NULL; \
   GdkColormap  *cmap        = NULL; \
-  screen = gttk_gdk_display_get_screen(wc->gdkDisplay, \
+  screen = gdk_display_get_screen(wc->gdkDisplay, \
                                           Tk_ScreenNumber(tkwin)); \
   printf("Widget: %s, d=%d, p=%p\n", Tk_PathName(tkwin), d, \
           gdk_xid_table_lookup((XID) d));fflush(0); \
-  gdkDrawable = gttk_gdk_pixmap_foreign_new_for_screen(screen, d, \
+  gdkDrawable = gdk_pixmap_foreign_new_for_screen(screen, d, \
           Tk_Width(tkwin), Tk_Height(tkwin), \
           DefaultDepthOfScreen(Tk_Screen(tkwin))); \
   if (!gdkDrawable) return; \
-  GdkVisual *visual = gttk_gdk_x11_screen_lookup_visual(screen,
+  GdkVisual *visual = gdk_x11_screen_lookup_visual(screen,
                               XVisualIDFromVisual(Tk_Visual(tkwin))); \
-  cmap = gttk_gdk_x11_colormap_foreign_new(visual, Tk_Colormap(tkwin)); \
-  gttk_gdk_drawable_set_colormap(gdkDrawable, cmap);\
+  cmap = gdk_x11_colormap_foreign_new(visual, Tk_Colormap(tkwin)); \
+  gdk_drawable_set_colormap(gdkDrawable, cmap);\
   printf("d=%d, gdkDrawable=%p, XID=%d, p=%p\n", d, gdkDrawable, \
           gdk_x11_drawable_get_xid(gdkDrawable), \
           gdk_xid_table_lookup((XID) d));fflush(0);

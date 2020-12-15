@@ -56,13 +56,13 @@ static void LabelframeBorderElementDraw(
     // GTTK_SETUP_WIDGET_SIZE(b.width, b.height);
     // GTTK_WIDGET_SET_FOCUS(widget);
     GTTK_DEFAULT_BACKGROUND;
-    // gttk_gtk_paint_flat_box(style, gdkDrawable, gtkState, gtkShadow, NULL,
+    // gtk_paint_flat_box(style, gdkDrawable, gtkState, gtkShadow, NULL,
     //                            widget, "frame", 0, 0, b.width, b.height);
     gttk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin,
                    0, 0, b.width, b.height, 0, 0);
     gttk_StateShadowTableLookup(NULL, state, gtkState, gtkShadow,
             GTTK_SECTION_BUTTONS|GTTK_SECTION_ALL);
-    gttk_gtk_paint_shadow(style, gdkDrawable, gtkState, gtkShadow, NULL, widget,
+    gtk_paint_shadow(style, gdkDrawable, gtkState, gtkShadow, NULL, widget,
                      "frame", 0, 0, b.width, b.height);
     gttk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin,
                    0, 0, b.width, b.height, b.x, b.y);

@@ -35,7 +35,7 @@ static void RadioButtonIndicatorElementGeometry(
     GTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
     GtkWidget *widget = gttk_GetRadioButton(wc);
     GTTK_ENSURE_WIDGET_OK;
-    gttk_gtk_widget_style_get(widget,
+    gtk_widget_style_get(widget,
            "indicator-size",    &size,
            "indicator-spacing", &spacing,
            "focus-line-width",  &focus_width,
@@ -59,18 +59,18 @@ static void RadioButtonIndicatorElementDraw(
     GTTK_DEFAULT_BACKGROUND_SIZE(b.width+20, b.height+20);
     GTTK_STYLE_FROM_WIDGET;
     GTTK_WIDGET_SET_FOCUS(widget);
-    gttk_gtk_widget_style_get(widget,
+    gtk_widget_style_get(widget,
            "indicator-size", &indicator_size, NULL);
     gttk_StateShadowTableLookup(NULL, state, gtkState, gtkShadow,
             GTTK_SECTION_BUTTONS|GTTK_SECTION_ALL);
     if (state & TTK_STATE_FOCUS) {
-      gttk_gtk_paint_focus(style, gdkDrawable, gtkState, NULL, widget,
+      gtk_paint_focus(style, gdkDrawable, gtkState, NULL, widget,
               "radiobutton", 0, 0, b.width + 20, b.height + 20);
     }
     // gttk_StateInfo(state, gtkState, gtkShadow, tkwin, widget);
     x = 10 + (b.width  - indicator_size) / 2;
     y = 10 + (b.height - indicator_size) / 2;
-    gttk_gtk_paint_option(style, gdkDrawable, gtkState, gtkShadow, NULL,
+    gtk_paint_option(style, gdkDrawable, gtkState, gtkShadow, NULL,
             widget, "radiobutton", x, y, indicator_size, indicator_size);
     gttk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin,
             10, 10, b.width, b.height, b.x, b.y);
@@ -103,7 +103,7 @@ static void RadioButtonBorderElementGeometry(
     GTTK_ENSURE_GTK_STYLE_ENGINE_ACTIVE;
     GtkWidget *widget = gttk_GetRadioButton(wc);
     GTTK_ENSURE_WIDGET_OK;
-    gttk_gtk_widget_style_get(widget,
+    gtk_widget_style_get(widget,
            "focus-line-width", &focus_width,
            "focus-padding",    &focus_pad, NULL);
     *paddingPtr = Ttk_UniformPadding(focus_width + focus_pad);
@@ -128,10 +128,10 @@ static void RadioButtonBorderElementDraw(
       GTTK_WIDGET_SET_FOCUS(widget);
       gttk_StateShadowTableLookup(NULL, state, gtkState, gtkShadow,
             GTTK_SECTION_BUTTONS|GTTK_SECTION_ALL);
-      gttk_gtk_widget_style_get(widget,
+      gtk_widget_style_get(widget,
            "focus-line-width", &focus_width,
            "focus-padding",    &focus_pad, NULL);
-      gttk_gtk_paint_focus(style, gdkDrawable, gtkState, NULL, widget,
+      gtk_paint_focus(style, gdkDrawable, gtkState, NULL, widget,
               "radiobutton", b.x + border_width, b.y + border_width,
                b.width - 2 * border_width, b.height - 2 * border_width);
     }

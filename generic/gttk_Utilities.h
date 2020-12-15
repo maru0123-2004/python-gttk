@@ -26,7 +26,7 @@
   if (!widget) return;
 
 #define GTTK_ATTACH_STYLE_TO_WIDGET \
-  style = gttk_gtk_style_attach(style, widget->window);
+  style = gtk_style_attach(style, widget->window);
 
 #define GTTK_WIDGET_CACHE_DEFINITION \
   gttk_WidgetCache *wc = (gttk_WidgetCache *) clientData;
@@ -48,7 +48,7 @@
   if (!wc) return; \
   style = gttk_GetGtkWindowStyle(wc->gtkWindow); \
   if (!style) return; \
-  gdkDrawable = gttk_gdk_pixmap_new(wc->gtkWindow->window, pw, ph, -1); \
+  gdkDrawable = gdk_pixmap_new(wc->gtkWindow->window, pw, ph, -1); \
   style = gttk_GetGtkWindowStyle(wc->gtkWindow);
 
 #define GTTK_STYLE_BACKGROUND_DEFAULT \
@@ -61,7 +61,7 @@
   if (!style) return;
 
 #define GTTK_DRAWABLE_FROM_WIDGET_SIZE(pw, ph) \
-  gdkDrawable = gttk_gdk_pixmap_new(widget->window, pw, ph, -1);
+  gdkDrawable = gdk_pixmap_new(widget->window, pw, ph, -1);
 
 #define GTTK_DRAWABLE_FROM_WIDGET \
   GTTK_DRAWABLE_FROM_WIDGET_SIZE(b.width, b.height)
@@ -72,14 +72,14 @@
 //   gdk_drawable_set_colormap(gdkDrawable, gdkColormap);
 
 #define GTTK_DEFAULT_BACKGROUND_SIZE(pw, ph) \
-  gttk_gtk_style_apply_default_background(style, gdkDrawable, TRUE, \
+  gtk_style_apply_default_background(style, gdkDrawable, TRUE, \
                gtkState, NULL, 0, 0, pw, ph);
 
 #define GTTK_DEFAULT_BACKGROUND \
   GTTK_DEFAULT_BACKGROUND_SIZE(b.width, b.height)
 
 #define GTTK_CLEANUP_GTK_DRAWABLE \
-  if (gdkDrawable) gttk_g_object_unref(gdkDrawable);
+  if (gdkDrawable) g_object_unref(gdkDrawable);
 
 #define GTTK_SETUP_STATE_SHADOW(statemap, shadowmap) \
     gtkState  = (GtkStateType) \
@@ -88,12 +88,12 @@
        gttk_StateTableLookup(shadowmap, state);
 
 #define GTTK_SETUP_WIDGET_SIZE(width, height) \
-  gttk_gtk_widget_set_size_request(widget, width, height);
+  gtk_widget_set_size_request(widget, width, height);
 
 #define GTTK_GET_WIDGET_SIZE(widthPtr, heightPtr)  \
   if (widget) { \
     GtkRequisition size; \
-    gttk_gtk_widget_size_request(widget, &size); \
+    gtk_widget_size_request(widget, &size); \
     widthPtr  = size.width; \
     heightPtr = size.height; \
   }
