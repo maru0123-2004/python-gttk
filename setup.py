@@ -167,11 +167,8 @@ elif "win" in sys.platform:
     # If loaders.cache is not found, it must be generated
     cache_file = os.path.join("gttk", specials["loaders.cache"], "loaders.cache")
     if not os.path.exists(cache_file):
-        p = sp.Popen(["gdk-pixbuf-query-loaders"], stdout=sp.PIPE)
-        out, err = p.communicate()
-        with open(cache_file, "w") as fo:
-            fo.write(out.decode())
-            fo.flush()
+        with open(cache_file, "wb") as fo:
+            sp.call(["gdk-pixbuf-query-loaders"], stdout=fo)
 
     kwargs = {"package_data": {"gttk": ["*.dll", "pkgIndex.tcl", "gttk.tcl"] + ["{}/{}".format(dir.strip("/"), base) for base, dir in specials.items()]}}
 

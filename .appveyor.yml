@@ -25,7 +25,7 @@ install:
   # Add %PYTHON% to the path for libffi-7.dll
   - set PATH=%PYTHON%;C:\msys64\mingw64\lib;%PATH%
 build_script:
-  - "%PYTHON%\\python.exe setup.py build bdist_wheel"
+  - "%PYTHON%\\python.exe -u setup.py build bdist_wheel"
   # Simplify PATH so as to test binary distribution
   - set PATH=C:\WINDOWS\system32;C:\WINDOWS
 test_script:
