@@ -52,11 +52,12 @@ elif "win" in sys.platform:
     import subprocess as sp
     from typing import List, Optional
 
-    dependencies = ["pango", "cmake", "gtk2", "glib2", "tk", "toolchain"]
+    dependencies = ["pango", "cmake", "gtk2", "glib2", "tk", "toolchain", "libffi"]
     
     for dep in dependencies:
         printf("Installing dependency {}...".format(dep), end=" ")
-        sp.call(["pacman", "--needed", "--noconfirm", "-S", "mingw-w64-x86_64-{}".format(dep)], stdout=sp.PIPE)
+        sp.call(["pacman", "--needed", "--noconfirm", "-S", "mingw-w64-x86_64-{}".format(dep)],
+                stdout=sp.PIPE, stderr=sp.PIPE)
         printf("Done.")
     sp.call(["cmake", ".", "-G", "MinGW Makefiles"])
     sp.call(["mingw32-make"])
@@ -157,12 +158,23 @@ elif "win" in sys.platform:
                     shutil.copyfile(p, os.path.join(target, os.path.basename(p)))
     
     specials={
-        "libpixmap.dll": "/lib/gtk-2.0/2.10.0/engines/", 
-        "libwimp.dll": "/lib/gtk-2.0/2.10.0/engines/",
-        "loaders.cache": "/lib/gdk-pixbuf-2.0/2.10.0/"}  # loaders.cache is used to specify abspaths to the loaders
+        "libpixmap.dll": "lib/gtk-2.0/2.10.0/engines/",
+        "libwimp.dll": "lib/gtk-2.0/2.10.0/engines/",
+        "loaders.cache": "lib/gdk-pixbuf-2.0/2.10.0/"}  # loaders.cache is used to specify abspaths to the loaders
     specials.update({"libpixbufloader-{}.dll".format(fmt): "/lib/gdk-pixbuf-2.0/2.10.0/loaders/"
                      for fmt in ["ani", "bmp", "gif", "icns", "ico", "jpeg", "png", "pnm", "qtif", "svg", "tga", "tiff", "xbm", "xpm"]})
     DependencyWalker("libgttk.dll", specials=specials).copy_to_target("gttk")
+
+    # If loaders.cache is not found, it must be generated
+    cache_file = os.path.join("gttk", specials["loaders.cache"], "loaders.cache")
+    if not os.path.exists(cache_file) or os.path.getsize(cache_file) < 1024:  # Minimum expected file size
+        print("Creating loaders.cache file...")
+        with open("loaders.cache", "wb") as fo:
+            sp.call(["gdk-pixbuf-query-loaders"], stdout=fo)
+        shutil.copyfile("loaders.cache", cache_file)
+        with open(cache_file) as fi:
+            print("gdk-pixbuf-query-loaders gave {} lines of output".format(len(fi.readlines())))
+
     kwargs = {"package_data": {"gttk": ["*.dll", "pkgIndex.tcl", "gttk.tcl"] + ["{}/{}".format(dir.strip("/"), base) for base, dir in specials.items()]}}
 
 else:
