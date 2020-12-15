@@ -169,6 +169,7 @@ elif "win" in sys.platform:
     if not os.path.exists(cache_file):
         with open(cache_file, "w") as fo:
             sp.call(["gdk-pixbuf-query-loaders"], stdout=fo)
+            fo.flush()
 
     kwargs = {"package_data": {"gttk": ["*.dll", "pkgIndex.tcl", "gttk.tcl"] + ["{}/{}".format(dir.strip("/"), base) for base, dir in specials.items()]}}
 
