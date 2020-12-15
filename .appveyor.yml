@@ -1,5 +1,5 @@
 environment:
-  APPVEYOR_RDP_PASSWORD: gttk:loaders
+  APPVEYOR_RDP_PASSWORD: rUC,QiKE%gde~SqZ
   matrix:
     - PYTHON: "C:\\PYTHON38-x64"
 build: off
