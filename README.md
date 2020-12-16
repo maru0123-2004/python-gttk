@@ -96,6 +96,52 @@ sys.path = sys.path[2:]
 import gttk
 ```
 
+## Setting the GTK Theme
+So, now that you've installed `gttk` and loaded it into your application,
+you want to specify what GTK should be loaded. Due to the nature of GTK,
+this may seem a bit complicated, but it's not too hard.
+
+### Default theme directories
+The default theme directory on **Linux** are specified by the XDG
+standard and generally `/usr/share/themes` is used. This folder contains
+Gnome themes, which can be applied to `gttk` if it includes a GTK+-2.0
+theme variant.
+
+On **Windows** the default directory is given by 
+`${dirname(GetModuleFileName())}\\share\\themes`, where `GetModuleFileName()` 
+is a `win32` function that returns the path to the current executable,
+so usually `%PYTHONDIR%\\python.exe`.
+
+These folders are not really convenient, as users do not generally
+have write permissions for them.
+
+### Setting a different theme directory
+A different theme directory may be specified by passing the 
+`theme_dir_prefix` kwarg to `GTTK.__init__`, or by setting the
+environment variable `GTK_DATA_PREFIX`. This value only serves as a
+prefix, so then the theme directory becomes 
+`${GTK_DATA_PREFIX}/share/themes`. Check the absolute path with
+`GTTK().get_themes_directory()`.
+
+### Loading a different theme
+To load a theme from the theme directory, first make sure that you have
+copied a proper GTK+-2.0 theme into the theme directory, in its own 
+sub-folder. Then, set the theme using the GTTK class
+```python
+gttk = GTTK(window, theme="THEME_NAME_HERE")
+# OR
+gttk.set_theme("THEME_NAME_HERE")
+``` 
+or you can create a `~/.gtkrc` file (the specific paths of the files 
+that are parsed are found with `GTTK().get_default_files()`) and having
+at least the line 
+```python
+gtk-theme-name = "THEME_NAME_HERE"
+```
+
+This will then be applied to all GTK applications that read the resource
+file.
+
 ## Screenshots
 `gttk` should work with any GTK theme you can throw at it, but below
 are the themes Yaru and Adwaita as examples.

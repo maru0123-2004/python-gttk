@@ -46,7 +46,12 @@ class GTTK(object):
         folder = os.path.dirname(os.path.abspath(__file__))
 
         if theme_dir_prefix is not None:
-            os.environ["GTK_DATA_PREFIX"] = theme_dir_prefix
+            if theme_dir_prefix == "LIB":
+                os.environ["GTK_DATA_PREFIX"] = folder
+            elif os.path.exists(theme_dir_prefix):
+                os.environ["GTK_DATA_PREFIX"] = theme_dir_prefix
+            else:  # Invalid directory specified, throw error here as GTK will fail silently
+                raise FileNotFoundError("Specified theme directory prefix does not exist: {}".format(theme_dir_prefix))
 
         # Create loaders.cache on win32 platforms to find pixbuf loaders properly
         if "win" in sys.platform:
