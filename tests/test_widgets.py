@@ -4,6 +4,7 @@ License: GNU GPLv3
 Copyright (c) 2017-2018 RedFantom
 """
 import sys
+sys.path = sys.path[2:]
 from unittest import TestCase
 import tkinter as tk
 from tkinter import ttk
@@ -52,15 +53,19 @@ class TestThemedWidgets(TestCase):
         signal_available = "signal" in locals() and hasattr(locals()["signal"], "alarm")
         theme = "gttk"
         self.style.theme_use(theme)
-        for widget in self.WIDGETS:
-            if signal_available:
-                signal.alarm(5)
-            printf("Testing {}: {}".format(theme, widget), end=" - ")
-            getattr(ttk, widget)(self.window).pack()
+        for theme in self.gttk.get_available_themes():
+            self.gttk.set_gtk_theme(theme)
             self.window.update()
-            if signal_available:
-                signal.alarm(0)
-            printf("SUCCESS")
+            printf("Testing GTK theme {}...".format(theme))
+            for widget in self.WIDGETS:
+                if signal_available:
+                    signal.alarm(5)
+                printf("Testing {}: {}".format(theme, widget), end=" - ")
+                getattr(ttk, widget)(self.window).pack()
+                self.window.update()
+                if signal_available:
+                    signal.alarm(0)
+                printf("SUCCESS")
 
     def tearDown(self):
         self.window.destroy()

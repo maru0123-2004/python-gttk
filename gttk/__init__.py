@@ -82,6 +82,9 @@ class GTTK(object):
         """Return the directory in which GTK looks for installed themes"""
         return self.tk.call("ttk::theme::gttk::gtkDirectory", "theme")
 
+    def get_available_themes(self) -> Tuple[str]:
+        return tuple(os.listdir(self.get_themes_directory()))
+
     def get_default_files(self) -> Tuple[str]:
         """Return the files that GTK parses by default at start-up"""
         return self.tk.call("ttk::theme::gttk::gtkDirectory", "default_files")
