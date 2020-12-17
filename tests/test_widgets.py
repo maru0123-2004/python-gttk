@@ -36,7 +36,8 @@ class TestThemedWidgets(TestCase):
         "Scrollbar",
         "Scale",
         "Entry",
-        "Combobox"
+        "Combobox",
+        "Separator"
     ]
 
     def setUp(self):
