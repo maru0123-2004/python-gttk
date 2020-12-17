@@ -25,7 +25,7 @@ install:
   - set PATH=%PYTHON%;C:\msys64\mingw64\lib;%PATH%
   # Download a GTK theme to test (makes sure package is built properly)
   - appveyor DownloadFile https://mirror.f4st.host/archlinux/community/os/x86_64/materia-gtk-theme-20200916-1-any.pkg.tar.zst
-  - 7z e materia-gtk-theme-20200916-1-any.pkg.tar.zst -o themes -y
+  - 7z e materia-gtk-theme-20200916-1-any.pkg.tar.zst -othemes -y
   - move themes/usr/share share
 build_script:
   - "%PYTHON%\\python.exe -u setup.py build bdist_wheel"
