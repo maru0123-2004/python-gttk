@@ -28,6 +28,7 @@ class Example(tk.Tk):
         self.scroll = ttk.Scrollbar(self, orient=tk.VERTICAL)
         self.checked = ttk.Checkbutton(self, text="Checked", variable=tk.BooleanVar(value=True))
         self.unchecked = ttk.Checkbutton(self, text="Unchecked")
+        self.separator = ttk.Separator(self, orient=tk.HORIZONTAL)
         self.tree = ttk.Treeview(self, height=4, show=("tree", "headings"))
         self.setup_tree()
         self.progress = ttk.Progressbar(self, maximum=100, value=50)
@@ -53,9 +54,10 @@ class Example(tk.Tk):
         self.radio_two.grid(row=4, column=2, **sticky)
         self.checked.grid(row=5, column=1, **sticky)
         self.unchecked.grid(row=5, column=2, **sticky)
-        self.scroll.grid(row=1, column=3, rowspan=8, padx=5, **sticky)
-        self.tree.grid(row=6, column=1, columnspan=2, **sticky)
-        self.progress.grid(row=9, column=1, columnspan=2, padx=5, pady=5, **sticky)
+        self.scroll.grid(row=1, column=3, rowspan=9, padx=5, **sticky)
+        self.separator.grid(row=6, column=1, columnspan=2, pady=5, **sticky)
+        self.tree.grid(row=7, column=1, columnspan=2, **sticky)
+        self.progress.grid(row=10, column=1, columnspan=2, padx=5, pady=5, **sticky)
 
     def screenshot(self, *args):
         """Take a screenshot, crop and save"""
@@ -83,12 +85,9 @@ if __name__ == '__main__':
     from gttk import GTTK
 
     window = Example()
-    gttk = GTTK(window, theme="Adwaita")
+    gttk = GTTK(window, theme="Yaru-dark")
     style = ttk.Style(window)
 
     style.theme_use("gttk")
-
-    gttk.set_gtk_theme("Yaru")
-    window.after(2000, lambda: gttk.set_gtk_theme("Adwaita"))
 
     window.mainloop()

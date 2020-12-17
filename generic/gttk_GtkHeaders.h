@@ -66,6 +66,7 @@ typedef struct gttk_WidgetCache {
   GtkWidget*     gtkHPaned;
   GtkWidget*     gtkVPaned;
   GtkWidget*     gtkWindow;
+  GtkWidget*     gtkSeparator;
   GtkWidget*     protoLayout;
 } gttk_WidgetCache;
 

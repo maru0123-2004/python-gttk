@@ -25,10 +25,6 @@ IF ( VERBOSE )
   SET ( GTK2_LOGGING_ENABLED   ON )
 ENDIF ( VERBOSE )
 
-SET ( PKG_SOURCES generic/gttk_TreeView.cpp
-                  generic/gttk_Separator.cpp
-                  generic/gttk_Arrows.cpp )
-
 SET ( PKG_SOURCES generic/gttk_Init.cpp
                   generic/gttk_GtkApp.cpp
                   generic/gttk_Utilities.cpp
@@ -46,7 +42,8 @@ SET ( PKG_SOURCES generic/gttk_Init.cpp
                   generic/gttk_SizeGrip.cpp
                   generic/gttk_Paned.cpp
                   generic/gttk_Notebook.cpp
-                  generic/gttk_Combobox.cpp )
+                  generic/gttk_Combobox.cpp
+                  generic/gttk_Separator.cpp )
 
 MESSAGE ( STATUS "===========================================================" )
 MESSAGE ( STATUS " Welcome to the ${PKG_NAME} ${PKG_VERSION} build system!" )

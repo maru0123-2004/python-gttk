@@ -181,6 +181,14 @@ GtkWidget *gttk_GetNotebook(gttk_WidgetCache* wc) {
   GTTK_CHECK_WIDGET(gtkNotebook, gtk_notebook_new());
 }; /* gttk_GetNotebook */
 
+GtkWidget* gttk_GetSeparator(gttk_WidgetCache* wc) {
+  if (wc->orientation == TTK_ORIENT_VERTICAL) {
+    GTTK_CHECK_WIDGET(gtkSeparator, gtk_vseparator_new());
+  } else {
+    GTTK_CHECK_WIDGET(gtkSeparator, gtk_hseparator_new());
+  }
+}
+
 
 const char *gttk_GtkStateStr(GtkStateType gtkState) {
   switch ((GtkStateType) gtkState) {
