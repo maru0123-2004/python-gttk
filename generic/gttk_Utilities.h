@@ -103,15 +103,6 @@
   int has_default = (defaultState == TTK_BUTTON_DEFAULT_ACTIVE); \
   /*Ttk_GetButtonDefaultStateFromObj(NULL, obj, &defaultState);*/
 
-#ifdef GTTK_LOAD_GTK_DYNAMICALLY
-
-#define GTTK_WIDGET_SET_FOCUS(widget)
-
-#define GTTK_WIDGET_SET_DEFAULT(widget, obj) \
-  int defaultState  = TTK_BUTTON_DEFAULT_DISABLED; \
-  int has_default = (defaultState == TTK_BUTTON_DEFAULT_ACTIVE);
-
-#else /* GTTK_LOAD_GTK_DYNAMICALLY */
 
 #define GTTK_WIDGET_SET_FOCUS(widget) \
   if (state & TTK_STATE_FOCUS) { \
@@ -129,7 +120,6 @@
   } else { \
     GTK_WIDGET_UNSET_FLAGS(widget, GTK_HAS_DEFAULT); \
   } 
-#endif /* GTTK_LOAD_GTK_DYNAMICALLY */
 
 #define GTTK_DEBUG_PRINT_BOX \
   printf("x=%d, y=%d, w=%d, h=%d\n", b.x, b.y, b.width, b.height); \

@@ -21,10 +21,6 @@ static char initScript[] =
   "namespace eval ttk::theme::gttk { variable version " PACKAGE_VERSION " };"
   "tcl_findLibrary gttk $ttk::theme::gttk::version "
   "$ttk::theme::gttk::version [file join [pwd] gttk.tcl] GTTK_LIBRARY gttk::library;";
-#ifdef GTTK_LOAD_GTK_DYNAMICALLY
-static char libsInitScript[] =
-  "ttk::theme::gttk::loadLibraries";
-#endif /* GTTK_LOAD_GTK_DYNAMICALLY */
 
 /*
  * Exit Handler.
@@ -523,15 +519,13 @@ int gttk_ThemeColour(ClientData clientData, Tcl_Interp *interp,
   return TCL_ERROR;
 }; /* gttk_ThemeColour */
 
-#ifndef GTTK_LOAD_GTK_DYNAMICALLY
 #ifndef GTK_STYLE_GET_PRIVATE
 struct _GtkStylePrivate {
   GSList *color_hashes;
 };
 typedef struct _GtkStylePrivate GtkStylePrivate;
 #define GTK_STYLE_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), GTK_TYPE_STYLE, GtkStylePrivate))
-#endif
-#endif /* GTTK_LOAD_GTK_DYNAMICALLY */
+#endif // GTTK_STYLE_GET_PRIVATE
 
 int gttk_ColourKeys(ClientData clientData, Tcl_Interp *interp,
                                  int objc, Tcl_Obj *const objv[]) {
@@ -546,7 +540,6 @@ int gttk_ColourKeys(ClientData clientData, Tcl_Interp *interp,
     Tcl_SetResult(interp, (char *) "empty style!", TCL_STATIC);
     return TCL_ERROR;
   }
-#ifndef GTTK_LOAD_GTK_DYNAMICALLY
   GtkStylePrivate *priv = GTK_STYLE_GET_PRIVATE(style);
   GSList *iter;
   Tcl_Obj *list = Tcl_NewListObj(0, NULL);
@@ -559,7 +552,6 @@ int gttk_ColourKeys(ClientData clientData, Tcl_Interp *interp,
     }
   }
   Tcl_SetObjResult(interp, list);
-#endif /* GTTK_LOAD_GTK_DYNAMICALLY */
   return TCL_OK;
 }; /* gttk_ColourKeys */
 
@@ -751,13 +743,6 @@ _Gttk_Init(Tcl_Interp *interp)
     if (Tcl_Eval(interp, initScript) != TCL_OK) {
       return TCL_ERROR;
     }
-#ifdef GTTK_LOAD_GTK_DYNAMICALLY
-    if (!gttk_GtkAppCreated) {
-      if (Tcl_Eval(interp, libsInitScript) != TCL_OK) {
-        return TCL_ERROR;
-      }
-    }
-#endif /* GTTK_LOAD_GTK_DYNAMICALLY */
 
     /*
      * Initialise Gtk:
