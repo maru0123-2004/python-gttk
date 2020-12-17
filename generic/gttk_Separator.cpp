@@ -25,10 +25,8 @@ typedef struct {
 } SeparatorElement;
 
 static Ttk_ElementOptionSpec SeparatorElementOptions[] = {
-    {(char*) "-orient", TK_OPTION_ANY,
-        Tk_Offset(SeparatorElement, orientObj), (char*) "horizontal"},
-    {(char*) "-background", TK_OPTION_BORDER,
-        Tk_Offset(SeparatorElement, borderObj), DEFAULT_BACKGROUND},
+    {"-orient", TK_OPTION_ANY, Tk_Offset(SeparatorElement, orientObj), "horizontal"},
+    {"-background", TK_OPTION_BORDER, Tk_Offset(SeparatorElement, borderObj), DEFAULT_BACKGROUND},
     {NULL}
 };
 
@@ -53,7 +51,6 @@ static void SeparatorElementDraw(
 
   gint height, width;
   gtk_widget_style_get(widget, "separator-height", &height, "separator-width", &width, NULL);
-  printf("Height: %d\n Width: %d\n", height, width);
 
   gttk_CopyGtkPixmapOnToDrawable(gdkDrawable, d, tkwin, 0, 0, b.width, b.height, b.x, b.y);
   Tcl_MutexUnlock(&gttkMutex);
@@ -102,7 +99,7 @@ static Ttk_ElementSpec SeparatorElementSpec = {
     SeparatorElementOptions,
     SeparatorElementGeometry,
     SeparatorElementDraw
-};
+}; // SeparatorElementSpec
 
 static Ttk_ElementSpec GeneralSeparatorElementSpec = {
     TK_STYLE_VERSION_2,
@@ -110,7 +107,7 @@ static Ttk_ElementSpec GeneralSeparatorElementSpec = {
     SeparatorElementOptions,
     GeneralSeparatorElementGeometry,
     GeneralSeparatorElementDraw
-};
+}; // GeneralSeparatorElementSpec
 
 // Widget layout
 TTK_BEGIN_LAYOUT(SeparatorLayout)
