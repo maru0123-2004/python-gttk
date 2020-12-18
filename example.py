@@ -30,6 +30,7 @@ class Example(tk.Tk):
         self.unchecked = ttk.Checkbutton(self, text="Unchecked")
         self.separator = ttk.Separator(self, orient=tk.HORIZONTAL)
         self.tree = ttk.Treeview(self, height=4, show=("tree", "headings"))
+        self.spinbox = ttk.Spinbox(self)
         self.setup_tree()
         self.progress = ttk.Progressbar(self, maximum=100, value=50)
         self.bind("<F10>", self.screenshot)
@@ -58,6 +59,7 @@ class Example(tk.Tk):
         self.separator.grid(row=6, column=1, columnspan=2, pady=5, **sticky)
         self.tree.grid(row=7, column=1, columnspan=2, **sticky)
         self.progress.grid(row=10, column=1, columnspan=2, padx=5, pady=5, **sticky)
+        self.spinbox.grid(row=11, column=1)
 
     def screenshot(self, *args):
         """Take a screenshot, crop and save"""
@@ -85,7 +87,7 @@ if __name__ == '__main__':
     from gttk import GTTK
 
     window = Example()
-    gttk = GTTK(window, theme="Yaru-dark")
+    gttk = GTTK(window, theme="Materia")
     style = ttk.Style(window)
 
     style.theme_use("gttk")
