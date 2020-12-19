@@ -171,6 +171,7 @@ extern GtkWidget *gttk_GetStatusBar(gttk_WidgetCache* wc);
 extern GtkWidget *gttk_GetPaned(gttk_WidgetCache* wc);
 extern GtkWidget *gttk_GetNotebook(gttk_WidgetCache* wc);
 extern GtkWidget* gttk_GetSeparator(gttk_WidgetCache* wc);
+extern GtkWidget* gttk_get_spin_button(gttk_WidgetCache* wc);
 #if 0
 extern void gttk_StoreStyleNameLowers(gttk_WidgetCache *wc);
 extern bool gttk_ThemeIs(gttk_WidgetCache *wc, const char* name);

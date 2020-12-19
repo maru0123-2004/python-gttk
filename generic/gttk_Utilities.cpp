@@ -189,6 +189,11 @@ GtkWidget* gttk_GetSeparator(gttk_WidgetCache* wc) {
   }
 }
 
+GtkWidget* gttk_get_spin_button(gttk_WidgetCache* wc) {
+  auto adjustment = (GtkAdjustment*) gtk_adjustment_new(0.0, 0.0, 1.0, 0, 0, 0);
+  GTTK_CHECK_WIDGET(gtkSpinButton, gtk_spin_button_new(adjustment, 0, 0))
+}
+
 
 const char *gttk_GtkStateStr(GtkStateType gtkState) {
   switch ((GtkStateType) gtkState) {

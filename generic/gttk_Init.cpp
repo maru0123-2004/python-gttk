@@ -771,6 +771,7 @@ _Gttk_Init(Tcl_Interp *interp)
     gttk_Init_Combobox(interp, wc, themePtr);
     // gttk_Init_TreeView(interp, wc, themePtr);
     gttk_Init_Separator(interp, wc, themePtr);
+    gttk_init_spinbox(interp, wc, themePtr);
     //gttk_Init_Arrows(interp, wc, themePtr);
     Tcl_CreateExitHandler(&gttk_ExitProc, 0);
     //Tcl_CreateThreadExitHandler(&gttk_ExitProc, 0);

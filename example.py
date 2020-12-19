@@ -14,6 +14,9 @@ class Example(tk.Tk):
     def __init__(self):
         tk.Tk.__init__(self)
         # Create widgets
+        self.notebook = ttk.Notebook(self)
+        self.notebook.add(ttk.Button(self, text="Hello World"), text="Frame One")
+        self.notebook.add(ttk.Button(self, text="Hello Universe"), text="Frame Two")
         self.menu = tk.Menu(self, tearoff=False)
         self.sub_menu = tk.Menu(self.menu, tearoff=False)
         self.sub_menu.add_command(label="Exit", command=self.destroy)
@@ -28,14 +31,15 @@ class Example(tk.Tk):
         self.scroll = ttk.Scrollbar(self, orient=tk.VERTICAL)
         self.checked = ttk.Checkbutton(self, text="Checked", variable=tk.BooleanVar(value=True))
         self.unchecked = ttk.Checkbutton(self, text="Unchecked")
-        self.separator = ttk.Separator(self, orient=tk.HORIZONTAL)
         self.tree = ttk.Treeview(self, height=4, show=("tree", "headings"))
-        self.spinbox = ttk.Spinbox(self)
         self.setup_tree()
+        self.spinbox = ttk.Spinbox(self)
+        self.combo = ttk.Combobox(self)
         self.progress = ttk.Progressbar(self, maximum=100, value=50)
-        self.bind("<F10>", self.screenshot)
         # Grid widgets
         self.grid_widgets()
+        # Bind screenshot button
+        self.bind("<F10>", self.screenshot)
 
     def setup_tree(self):
         """Setup an example Treeview"""
@@ -47,6 +51,7 @@ class Example(tk.Tk):
     def grid_widgets(self):
         """Put widgets in the grid"""
         sticky = {"sticky": "nswe"}
+        self.notebook.grid(row=0, column=1, columnspan=2, **sticky)
         self.label.grid(row=1, column=1, columnspan=2, **sticky)
         self.dropdown.grid(row=2, column=1, **sticky)
         self.entry.grid(row=2, column=2, **sticky)
@@ -55,11 +60,11 @@ class Example(tk.Tk):
         self.radio_two.grid(row=4, column=2, **sticky)
         self.checked.grid(row=5, column=1, **sticky)
         self.unchecked.grid(row=5, column=2, **sticky)
-        self.scroll.grid(row=1, column=3, rowspan=9, padx=5, **sticky)
-        self.separator.grid(row=6, column=1, columnspan=2, pady=5, **sticky)
-        self.tree.grid(row=7, column=1, columnspan=2, **sticky)
-        self.progress.grid(row=10, column=1, columnspan=2, padx=5, pady=5, **sticky)
-        self.spinbox.grid(row=11, column=1)
+        self.scroll.grid(row=1, column=3, rowspan=8, padx=5, **sticky)
+        self.tree.grid(row=6, column=1, columnspan=2, **sticky)
+        self.spinbox.grid(row=7, column=1, columnspan=2, **sticky)
+        self.combo.grid(row=8, column=1, columnspan=2, **sticky)
+        self.progress.grid(row=9, column=1, columnspan=2, padx=5, pady=5, **sticky)
 
     def screenshot(self, *args):
         """Take a screenshot, crop and save"""
