@@ -4,6 +4,15 @@ environment:
 build: off
 install:
   - set PATH=C:\msys64\usr\bin;%PATH%
+  # msys2/MSYS2-packages#1962
+  - >-
+    move C:\msys64 C:\msys64_old &&
+    curl -kLo msys2.tar.xz https://github.com/msys2/msys2-installer/releases/download/nightly-x86_64/msys2-base-x86_64-latest.tar.xz &&
+    7z x -so msys2.tar.xz | 7z x -si -ttar &&
+    move msys64 C:\ && del msys2.tar.xz
+  - bash -lc "pacman -Syuu --noconfirm"
+  - taskkill /f /fi "MODULES eq msys-2.0.dll" || exit /b 0
+  - bash -lc "pacman -Suu --noconfirm"
   # Load PGP Keys for Msys64
   - bash -lc "curl -O http://repo.msys2.org/msys/x86_64/msys2-keyring-r21.b39fb11-1-any.pkg.tar.xz"
   - bash -lc "curl -O http://repo.msys2.org/msys/x86_64/msys2-keyring-r21.b39fb11-1-any.pkg.tar.xz.sig"
@@ -11,9 +20,6 @@ install:
   - bash -lc "pacman -U --noconfirm --config <(echo) msys2-keyring-r21.b39fb11-1-any.pkg.tar.xz"
   # Kill gpg-agent due to bug in MSYS
   - TaskKill /IM gpg-agent.exe /F
-  # msys2/MSYS2-packages#1962
-  - bash -lc "curl -O https://mirror.msys2.org/msys/x86_64/pacman-6.0.1-3-x86_64.pkg.tar.zst"
-  - bash -lc "pacman -U --noconfirm pacman-6.0.1-3-x86_64.pkg.tar.zst"
   # Update known packages
   - bash -lc "pacman --needed --noconfirm -Syu"
   - bash -lc "pacman --needed --noconfirm -Sy"
