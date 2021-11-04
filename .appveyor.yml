@@ -12,7 +12,8 @@ install:
   # Kill gpg-agent due to bug in MSYS
   - TaskKill /IM gpg-agent.exe /F
   # msys2/MSYS2-packages#1962
-  - bash -lc "pacman --noconfirm -Sy pacman"
+  - bash -lc "curl -O https://mirror.msys2.org/msys/x86_64/pacman-6.0.1-3-x86_64.pkg.tar.zst"
+  - bash -lc "pacman -U --noconfirm pacman-6.0.1-3-x86_64.pkg.tar.zst"
   # Update known packages
   - bash -lc "pacman --needed --noconfirm -Syu"
   - bash -lc "pacman --needed --noconfirm -Sy"
