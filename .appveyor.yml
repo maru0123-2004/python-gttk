@@ -11,6 +11,8 @@ install:
   - bash -lc "pacman -U --noconfirm --config <(echo) msys2-keyring-r21.b39fb11-1-any.pkg.tar.xz"
   # Kill gpg-agent due to bug in MSYS
   - TaskKill /IM gpg-agent.exe /F
+  # msys2/MSYS2-packages#1962
+  - bash -lc "pacman --noconfirm -Sy pacman"
   # Update known packages
   - bash -lc "pacman --needed --noconfirm -Syu"
   - bash -lc "pacman --needed --noconfirm -Sy"
