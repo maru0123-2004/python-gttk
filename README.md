@@ -130,7 +130,7 @@ sub-folder. Then, set the theme using the GTTK class
 ```python
 gttk = GTTK(window, theme="THEME_NAME_HERE")
 # OR
-gttk.set_theme("THEME_NAME_HERE")
+gttk.set_gtk_theme("THEME_NAME_HERE")
 ``` 
 or you can create a `~/.gtkrc` file (the specific paths of the files 
 that are parsed are found with `GTTK().get_default_files()`) and having
@@ -141,6 +141,14 @@ gtk-theme-name = "THEME_NAME_HERE"
 
 This will then be applied to all GTK applications that read the resource
 file.
+
+### Listing available theme
+To list up available theme, run this function:
+```python
+gttk=GTTK(window)
+gttk.get_themes_available() #this
+```
+It return tuple of theme names.
 
 ## Screenshots
 `gttk` should work with any GTK theme you can throw at it, but below
